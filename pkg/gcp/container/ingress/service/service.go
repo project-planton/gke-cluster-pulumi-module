@@ -4,13 +4,13 @@ import (
 	wordpb "buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/commons/english/rpc/enums"
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/ingress/controller"
-	ingressnamespace "github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/ingress/namespace"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/ip"
-	puluminameoutputcustom "github.com/plantoncloud-inc/pulumi-stack-runner-sdk/go/pulumi/name/output/custom"
-	"github.com/plantoncloud-inc/stack-runner-service/internal/domain/code2cloud/deploy/kafka/kubernetes/listener"
-	"github.com/plantoncloud-inc/stack-runner-service/internal/domain/code2cloud/deploy/postgres/kubernetes/cluster"
-	redisport "github.com/plantoncloud-inc/stack-runner-service/internal/domain/code2cloud/deploy/redis/kubernetes/network/port"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/controller"
+	ingressnamespace "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/namespace"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/kafka"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/postgres"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/redis"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
+	puluminameoutputcustom "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/helm/v3"
@@ -121,20 +121,20 @@ func addService(ctx *pulumi.Context, input *Input, serviceName string, addedIpAd
 				&corev1.ServicePortArgs{
 					Name:       pulumi.String("kafka-private"),
 					Protocol:   pulumi.String("TCP"),
-					Port:       pulumi.Int(listener.ExternalPrivateListenerPortNumber),
-					TargetPort: pulumi.Int(listener.ExternalPrivateListenerPortNumber),
+					Port:       pulumi.Int(kafka.ExternalPrivateListenerPortNumber),
+					TargetPort: pulumi.Int(kafka.ExternalPrivateListenerPortNumber),
 				},
 				&corev1.ServicePortArgs{
 					Name:       pulumi.String("kafka-public"),
 					Protocol:   pulumi.String("TCP"),
-					Port:       pulumi.Int(listener.ExternalPublicListenerPortNumber),
-					TargetPort: pulumi.Int(listener.ExternalPublicListenerPortNumber),
+					Port:       pulumi.Int(kafka.ExternalPublicListenerPortNumber),
+					TargetPort: pulumi.Int(kafka.ExternalPublicListenerPortNumber),
 				},
 				&corev1.ServicePortArgs{
 					Name:       pulumi.String("postgres"),
 					Protocol:   pulumi.String("TCP"),
-					Port:       pulumi.Int(cluster.PostgresContainerPort),
-					TargetPort: pulumi.Int(cluster.PostgresContainerPort),
+					Port:       pulumi.Int(postgres.ContainerPort),
+					TargetPort: pulumi.Int(postgres.ContainerPort),
 				},
 				&corev1.ServicePortArgs{
 					Name:       pulumi.String("debug"),
@@ -145,8 +145,8 @@ func addService(ctx *pulumi.Context, input *Input, serviceName string, addedIpAd
 				&corev1.ServicePortArgs{
 					Name:       pulumi.String("redis"),
 					Protocol:   pulumi.String("TCP"),
-					Port:       pulumi.Int(redisport.RedisPort),
-					TargetPort: pulumi.Int(redisport.RedisPort),
+					Port:       pulumi.Int(redis.Port),
+					TargetPort: pulumi.Int(redis.Port),
 				},
 			},
 		},

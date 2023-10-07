@@ -3,9 +3,9 @@ package aws
 import (
 	"buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/aws"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/aws/container/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/aws/network"
-	pulumiawsnativeprovider "github.com/plantoncloud-inc/pulumi-stack-runner-sdk/go/pulumi/automation/provider/aws"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/container/cluster"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/network"
+	pulumiawsnativeprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

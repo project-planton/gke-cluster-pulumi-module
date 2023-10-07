@@ -3,9 +3,10 @@ package istio
 import (
 	"buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/ingress"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/system"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/system"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -36,7 +37,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedResources, error) {
 		KubernetesProvider:        input.KubernetesProvider,
 		IstioAddonIngressInput:    input.IstioAddonInput.Ingress,
 		IstioSystemAddedResources: istioSystemAddedResources,
-		ReqWorkspace:              input.Workspace,
+		WorkspaceDir:              input.Workspace,
 	})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add istio-ingress resources")

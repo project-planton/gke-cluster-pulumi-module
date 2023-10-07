@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/kubernetes/manifest"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/ingress/controller"
-	ingressnamespace "github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio/ingress/namespace"
-	"github.com/plantoncloud-inc/stack-runner-service/internal/domain/code2cloud/deploy/kafka/kubernetes/listener"
-	productstoragedatabasepostgresclusterstackimplcluster "github.com/plantoncloud-inc/stack-runner-service/internal/domain/code2cloud/deploy/postgres/kubernetes/cluster"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/controller"
+	ingressnamespace "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/namespace"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/kafka"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/postgres"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/helm/v3"
 	pulumik8syaml "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/yaml"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
@@ -17,9 +18,7 @@ import (
 )
 
 const (
-	Namespace           = ingressnamespace.Name
-	KafkaGatewayName    = "kafka"
-	PostgresGatewayName = "postgres"
+	Namespace = ingressnamespace.Name
 )
 
 type Input struct {
@@ -40,11 +39,11 @@ func Resources(ctx *pulumi.Context, input *Input) error {
 
 func addKafkaGateway(ctx *pulumi.Context, input *Input) error {
 	gatewayObject := buildTlsPassThroughGatewayObject(
-		KafkaGatewayName,
+		kafka.GatewayName,
 		Namespace,
-		listener.ExternalPublicListenerPortNumber,
+		kafka.ExternalPublicListenerPortNumber,
 	)
-	resourceName := fmt.Sprintf("gateway-%s", KafkaGatewayName)
+	resourceName := fmt.Sprintf("gateway-%s", kafka.GatewayName)
 	manifestPath := filepath.Join(input.Workspace, fmt.Sprintf("%s.yaml", resourceName))
 	if err := manifest.Create(manifestPath, gatewayObject); err != nil {
 		return errors.Wrapf(err, "failed to create %s manifest file", manifestPath)
@@ -60,11 +59,11 @@ func addKafkaGateway(ctx *pulumi.Context, input *Input) error {
 
 func addPostgresGateway(ctx *pulumi.Context, input *Input) error {
 	gatewayObject := buildTlsPassThroughGatewayObject(
-		PostgresGatewayName,
+		postgres.GatewayName,
 		Namespace,
-		productstoragedatabasepostgresclusterstackimplcluster.PostgresContainerPort,
+		postgres.ContainerPort,
 	)
-	resourceName := fmt.Sprintf("gateway-%s", PostgresGatewayName)
+	resourceName := fmt.Sprintf("gateway-%s", postgres.GatewayName)
 	manifestPath := filepath.Join(input.Workspace, fmt.Sprintf("%s.yaml", resourceName))
 	if err := manifest.Create(manifestPath, gatewayObject); err != nil {
 		return errors.Wrapf(err, "failed to create %s manifest file", manifestPath)

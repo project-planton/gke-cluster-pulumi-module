@@ -42,14 +42,14 @@ spec:
 `
 
 type Input struct {
-	ReqWorkspace                      string
+	WorkspaceDir                      string
 	AddedIstioIngressNamespace        *v1.Namespace
 	AddedIngressControllerHelmRelease *helm.Release
 }
 
 // Resources installs envoy-filter required to support for grpc-web ingress requests
 func Resources(ctx *pulumi.Context, input *Input) error {
-	manifestPath := filepath.Join(input.ReqWorkspace, "envoy-filter.yaml")
+	manifestPath := filepath.Join(input.WorkspaceDir, "envoy-filter.yaml")
 	if !file.IsDirExists(filepath.Dir(manifestPath)) {
 		if err := os.MkdirAll(filepath.Dir(manifestPath), os.ModePerm); err != nil {
 			return errors.Wrapf(err, "failed to ensure %s dir", filepath.Dir(manifestPath))

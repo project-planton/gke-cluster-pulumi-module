@@ -6,6 +6,6 @@ import (
 
 type Input struct {
 	SourceKubeconfigBase64 string
-	ReqWorkspace           string
+	WorkspaceDir           string
 	StackOperationType     stackrpc.StackOperationType
 }

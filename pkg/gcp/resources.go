@@ -1,21 +1,26 @@
 package gcp
 
 import (
+	"buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/ingress"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/iam"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/projects"
-	pulumigcpprovider "github.com/plantoncloud-inc/pulumi-stack-runner-sdk/go/pulumi/automation/provider/google"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
+	pulumigcpprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/google"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// resources sets up kube-cluster projects
-// * creates kube-cluster and vpc-network projects
-// * enabled required apis on kube-cluster and vpc-network projects
-func (s *Stack) resources(ctx *pulumi.Context) error {
+type ResourceStack struct {
+	WorkspaceDir     string
+	Input            *gcp.KubeClusterGcpStackInput
+	GcpLabels        map[string]string
+	KubernetesLabels map[string]string
+}
+
+func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	gcpProvider, err := pulumigcpprovider.Get(ctx, s.Input.CredentialsInput.Google)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
@@ -71,7 +76,7 @@ func (s *Stack) resources(ctx *pulumi.Context) error {
 	addedContainerClusterAddonResources, err := addon.Resources(ctx, &addon.Input{
 		KubeClusterAddons:              s.Input.ResourceInput.KubeCluster.Spec.KubernetesAddons,
 		ContainerAddonInput:            s.Input.ResourceInput.Container.Addon,
-		ReqWorkspace:                   s.ReqWorkspace,
+		WorkspaceDir:                   s.WorkspaceDir,
 		AddedContainerClusterProject:   addedProjectsResources.KubeClusterProjects.ContainerClusterProject,
 		AddedContainerClusterResources: addedContainerClusters,
 		AddedIamResources:              addedIamResources,
@@ -81,7 +86,7 @@ func (s *Stack) resources(ctx *pulumi.Context) error {
 	}
 
 	if err := ingress.Resources(ctx, &ingress.Input{
-		ReqWorkspace:           s.ReqWorkspace,
+		WorkspaceDir:           s.WorkspaceDir,
 		AddedIpAddresses:       addedNetworkResources.AddedIpAddresses,
 		AddedContainerClusters: addedContainerClusters,
 		AddedAddonResources:    addedContainerClusterAddonResources,

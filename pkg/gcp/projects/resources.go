@@ -2,8 +2,8 @@ package projects
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/projects/folder"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/projects/project"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/folder"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

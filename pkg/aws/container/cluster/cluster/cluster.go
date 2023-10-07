@@ -3,7 +3,7 @@ package cluster
 import (
 	kubernetesclusterv1state "buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/state"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/aws/network"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/network"
 	awsclassic "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-eks/sdk/go/eks"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

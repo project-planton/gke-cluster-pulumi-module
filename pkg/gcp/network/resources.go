@@ -2,14 +2,14 @@ package network
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/firewall"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/iam"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/ip"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/nat"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/router"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/subnet"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/network/vpc"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/projects/project"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/firewall"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/iam"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/nat"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/router"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/subnet"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/vpc"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

@@ -4,23 +4,23 @@ import (
 	"buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	kubernetesclusterv1state "buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/state"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/certmanager"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/externalsecrets"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/ingressnginx"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/istio"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/kubecost"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/linkerd"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/opencost"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/plantoncloudkubeagent"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/postgresoperator"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/prometheus"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/reflector"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/solroperator"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/strimzi"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/addon/traefik"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/container/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-stack/pkg/gcp/iam"
-	pulumikubernetesprovider "github.com/plantoncloud-inc/pulumi-stack-runner-sdk/go/pulumi/automation/provider/kubernetes"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/certmanager"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externalsecrets"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/ingressnginx"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/kubecost"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/linkerd"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/opencost"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/plantoncloudkubeagent"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/postgresoperator"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/prometheus"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/reflector"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/solroperator"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/strimzi"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/traefik"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
+	pulumikubernetesprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/kubernetes"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -28,7 +28,7 @@ import (
 
 type Input struct {
 	ContainerAddonInput            *gcp.Addons
-	ReqWorkspace                   string
+	WorkspaceDir                   string
 	AddedContainerClusterResources *cluster.AddedContainerClusterResources
 	AddedIamResources              *iam.AddedIamResources
 	AddedContainerClusterProject   *organizations.Project
@@ -54,7 +54,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedResources, error) {
 }
 
 func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubernetes.Provider, input *Input) (*AddedResources, error) {
-	workspace := input.ReqWorkspace
+	workspace := input.WorkspaceDir
 	addonsInput := input.ContainerAddonInput
 	istioAddedResources, err := istio.Resources(ctx, &istio.Input{
 		Workspace:          workspace,
