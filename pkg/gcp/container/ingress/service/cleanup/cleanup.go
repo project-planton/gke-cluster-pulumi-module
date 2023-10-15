@@ -1,7 +1,7 @@
 package cleanup
 
 import (
-	stackrpc "buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go/cloud/planton/apis/v1/stack/rpc/enums"
+	stackrpc "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/rpc/enums"
 )
 
 type Input struct {

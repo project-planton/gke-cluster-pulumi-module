@@ -20,6 +20,5 @@ build: clean deps vet fmt
 
 .PHONY: update-deps
 update-deps:
-	go get buf.build/gen/go/plantoncloud/planton-cloud-apis/protocolbuffers/go@latest
-	go get buf.build/gen/go/plantoncloud/planton-cloud-apis/grpc/go@latest
+	go get github.com/plantoncloud/planton-cloud-apis@latest
 	go get github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk
