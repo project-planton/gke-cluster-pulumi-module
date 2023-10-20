@@ -4,8 +4,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	kubernetesclusterv1state "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/state"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/rpc/enums"
+	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
+	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/container"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -19,7 +19,7 @@ type Input struct {
 	KubeClusterId string
 	GcpZone       string
 	Cluster       *container.Cluster
-	NodePools     []*kubernetesclusterv1state.KubeClusterNodePoolGcpState
+	NodePools     []*kubeclusterv1.KubeClusterNodePoolGcp
 	Labels        map[string]string
 }
 
@@ -35,7 +35,7 @@ func Resources(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) {
 	return addedNodePools, nil
 }
 
-func addNodePool(ctx *pulumi.Context, input *Input, clusterNodePoolInput *kubernetesclusterv1state.KubeClusterNodePoolGcpState) (*container.NodePool, error) {
+func addNodePool(ctx *pulumi.Context, input *Input, clusterNodePoolInput *kubeclusterv1.KubeClusterNodePoolGcp) (*container.NodePool, error) {
 	addedNodePool, err := container.NewNodePool(ctx, clusterNodePoolInput.Name, &container.NodePoolArgs{
 		Location:  pulumi.String(input.GcpZone),
 		Project:   input.Cluster.Project,

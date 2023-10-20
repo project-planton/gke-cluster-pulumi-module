@@ -10,7 +10,7 @@ import (
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/org"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/rpc/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/enums"
 )
 
 func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.KubeClusterGcpStackOutputs, error) {

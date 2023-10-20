@@ -3,14 +3,14 @@ package cluster
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/network"
-	kubernetesclusterv1state "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/state"
+	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
 	awsclassic "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-eks/sdk/go/eks"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Input struct {
-	KubeCluster           *kubernetesclusterv1state.KubeClusterState
+	KubeCluster           *kubeclusterv1.KubeCluster
 	Labels                map[string]string
 	AddedNetworkResources *network.AddedResources
 	AwsProvider           *awsclassic.Provider
