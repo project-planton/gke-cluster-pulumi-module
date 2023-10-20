@@ -19,8 +19,8 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
 	pulumikubernetesprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/kubernetes"
+	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
-	kubernetesclusterv1state "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/state"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -32,7 +32,7 @@ type Input struct {
 	AddedContainerClusterResources *cluster.AddedContainerClusterResources
 	AddedIamResources              *iam.AddedIamResources
 	AddedContainerClusterProject   *organizations.Project
-	KubeClusterAddons              *kubernetesclusterv1state.KubeClusterAddonsSpecState
+	KubeClusterAddons              *kubeclusterv1.KubeClusterAddonsSpec
 }
 
 type AddedResources struct {
