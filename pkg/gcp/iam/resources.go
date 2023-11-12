@@ -3,10 +3,12 @@ package iam
 import (
 	"github.com/pkg/errors"
 	addoncertmanager "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/certmanager"
+	addonexternaldns "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externaldns"
 	addonexternalsecrets "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externalsecrets"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/certmanager"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/dns"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/externaldns"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/externalsecrets"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/workloaddeployer"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
@@ -21,6 +23,7 @@ type Input struct {
 
 type AddedIamResources struct {
 	CertManagerGsa         *serviceaccount.Account
+	ExternalDnsGsa         *serviceaccount.Account
 	ExternalSecretsGsa     *serviceaccount.Account
 	WorkloadDeployerGsa    *serviceaccount.Account
 	WorkloadDeployerGsaKey *serviceaccount.Key
@@ -33,6 +36,13 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedIamResources, error) {
 	})
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add %s gsa", addoncertmanager.Ksa)
+	}
+	addedExternalDnsGsa, err := externaldns.Resources(ctx, &externaldns.Input{
+		AddedContainerClusterProject:   input.AddedContainerClusterProject,
+		AddedContainerClusterResources: input.AddedContainerClusters,
+	})
+	if err != nil {
+		return nil, errors.Wrapf(err, "failed to add %s gsa", addonexternaldns.Ksa)
 	}
 	addedExternalSecretsGsa, err := externalsecrets.Resources(ctx, &externalsecrets.Input{
 		AddedContainerClusterProject:   input.AddedContainerClusterProject,
@@ -57,6 +67,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedIamResources, error) {
 	}
 	return &AddedIamResources{
 		CertManagerGsa:         addedCertManagerGsa,
+		ExternalDnsGsa:         addedExternalDnsGsa,
 		ExternalSecretsGsa:     addedExternalSecretsGsa,
 		WorkloadDeployerGsa:    addedWorkloadDeployerResources.AddedWorkloadDeployerGsa,
 		WorkloadDeployerGsaKey: addedWorkloadDeployerResources.AddedWorkloadDeployerGsaKey,
