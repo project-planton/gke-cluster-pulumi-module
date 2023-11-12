@@ -12,7 +12,7 @@ import (
 
 type Input struct {
 	WorkspaceDir           string
-	AddedIpAddresses       *ip.AddedComputeIpAddresses
+	AddedIpAddresses       *ip.AddedIngressIpAddresses
 	AddedContainerClusters *cluster.AddedContainerClusterResources
 	AddedAddonResources    *addon.AddedResources
 }

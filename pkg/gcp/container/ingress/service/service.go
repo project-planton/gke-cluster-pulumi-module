@@ -34,7 +34,7 @@ var (
 )
 
 type Input struct {
-	AddedComputeIpAddress                  *ip.AddedComputeIpAddresses
+	AddedComputeIpAddress                  *ip.AddedIngressIpAddresses
 	AddedIstioIngressControllerHelmRelease *helm.Release
 }
 
@@ -158,7 +158,7 @@ func addService(ctx *pulumi.Context, input *Input, serviceName string, addedIpAd
 	return nil
 }
 
-func exportIpAddressOutputs(ctx *pulumi.Context, ingressIpAddress *ip.AddedComputeIpAddresses) error {
+func exportIpAddressOutputs(ctx *pulumi.Context, ingressIpAddress *ip.AddedIngressIpAddresses) error {
 	ctx.Export(GetInternalIpOutputName(), ingressIpAddress.Internal.Address)
 	ctx.Export(GetExternalIpOutputName(), ingressIpAddress.External.Address)
 	return nil

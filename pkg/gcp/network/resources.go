@@ -25,7 +25,7 @@ type Input struct {
 type AddedNetworkResources struct {
 	AddedVpc                 *compute.Network
 	AddedSubnet              *compute.Subnetwork
-	AddedIpAddresses         *ip.AddedComputeIpAddresses
+	AddedIpAddresses         *ip.AddedIngressIpAddresses
 	AddedNetworkIamResources []pulumi.Resource
 }
 

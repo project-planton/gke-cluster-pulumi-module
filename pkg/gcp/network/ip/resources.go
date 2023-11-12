@@ -21,14 +21,14 @@ type Input struct {
 	Labels                 map[string]string
 }
 
-type AddedComputeIpAddresses struct {
+type AddedIngressIpAddresses struct {
 	External *compute.Address
 	Internal *compute.Address
 }
 
 // Resources adds one set of external and one internal ip addresses reservations.
 // these ip address are attached to the load balancers created by services on container cluster to configure ingress
-func Resources(ctx *pulumi.Context, input *Input) (*AddedComputeIpAddresses, error) {
+func Resources(ctx *pulumi.Context, input *Input) (*AddedIngressIpAddresses, error) {
 	addedIpAddresses, err := addIpAddresses(ctx, input,
 		input.AddedProjectsResources.KubeClusterProjects.ContainerClusterProject,
 		input.AddedProjectsResources.AddedProjectApis.ContainerClusterProject)
@@ -39,7 +39,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedComputeIpAddresses, err
 	return addedIpAddresses, nil
 }
 
-func exportOutputs(ctx *pulumi.Context, kubeClusterId string, addedIpAddresses *AddedComputeIpAddresses) {
+func exportOutputs(ctx *pulumi.Context, kubeClusterId string, addedIpAddresses *AddedIngressIpAddresses) {
 	ctx.Export(getIngressIpOutputName(enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_EXTERNAL, kubeClusterId),
 		addedIpAddresses.External.Address)
 	ctx.Export(getIngressIpOutputName(enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_INTERNAL, kubeClusterId),
@@ -47,7 +47,7 @@ func exportOutputs(ctx *pulumi.Context, kubeClusterId string, addedIpAddresses *
 }
 
 func addIpAddresses(ctx *pulumi.Context, input *Input, addedGcpProject *organizations.Project,
-	dependencies []pulumi.Resource) (*AddedComputeIpAddresses, error) {
+	dependencies []pulumi.Resource) (*AddedIngressIpAddresses, error) {
 	externalIpAddress, err := addExternalIp(ctx, input, addedGcpProject, dependencies)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add external ingress ip")
@@ -56,7 +56,7 @@ func addIpAddresses(ctx *pulumi.Context, input *Input, addedGcpProject *organiza
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add internal ingress ip")
 	}
-	return &AddedComputeIpAddresses{
+	return &AddedIngressIpAddresses{
 		External: externalIpAddress,
 		Internal: internalIpAddress,
 	}, nil
