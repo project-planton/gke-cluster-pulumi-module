@@ -2,6 +2,7 @@ package iam
 
 import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/certmanager"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/externaldns"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/externalsecrets"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/workloaddeployer"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
@@ -12,6 +13,7 @@ func Output(input *kubernetesclustergcpstack.KubeClusterGcpStackResourceInput, s
 	return &kubernetesclustergcpstack.KubeClusterGcpStackIamOutputs{
 		CertManagerGsaEmail:          backend.GetVal(stackOutput, certmanager.GetGsaEmailOutputName()),
 		ExternalSecretsGsaEmail:      backend.GetVal(stackOutput, externalsecrets.GetGsaEmailOutputName()),
+		ExternalDnsGsaEmail:          backend.GetVal(stackOutput, externaldns.GetGsaEmailOutputName()),
 		WorkloadDeployerGsaEmail:     backend.GetVal(stackOutput, workloaddeployer.GetGsaEmailOutputName()),
 		WorkloadDeployerGsaKeyBase64: backend.GetVal(stackOutput, workloaddeployer.GetGsaKeyOutputName()),
 	}
