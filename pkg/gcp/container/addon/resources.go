@@ -3,10 +3,10 @@ package addon
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/certmanager"
+	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externaldns"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externalsecrets"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/ingressnginx"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/kubecost"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/linkerd"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/opencost"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/plantoncloudkubeagent"
@@ -82,6 +82,15 @@ func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubern
 		return nil, errors.Wrap(err, "failed to add external-secrets addon")
 	}
 
+	if err := externaldns.Resources(ctx, &externaldns.Input{
+		Workspace:             workspace,
+		KubernetesProvider:    kubernetesProvider,
+		ExternalDnsAddonInput: addonsInput.ExternalDns,
+		AddedExternalDnsGsa:   input.AddedIamResources.ExternalDnsGsa,
+	}); err != nil {
+		return nil, errors.Wrap(err, "failed to add external-dns resources")
+	}
+
 	if input.KubeClusterAddons != nil && input.KubeClusterAddons.IsInstallKafkaOperator {
 		if err := strimzi.Resources(ctx, &strimzi.Input{
 			KubernetesProvider: kubernetesProvider,
@@ -144,12 +153,14 @@ func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubern
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add planton-cloud-kube-agent addon")
 	}
-	if err := kubecost.Resources(ctx, &kubecost.Input{
-		KubernetesProvider: kubernetesProvider,
-		KubeCostAddonInput: addonsInput.KubeCost,
-	}); err != nil {
-		return nil, errors.Wrap(err, "failed to add kube-cost addon")
-	}
+
+	//todo: upgrade to allow kubernetes upgrades
+	//if err := kubecost.Resources(ctx, &kubecost.Input{
+	//	KubernetesProvider: kubernetesProvider,
+	//	KubeCostAddonInput: addonsInput.KubeCost,
+	//}); err != nil {
+	//	return nil, errors.Wrap(err, "failed to add kube-cost addon")
+	//}
 
 	if input.KubeClusterAddons != nil && input.KubeClusterAddons.IsInstallSolrOperator {
 		if err := solroperator.Resources(ctx, &solroperator.Input{

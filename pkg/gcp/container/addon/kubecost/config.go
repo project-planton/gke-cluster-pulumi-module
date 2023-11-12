@@ -22,6 +22,6 @@ func getHelmChart() *helm.Chart {
 		ReleaseName: "kubecost",
 		Repo:        "https://kubecost.github.io/cost-analyzer/",
 		Name:        "cost-analyzer",
-		Version:     "1.103.0-rc.0",
+		Version:     "1.107.0",
 	}
 }

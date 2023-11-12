@@ -35,8 +35,8 @@ func getHelmChart() *helmcommons.Chart {
 		ReleaseName: "cert-manager",
 		Repo:        "https://charts.jetstack.io",
 		Name:        "cert-manager",
-		//https://github.com/cert-manager/cert-manager/releases/tag/v1.12.2
-		Version: "v1.12.2",
+		//https://github.com/cert-manager/cert-manager/releases/tag/v1.13.2
+		Version: "v1.13.2",
 	}
 }
 
