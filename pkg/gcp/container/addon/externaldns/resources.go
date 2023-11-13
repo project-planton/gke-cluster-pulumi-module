@@ -7,10 +7,8 @@ import (
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	pulk8scv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
-	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	v12 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -30,50 +28,11 @@ func Resources(ctx *pulumi.Context, input *Input) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to add namespace")
 	}
-	addedServiceAccount, err := addServiceAccount(ctx, input, addedNamespace)
+	_, err = addServiceAccount(ctx, input, addedNamespace)
 	if err != nil {
 		return errors.Wrap(err, "failed to add service account")
 	}
-	_, err = addHelmRelease(ctx, addedNamespace, addedServiceAccount)
-	if err != nil {
-		return errors.Wrap(err, "failed to add helm release")
-	}
 	return nil
-}
-
-func addHelmRelease(ctx *pulumi.Context, addedNamespace *pulk8scv1.Namespace, addedServiceAccount *pulk8scv1.ServiceAccount) (*helm.Release, error) {
-	helmVal := getHelmVal()
-	helmChart := getHelmChart()
-	var helmValInput map[string]interface{}
-	helmValBytes, err := yaml.Marshal(helmVal)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to marshal helm val to bytes")
-	}
-	if err := yaml.Unmarshal(helmValBytes, &helmValInput); err != nil {
-		return nil, errors.Wrap(err, "failed to unmarshal helm val")
-	}
-	r, err := helm.NewRelease(ctx, helmChart.ReleaseName,
-		&helm.ReleaseArgs{
-			Name:            pulumi.String(helmChart.Name),
-			Namespace:       pulumi.String(Namespace),
-			Chart:           pulumi.String(helmChart.Name),
-			Version:         pulumi.String(helmChart.Version),
-			CreateNamespace: pulumi.Bool(false),
-			Atomic:          pulumi.Bool(false),
-			CleanupOnFail:   pulumi.Bool(true),
-			WaitForJobs:     pulumi.Bool(true),
-			Timeout:         pulumi.Int(180), // 3 minutes
-			Values:          pulumi.ToMap(helmValInput),
-			RepositoryOpts: helm.RepositoryOptsArgs{
-				Repo: pulumi.String(helmChart.Repo),
-			},
-		}, pulumi.Parent(addedNamespace),
-		pulumi.DependsOn([]pulumi.Resource{addedServiceAccount}),
-		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to add %s helm release", helmChart.ReleaseName)
-	}
-	return r, nil
 }
 
 func addNamespace(ctx *pulumi.Context, input *Input) (*pulk8scv1.Namespace, error) {
