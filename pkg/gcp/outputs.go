@@ -2,6 +2,8 @@ package gcp
 
 import (
 	"context"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/job/enums/operationtype"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
@@ -10,7 +12,6 @@ import (
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/org"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/enums"
 )
 
 func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.KubeClusterGcpStackOutputs, error) {
@@ -26,7 +27,7 @@ func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.Kub
 }
 
 func Get(stackOutput map[string]interface{}, input *gcp.KubeClusterGcpStackInput) *gcp.KubeClusterGcpStackOutputs {
-	if input.StackJob.OperationType != enums.StackOperationType_apply || stackOutput == nil {
+	if input.StackJob.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
 		return &gcp.KubeClusterGcpStackOutputs{}
 	}
 

@@ -7,7 +7,7 @@ import (
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/releasechannel"
 	kubernetesclustergcpstack "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/container"
@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	gkeReleaseChannel           = enums.GkeReleaseChannel_STABLE
+	gkeReleaseChannel           = releasechannel.GkeReleaseChannel_STABLE
 	autoscalingProfileBalanced  = "BALANCED"
 	autoscalingProfileOptimized = "OPTIMIZE_UTILIZATION"
 )

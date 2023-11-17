@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/podservicesecondaryrangecidrsetnum"
 	envgcpnetworkapi "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	rpc "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
@@ -42,26 +42,26 @@ const (
 )
 
 var (
-	podCidrSecondaryRangeMap = map[enums.GkeKubePodServiceSecondaryRangeCidrSetNum]*envgcpnetworkapi.KubePodServiceSecondaryRangeCidr{
-		enums.GkeKubePodServiceSecondaryRangeCidrSetNum_ONE: {
+	podCidrSecondaryRangeMap = map[podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum]*envgcpnetworkapi.KubePodServiceSecondaryRangeCidr{
+		podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_one: {
 			Pod:     "10.4.0.0/14",
 			Service: "10.36.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_TWO: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_two: {
 			Pod:     "10.8.0.0/14",
 			Service: "10.40.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_THREE: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_three: {
 			Pod:     "10.12.0.0/14",
 			Service: "10.44.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FOUR: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_four: {
 			Pod:     "10.16.0.0/14",
 			Service: "10.48.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FIVE: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_five: {
 			Pod:     "10.20.0.0/14",
 			Service: "10.52.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SIX: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_six: {
 			Pod:     "10.24.0.0/14",
 			Service: "10.56.0.0/14",
-		}, enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SEVEN: {
+		}, podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_seven: {
 			Pod:     "10.28.0.0/14",
 			Service: "10.60.0.0/14",
 		},
@@ -93,20 +93,20 @@ func addSubNetwork(ctx *pulumi.Context, input *Input) (*compute.Subnetwork, erro
 		IpCidrRange:           pulumi.String(subNetworkCidr),
 		PrivateIpGoogleAccess: pulumi.BoolPtr(true),
 		SecondaryIpRanges: &compute.SubnetworkSecondaryIpRangeArray{
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_ONE),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_ONE),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_TWO),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_TWO),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_THREE),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_THREE),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FOUR),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FOUR),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FIVE),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_FIVE),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SIX),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SIX),
-			getPodSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SEVEN),
-			getServiceSecondaryRanges(enums.GkeKubePodServiceSecondaryRangeCidrSetNum_SEVEN),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_one),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_one),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_two),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_two),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_three),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_three),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_four),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_four),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_five),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_five),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_six),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_six),
+			getPodSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_seven),
+			getServiceSecondaryRanges(podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_seven),
 		},
 	}, pulumi.Parent(input.VpcNetwork))
 	if err != nil {
@@ -117,7 +117,7 @@ func addSubNetwork(ctx *pulumi.Context, input *Input) (*compute.Subnetwork, erro
 }
 
 // todo: this is a suboptimal code as a workaround for in ability to create an pulumi input array with looping
-func getPodSecondaryRanges(setNum enums.GkeKubePodServiceSecondaryRangeCidrSetNum) *compute.SubnetworkSecondaryIpRangeArgs {
+func getPodSecondaryRanges(setNum podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum) *compute.SubnetworkSecondaryIpRangeArgs {
 	rangeSet := podCidrSecondaryRangeMap[setNum]
 	return &compute.SubnetworkSecondaryIpRangeArgs{
 		RangeName:   pulumi.String(GetPodsSecondaryRangeName(setNum)),
@@ -126,7 +126,7 @@ func getPodSecondaryRanges(setNum enums.GkeKubePodServiceSecondaryRangeCidrSetNu
 }
 
 // todo: this is a suboptimal code as a workaround for in ability to create an pulumi input array with looping
-func getServiceSecondaryRanges(setNum enums.GkeKubePodServiceSecondaryRangeCidrSetNum) *compute.SubnetworkSecondaryIpRangeArgs {
+func getServiceSecondaryRanges(setNum podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum) *compute.SubnetworkSecondaryIpRangeArgs {
 	rangeSet := podCidrSecondaryRangeMap[setNum]
 	return &compute.SubnetworkSecondaryIpRangeArgs{
 		RangeName:   pulumi.String(GetServicesSecondaryRangeName(setNum)),
@@ -138,11 +138,11 @@ func GetSubNetworkName(kubeClusterId string) string {
 	return fmt.Sprintf("%s-%s", rpc.Word_kubernetes, kubeClusterId)
 }
 
-func GetServicesSecondaryRangeName(setNum enums.GkeKubePodServiceSecondaryRangeCidrSetNum) string {
+func GetServicesSecondaryRangeName(setNum podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum) string {
 	return fmt.Sprintf("%s-%s", secondaryIpRangeNameServicesPrefix, strings.ToLower(setNum.String()))
 }
 
-func GetPodsSecondaryRangeName(setNum enums.GkeKubePodServiceSecondaryRangeCidrSetNum) string {
+func GetPodsSecondaryRangeName(setNum podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum) string {
 	return fmt.Sprintf("%s-%s", secondaryIpRangeNamePodsPrefix, strings.ToLower(setNum.String()))
 }
 
