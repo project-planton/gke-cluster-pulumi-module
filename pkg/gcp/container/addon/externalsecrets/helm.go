@@ -11,7 +11,7 @@ func getHelmChart() *helmcommons.Chart {
 		ReleaseName: "external-secrets",
 		Repo:        "https://charts.external-secrets.io",
 		Name:        "external-secrets",
-		Version:     "0.6.1",
+		Version:     "0.9.9",
 	}
 }
 

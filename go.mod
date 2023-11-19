@@ -2,8 +2,6 @@ module github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint
 
 go 1.21
 
-toolchain go1.21.3
-
 //replace github.com/plantoncloud/planton-cloud-apis => /Users/swarup/scm/github.com/plantoncloud/planton-cloud-apis
 //
 //replace github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk => /Users/swarup/scm/github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk
