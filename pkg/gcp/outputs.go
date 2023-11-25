@@ -2,6 +2,7 @@ package gcp
 
 import (
 	"context"
+
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/job/enums/operationtype"
 
 	"github.com/pkg/errors"
@@ -27,7 +28,7 @@ func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.Kub
 }
 
 func Get(stackOutput map[string]interface{}, input *gcp.KubeClusterGcpStackInput) *gcp.KubeClusterGcpStackOutputs {
-	if input.StackJob.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
+	if input.StackJob.Spec.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
 		return &gcp.KubeClusterGcpStackOutputs{}
 	}
 

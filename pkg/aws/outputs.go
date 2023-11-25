@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/stack/job/enums/operationtype"
 
 	"github.com/pkg/errors"
@@ -23,7 +24,7 @@ func Outputs(ctx context.Context, input *aws.KubeClusterAwsStackInput) (*aws.Kub
 }
 
 func Get(stackOutput map[string]interface{}, input *aws.KubeClusterAwsStackInput) *aws.KubeClusterAwsStackOutputs {
-	if input.StackJob.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
+	if input.StackJob.Spec.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
 		return &aws.KubeClusterAwsStackOutputs{}
 	}
 
