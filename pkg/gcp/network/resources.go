@@ -10,7 +10,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/subnet"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/vpc"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

@@ -21,7 +21,7 @@ import (
 	pulumikubernetesprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/kubernetes"
 	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

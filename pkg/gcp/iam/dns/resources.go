@@ -5,9 +5,9 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/projects"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/serviceaccount"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

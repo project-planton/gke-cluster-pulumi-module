@@ -7,8 +7,8 @@ import (
 	puluminamegcpoutput "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/network/ip/enums"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strings"
 )

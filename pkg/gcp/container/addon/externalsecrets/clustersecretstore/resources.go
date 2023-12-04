@@ -3,7 +3,7 @@ package clustersecretstore
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	pulumik8syaml "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/yaml"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

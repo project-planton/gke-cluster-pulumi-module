@@ -7,8 +7,8 @@ import (
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/podservicesecondaryrangecidrsetnum"
 	envgcpnetworkapi "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
 	rpc "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strings"
 )

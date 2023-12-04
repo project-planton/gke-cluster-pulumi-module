@@ -11,7 +11,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
 	puluminameoutputcustom "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
 	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
-	"github.com/pulumi/pulumi-gcp/sdk/v6/go/gcp/compute"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
