@@ -41,6 +41,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*container.Cluster, error) {
 		Network:               input.AddedNetworkResources.AddedVpc.SelfLink,
 		Subnetwork:            input.AddedNetworkResources.AddedSubnet.SelfLink,
 		RemoveDefaultNodePool: pulumi.Bool(true),
+		DeletionProtection:    pulumi.Bool(false),
 		WorkloadIdentityConfig: container.ClusterWorkloadIdentityConfigPtrInput(
 			&container.ClusterWorkloadIdentityConfigArgs{WorkloadPool: getWorkloadIdentityNamespace(input.AddedContainerClusterProject)}),
 		InitialNodeCount: pulumi.Int(1),
