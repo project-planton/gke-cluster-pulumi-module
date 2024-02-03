@@ -1468,6 +1468,8 @@ github.com/plantoncloud-inc/go-commons v0.0.421 h1:VSQ4HEZtyU7pwJC58gtIqJiu1HUUU
 github.com/plantoncloud-inc/go-commons v0.0.421/go.mod h1:qBWSWU6mFL1qf3bhBQ48ZXo5ktifNjbSBD/6PaLGB6Q=
 github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk v0.0.18 h1:zdrJpccqS3NipYyVs/u+bMPLJJKm/SyANFuDonk/bu4=
 github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk v0.0.18/go.mod h1:m1zrXzYgJmRlG9EwJGfwvasZsjnaDFkPpirASf1mC4w=
+github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk v0.0.19 h1:2LF9aTNIieqBhU3BU7BDdMEQ12XuhJ9/+qylyZyAWCQ=
+github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk v0.0.19/go.mod h1:0J4j3CHMr0mABOzP4jn4c5xjVVP4p2bVac48R84EjII=
 github.com/plantoncloud/planton-cloud-apis v0.0.69 h1:DrO66He+JT9HtQKXHZ4dMzZD+SOLioung+4JA1iMw+4=
 github.com/plantoncloud/planton-cloud-apis v0.0.69/go.mod h1:y1LFk2+lhkY1KKqQ/t1R+WXPEwraH1aKfhOxVjZIaOY=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
