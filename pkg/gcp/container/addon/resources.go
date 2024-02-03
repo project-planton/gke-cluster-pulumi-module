@@ -91,22 +91,18 @@ func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubern
 		return nil, errors.Wrap(err, "failed to add external-dns resources")
 	}
 
-	if input.KubeClusterAddons != nil && input.KubeClusterAddons.IsInstallKafkaOperator {
-		if err := strimzi.Resources(ctx, &strimzi.Input{
-			KubernetesProvider: kubernetesProvider,
-			StrimziAddonInput:  addonsInput.Strimzi,
-		}); err != nil {
-			return nil, errors.Wrap(err, "failed to add external-secrets addon")
-		}
+	if err := strimzi.Resources(ctx, &strimzi.Input{
+		KubernetesProvider: kubernetesProvider,
+		StrimziAddonInput:  addonsInput.Strimzi,
+	}); err != nil {
+		return nil, errors.Wrap(err, "failed to add external-secrets addon")
 	}
 
-	if input.KubeClusterAddons != nil && input.KubeClusterAddons.IsInstallPostgresOperator {
-		if err := postgresoperator.Resources(ctx, &postgresoperator.Input{
-			KubernetesProvider:         kubernetesProvider,
-			PostgresOperatorAddonInput: addonsInput.PostgresOperator,
-		}); err != nil {
-			return nil, errors.Wrap(err, "failed to add postgres-operator resources")
-		}
+	if err := postgresoperator.Resources(ctx, &postgresoperator.Input{
+		KubernetesProvider:         kubernetesProvider,
+		PostgresOperatorAddonInput: addonsInput.PostgresOperator,
+	}); err != nil {
+		return nil, errors.Wrap(err, "failed to add postgres-operator resources")
 	}
 
 	if err := ingressnginx.Resources(ctx, &ingressnginx.Input{
@@ -116,30 +112,35 @@ func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubern
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add ingress-nginx addon")
 	}
+
 	if err := traefik.Resources(ctx, &traefik.Input{
 		KubernetesProvider: kubernetesProvider,
 		TraefikAddonInput:  addonsInput.Traefik,
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add traefik resources")
 	}
+
 	if err := linkerd.Resources(ctx, &linkerd.Input{
 		KubernetesProvider: kubernetesProvider,
 		LinkerdAddonInput:  addonsInput.Linkerd,
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add linkerd resources")
 	}
+
 	if err := reflector.Resources(ctx, &reflector.Input{
 		KubernetesProvider:  kubernetesProvider,
 		ReflectorAddonInput: addonsInput.Reflector,
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add reflector addon")
 	}
+
 	if err := prometheus.Resources(ctx, &prometheus.Input{
 		KubernetesProvider: kubernetesProvider,
 		OpenCostAddonInput: addonsInput.OpenCost,
 	}); err != nil {
 		return nil, errors.Wrap(err, "failed to add prometheus addon")
 	}
+
 	if err := opencost.Resources(ctx, &opencost.Input{
 		KubernetesProvider: kubernetesProvider,
 		OpenCostAddonInput: addonsInput.OpenCost,
@@ -162,13 +163,11 @@ func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubern
 	//	return nil, errors.Wrap(err, "failed to add kube-cost addon")
 	//}
 
-	if input.KubeClusterAddons != nil && input.KubeClusterAddons.IsInstallSolrOperator {
-		if err := solroperator.Resources(ctx, &solroperator.Input{
-			KubernetesProvider:     kubernetesProvider,
-			SolrOperatorAddonInput: addonsInput.SolrOperator,
-		}); err != nil {
-			return nil, errors.Wrap(err, "failed to add solr-operator addon")
-		}
+	if err := solroperator.Resources(ctx, &solroperator.Input{
+		KubernetesProvider:     kubernetesProvider,
+		SolrOperatorAddonInput: addonsInput.SolrOperator,
+	}); err != nil {
+		return nil, errors.Wrap(err, "failed to add solr-operator addon")
 	}
 
 	return &AddedResources{

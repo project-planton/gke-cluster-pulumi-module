@@ -24,6 +24,10 @@ type Input struct {
 }
 
 func Resources(ctx *pulumi.Context, input *Input) error {
+	if input.ExternalDnsAddonInput == nil || !input.ExternalDnsAddonInput.Enabled {
+		return nil
+	}
+
 	addedNamespace, err := addNamespace(ctx, input)
 	if err != nil {
 		return errors.Wrap(err, "failed to add namespace")
