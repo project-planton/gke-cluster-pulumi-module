@@ -90,6 +90,7 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 		AddedIpAddresses:       addedNetworkResources.AddedIpAddresses,
 		AddedContainerClusters: addedContainerClusters,
 		AddedAddonResources:    addedContainerClusterAddonResources,
+		IstioAddonInput:        s.Input.ResourceInput.Container.Addon.Istio,
 	}); err != nil {
 		return errors.Wrap(err, "failed to add container ingress resources")
 	}
