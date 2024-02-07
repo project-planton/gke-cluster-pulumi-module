@@ -42,7 +42,7 @@ replace (
 require (
 	github.com/cert-manager/cert-manager v1.10.0
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.5.3
+	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.7.1
 	github.com/pulumi/pulumi-random/sdk/v4 v4.14.0
 	github.com/pulumi/pulumi/sdk/v3 v3.104.2
 	github.com/sirupsen/logrus v1.9.3 // indirect
