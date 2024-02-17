@@ -3,7 +3,7 @@ package controller
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/system"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	v1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -11,7 +11,7 @@ import (
 )
 
 type Input struct {
-	IstioAddonIngressInput    *gcp.AddonsIstioIngress
+	IstioAddonIngressInput    *c2cv1deployk8cstackgcpmodel.AddonsIstioIngress
 	Namespace                 *v1.Namespace
 	IstioSystemAddedResources *system.AddedResources
 }

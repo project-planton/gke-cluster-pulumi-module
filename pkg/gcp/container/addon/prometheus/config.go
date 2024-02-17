@@ -2,7 +2,7 @@ package prometheus
 
 import (
 	"github.com/plantoncloud-inc/go-commons/kubernetes/helm"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 )
 
 const (
@@ -61,7 +61,7 @@ server:
 	  enabled: true
 	  size: 2Gi
 */
-func getHelmVal(openCostInput *gcp.AddonsOpenCost) *HelmVal {
+func getHelmVal(openCostInput *c2cv1deployk8cstackgcpmodel.AddonsOpenCost) *HelmVal {
 	helmVal := &HelmVal{
 		AlertManager:           &ValAlertManager{Enabled: false},
 		KubeStateMetrics:       &ValKubeStateMetrics{Enabled: false},

@@ -6,9 +6,9 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/subnet"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/releasechannel"
-	kubernetesclustergcpstack "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
@@ -28,8 +28,8 @@ type Input struct {
 	AddedContainerClusterProject *organizations.Project
 	AddedNetworkResources        *network.AddedNetworkResources
 	IsWorkloadLogsEnabled        bool
-	ClusterConfig                *kubernetesclustergcpstack.ClusterConfig
-	ClusterAutoscalingConfig     *kubeclusterv1.KubeClusterGcpClusterAutoscalingConfigSpec
+	ClusterConfig                *c2cv1deployk8cstackgcpmodel.ClusterConfig
+	ClusterAutoscalingConfig     *code2cloudv1deployk8cmodel.KubeClusterGcpClusterAutoscalingConfigSpec
 }
 
 func Resources(ctx *pulumi.Context, input *Input) (*container.Cluster, error) {
@@ -115,7 +115,7 @@ func getLoggingComponents(isWorkloadLogsEnabled bool) pulumi.StringArray {
 	return comps
 }
 
-func getClusterAutoScalingInput(input *kubeclusterv1.KubeClusterGcpClusterAutoscalingConfigSpec) container.ClusterClusterAutoscalingPtrInput {
+func getClusterAutoScalingInput(input *code2cloudv1deployk8cmodel.KubeClusterGcpClusterAutoscalingConfigSpec) container.ClusterClusterAutoscalingPtrInput {
 	if input == nil || !input.IsEnabled {
 		return container.ClusterClusterAutoscalingPtrInput(&container.ClusterClusterAutoscalingArgs{
 			Enabled: pulumi.Bool(false),

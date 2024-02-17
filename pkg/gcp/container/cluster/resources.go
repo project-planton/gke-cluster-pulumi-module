@@ -5,8 +5,8 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network"
-	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -16,12 +16,12 @@ type Input struct {
 	KubeClusterId                string
 	GcpZone                      string
 	AddedContainerClusterProject *organizations.Project
-	ContainerClusterInput        *gcp.KubeClusterGcpStackContainerClusterInput
+	ContainerClusterInput        *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackContainerClusterInput
 	AddedNetworkResources        *network.AddedNetworkResources
 	Labels                       map[string]string
 	IsWorkloadLogsEnabled        bool
-	NodePools                    []*kubeclusterv1.KubeClusterNodePoolGcp
-	ClusterAutoscalingConfig     *kubeclusterv1.KubeClusterGcpClusterAutoscalingConfigSpec
+	NodePools                    []*code2cloudv1deployk8cmodel.KubeClusterNodePoolGcp
+	ClusterAutoscalingConfig     *code2cloudv1deployk8cmodel.KubeClusterGcpClusterAutoscalingConfigSpec
 }
 
 type AddedContainerClusterResources struct {

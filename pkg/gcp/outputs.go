@@ -12,10 +12,10 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/org"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 )
 
-func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.KubeClusterGcpStackOutputs, error) {
+func Outputs(ctx context.Context, input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackInput) (*c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs, error) {
 	pulumiOrgName, err := org.GetOrgName()
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get pulumi org name")
@@ -27,9 +27,9 @@ func Outputs(ctx context.Context, input *gcp.KubeClusterGcpStackInput) (*gcp.Kub
 	return Get(stackOutput, input), nil
 }
 
-func Get(stackOutput map[string]interface{}, input *gcp.KubeClusterGcpStackInput) *gcp.KubeClusterGcpStackOutputs {
+func Get(stackOutput map[string]interface{}, input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackInput) *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs {
 	if input.StackJob.Spec.OperationType != operationtype.StackJobOperationType_apply || stackOutput == nil {
-		return &gcp.KubeClusterGcpStackOutputs{}
+		return &c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs{}
 	}
 
 	projectsOutputs := projects.Output(input.ResourceInput, stackOutput)
@@ -37,7 +37,7 @@ func Get(stackOutput map[string]interface{}, input *gcp.KubeClusterGcpStackInput
 	iamOutputs := iam.Output(input.ResourceInput, stackOutput)
 	containerClusterOutputs := cluster.Output(input.ResourceInput, stackOutput)
 
-	return &gcp.KubeClusterGcpStackOutputs{
+	return &c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs{
 		Projects:  projectsOutputs,
 		Network:   networkOutputs,
 		Iam:       iamOutputs,

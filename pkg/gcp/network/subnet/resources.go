@@ -5,7 +5,7 @@ import (
 	"github.com/pkg/errors"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/podservicesecondaryrangecidrsetnum"
-	envgcpnetworkapi "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	rpc "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
@@ -42,7 +42,7 @@ const (
 )
 
 var (
-	podCidrSecondaryRangeMap = map[podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum]*envgcpnetworkapi.KubePodServiceSecondaryRangeCidr{
+	podCidrSecondaryRangeMap = map[podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum]*c2cv1deployk8cstackgcpmodel.KubePodServiceSecondaryRangeCidr{
 		podservicesecondaryrangecidrsetnum.GkeKubePodServiceSecondaryRangeCidrSetNum_one: {
 			Pod:     "10.4.0.0/14",
 			Service: "10.36.0.0/14",

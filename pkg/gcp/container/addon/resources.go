@@ -19,20 +19,20 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
 	pulumikubernetesprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/kubernetes"
-	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Input struct {
-	ContainerAddonInput            *gcp.Addons
+	ContainerAddonInput            *c2cv1deployk8cstackgcpmodel.Addons
 	WorkspaceDir                   string
 	AddedContainerClusterResources *cluster.AddedContainerClusterResources
 	AddedIamResources              *iam.AddedIamResources
 	AddedContainerClusterProject   *organizations.Project
-	KubeClusterAddons              *kubeclusterv1.KubeClusterAddonsSpec
+	KubeClusterAddons              *code2cloudv1deployk8cmodel.KubeClusterAddonsSpec
 }
 
 type AddedResources struct {

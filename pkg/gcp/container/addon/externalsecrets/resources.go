@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/workloadidentity"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externalsecrets/clustersecretstore"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
@@ -24,7 +24,7 @@ const (
 type Input struct {
 	Workspace                    string
 	KubernetesProvider           *pulumikubernetes.Provider
-	ExternalSecretsAddonInput    *gcp.AddonsExternalSecrets
+	ExternalSecretsAddonInput    *c2cv1deployk8cstackgcpmodel.AddonsExternalSecrets
 	AddedExternalSecretsGsa      *serviceaccount.Account
 	AddedContainerClusterProject *organizations.Project
 }

@@ -2,7 +2,7 @@ package ingressnginx
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -12,7 +12,7 @@ import (
 type Input struct {
 	Workspace              string
 	KubernetesProvider     *pulumikubernetes.Provider
-	IngressNginxAddonInput *gcp.AddonsIngressNginx
+	IngressNginxAddonInput *c2cv1deployk8cstackgcpmodel.AddonsIngressNginx
 }
 
 func Resources(ctx *pulumi.Context, input *Input) error {

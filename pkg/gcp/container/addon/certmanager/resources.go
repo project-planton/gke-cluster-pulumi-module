@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/workloadidentity"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/certmanager/clusterissuer"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	pulk8scv1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -22,7 +22,7 @@ const (
 type Input struct {
 	Workspace             string
 	KubernetesProvider    *pulumikubernetes.Provider
-	CertManagerAddonInput *gcp.AddonsCertManager
+	CertManagerAddonInput *c2cv1deployk8cstackgcpmodel.AddonsCertManager
 	AddedCertManagerGsa   *serviceaccount.Account
 }
 

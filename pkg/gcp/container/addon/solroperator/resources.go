@@ -2,7 +2,7 @@ package solroperator
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	pulumiyaml "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/yaml"
@@ -12,7 +12,7 @@ import (
 
 type Input struct {
 	KubernetesProvider     *pulumikubernetes.Provider
-	SolrOperatorAddonInput *gcp.AddonsSolrOperator
+	SolrOperatorAddonInput *c2cv1deployk8cstackgcpmodel.AddonsSolrOperator
 }
 
 func Resources(ctx *pulumi.Context, input *Input) error {

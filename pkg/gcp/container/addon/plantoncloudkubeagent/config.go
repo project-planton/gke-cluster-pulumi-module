@@ -2,7 +2,7 @@ package plantoncloudkubeagent
 
 import (
 	"github.com/plantoncloud-inc/go-commons/kubernetes/helm"
-	gcp "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 )
 
 const (
@@ -22,7 +22,7 @@ type HelmVal struct {
 	TokenExpirationCheckIntervalSeconds int32  `yaml:"tokenExpirationCheckIntervalSeconds"`
 }
 
-func getHelmVal(input *gcp.AddonsPlantonCloudKubeAgent) *HelmVal {
+func getHelmVal(input *c2cv1deployk8cstackgcpmodel.AddonsPlantonCloudKubeAgent) *HelmVal {
 	return &HelmVal{
 		Image:                               input.DockerImage,
 		Company:                             input.CompanyId,

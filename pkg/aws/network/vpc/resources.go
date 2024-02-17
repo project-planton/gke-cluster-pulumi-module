@@ -2,7 +2,7 @@ package vpc
 
 import (
 	"github.com/pkg/errors"
-	kubeclusterv1 "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
 	awsclassic "github.com/pulumi/pulumi-aws/sdk/v6/go/aws"
 	"github.com/pulumi/pulumi-awsx/sdk/go/awsx/ec2"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -13,7 +13,7 @@ const DefaultCidrBlock = "10.0.0.0/16"
 
 type Input struct {
 	AwsProvider *awsclassic.Provider
-	KubeCluster *kubeclusterv1.KubeCluster
+	KubeCluster *code2cloudv1deployk8cmodel.KubeCluster
 	Labels      map[string]string
 }
 

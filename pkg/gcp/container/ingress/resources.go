@@ -7,7 +7,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/service"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -16,7 +16,7 @@ type Input struct {
 	AddedIpAddresses       *ip.AddedIngressIpAddresses
 	AddedContainerClusters *cluster.AddedContainerClusterResources
 	AddedAddonResources    *addon.AddedResources
-	IstioAddonInput        *gcp.AddonsIstio
+	IstioAddonInput        *c2cv1deployk8cstackgcpmodel.AddonsIstio
 }
 
 func Resources(ctx *pulumi.Context, input *Input) error {
