@@ -2,9 +2,10 @@ package dns
 
 import (
 	"fmt"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -19,7 +20,7 @@ type Input struct {
 
 // Resources grants workload-deployer and cert-manager service accounts dns-admin role in kube-cluster project.
 func Resources(ctx *pulumi.Context, input *Input) error {
-	_, err := projects.NewIAMBinding(ctx, fmt.Sprintf("%s-dns-admin", enums.Word_share.String()),
+	_, err := projects.NewIAMBinding(ctx, fmt.Sprintf("%s-dns-admin", englishword.EnglishWord_share.String()),
 		&projects.IAMBindingArgs{
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s", input.AddedWorkloadDeployerGsa.Email),

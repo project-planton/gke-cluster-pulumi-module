@@ -2,9 +2,10 @@ package folder
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	puluminamegcpoutput "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -45,13 +46,13 @@ func Resources(ctx *pulumi.Context, input *Input) (*organizations.Folder, error)
 }
 
 func GetKubeClusterFolderIdOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, wordpb.Word_id.String())
+	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, englishword.EnglishWord_id.String())
 }
 
 func GetKubeClusterFolderDisplayNameOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, wordpb.Word_name.String())
+	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, englishword.EnglishWord_name.String())
 }
 
 func GetKubeClusterFolderParentOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, wordpb.Word_parent.String())
+	return puluminamegcpoutput.Name(&organizations.Folder{}, kubeClusterId, englishword.EnglishWord_parent.String())
 }

@@ -12,7 +12,7 @@ var PlantonCloudStandardLabels = []string{
 	kuberneteslabels.Company,
 	kuberneteslabels.Product,
 	kuberneteslabels.Environment,
-	kuberneteslabels.ResourceType,
+	kuberneteslabels.ResourceKind,
 	kuberneteslabels.ResourceId,
 }
 

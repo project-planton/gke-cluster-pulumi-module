@@ -2,13 +2,14 @@ package nat
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/pkg/errors"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strings"
 )
 
 type Input struct {
@@ -36,7 +37,7 @@ func addComputeIpAddress(ctx *pulumi.Context, input *Input) (*compute.Address, e
 		Name:        pulumi.String(natAddressName),
 		Project:     input.AddedVpcNetworkProject.ProjectId,
 		Region:      input.AddedNetworkRouter.Region,
-		AddressType: pulumi.String(strings.ToUpper(wordpb.Word_external.String())),
+		AddressType: pulumi.String(strings.ToUpper(englishword.EnglishWord_external.String())),
 		Labels:      pulumi.ToStringMap(input.Labels),
 	}, pulumi.Parent(input.AddedNetworkRouter))
 	if err != nil {
@@ -65,7 +66,7 @@ func addComputeRouterNat(ctx *pulumi.Context, input *Input, addedIpAddress *comp
 }
 
 func GetNatAddressName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s-nat-%s", wordpb.Word_kubernetes, kubeClusterId, wordpb.Word_external)
+	return fmt.Sprintf("%s-%s-nat-%s", englishword.EnglishWord_kubernetes, kubeClusterId, englishword.EnglishWord_external)
 }
 
 func GetNatAddressOutputName(natAddressName string) string {
@@ -73,7 +74,7 @@ func GetNatAddressOutputName(natAddressName string) string {
 }
 
 func GetRouterNatName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s-router-nat", wordpb.Word_kubernetes, kubeClusterId)
+	return fmt.Sprintf("%s-%s-router-nat", englishword.EnglishWord_kubernetes, kubeClusterId)
 }
 
 func GetNatRouterSelfLinkOutputName(routerNatName string) string {

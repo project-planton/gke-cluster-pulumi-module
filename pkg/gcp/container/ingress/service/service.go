@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/controller"
 	ingressnamespace "github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/namespace"
@@ -10,7 +11,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway/redis"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
 	puluminameoutputcustom "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -165,9 +166,9 @@ func exportIpAddressOutputs(ctx *pulumi.Context, ingressIpAddress *ip.AddedIngre
 }
 
 func GetInternalIpOutputName() string {
-	return puluminameoutputcustom.Name(fmt.Sprintf("%s-%s-%s", wordpb.Word_ingress.String(), wordpb.Word_internal.String(), wordpb.Word_ip.String()))
+	return puluminameoutputcustom.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(), englishword.EnglishWord_internal.String(), englishword.EnglishWord_ip.String()))
 }
 
 func GetExternalIpOutputName() string {
-	return puluminameoutputcustom.Name(fmt.Sprintf("%s-%s-%s", wordpb.Word_ingress.String(), wordpb.Word_external.String(), wordpb.Word_ip.String()))
+	return puluminameoutputcustom.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(), englishword.EnglishWord_external.String(), englishword.EnglishWord_ip.String()))
 }

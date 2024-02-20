@@ -6,17 +6,17 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/subnet"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/provider/gcpgke/enums/releasechannel"
-	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/enums/gkereleasechannel"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 const (
-	gkeReleaseChannel           = releasechannel.GkeReleaseChannel_STABLE
+	gkeReleaseChannel           = gkereleasechannel.GkeReleaseChannel_STABLE
 	autoscalingProfileBalanced  = "BALANCED"
 	autoscalingProfileOptimized = "OPTIMIZE_UTILIZATION"
 )
@@ -144,11 +144,11 @@ func GetApiServerCidrBlockOutputName(clusterFullName string) string {
 }
 
 func GetClusterNameOutputName(clusterFullName string) string {
-	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, wordpb.Word_name.String())
+	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, englishword.EnglishWord_name.String())
 }
 
 func GetClusterEndpointOutputName(clusterFullName string) string {
-	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, wordpb.Word_endpoint.String())
+	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, englishword.EnglishWord_endpoint.String())
 }
 
 func GetClusterCaDataOutputName(clusterFullName string) string {

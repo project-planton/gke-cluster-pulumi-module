@@ -6,7 +6,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/externalsecrets"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam/workloaddeployer"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
-	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 )
 
 func Output(input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackResourceInput,

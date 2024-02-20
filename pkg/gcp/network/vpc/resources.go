@@ -2,10 +2,11 @@ package vpc
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -37,7 +38,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*compute.Network, error) {
 
 // addSharedVpcServiceProjects adds kube-cluster project as a service project to the vpc-network project
 func addSharedVpcServiceProjects(ctx *pulumi.Context, input *Input, hostProject *compute.SharedVPCHostProject) error {
-	_, err := compute.NewSharedVPCServiceProject(ctx, fmt.Sprintf("%s-%s", wordpb.Word_kubernetes, input.KubeClusterId),
+	_, err := compute.NewSharedVPCServiceProject(ctx, fmt.Sprintf("%s-%s", englishword.EnglishWord_kubernetes, input.KubeClusterId),
 		&compute.SharedVPCServiceProjectArgs{
 			HostProject:    hostProject.Project,
 			ServiceProject: input.AddedProjectsResources.KubeClusterProjects.ContainerClusterProject.ProjectId,
@@ -52,7 +53,7 @@ func addSharedVpcServiceProjects(ctx *pulumi.Context, input *Input, hostProject 
 
 func addSharedVpcHostProject(ctx *pulumi.Context, input *Input) (*compute.SharedVPCHostProject, error) {
 	hostProject, err := compute.NewSharedVPCHostProject(ctx,
-		fmt.Sprintf("%s-%s-host", wordpb.Word_kubernetes, input.KubeClusterId),
+		fmt.Sprintf("%s-%s-host", englishword.EnglishWord_kubernetes, input.KubeClusterId),
 		&compute.SharedVPCHostProjectArgs{
 			Project: input.AddedProjectsResources.KubeClusterProjects.VpcNetworkProject.ProjectId,
 		}, pulumi.Parent(input.AddedProjectsResources.KubeClusterProjects.VpcNetworkProject),
@@ -78,7 +79,7 @@ func addNetwork(ctx *pulumi.Context, input *Input) (*compute.Network, error) {
 }
 
 func GetNetworkName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s", wordpb.Word_kubernetes, kubeClusterId)
+	return fmt.Sprintf("%s-%s", englishword.EnglishWord_kubernetes, kubeClusterId)
 }
 
 func GetNetworkSelfLinkOutputName(networkName string) string {

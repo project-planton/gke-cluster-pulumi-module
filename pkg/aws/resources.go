@@ -5,7 +5,7 @@ import (
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/container/cluster"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/aws/network"
 	pulumiawsnativeprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/aws"
-	c2cv1deployk8cstackawsmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/aws/model"
+	c2cv1deployk8cstackawsmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/aws/model"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

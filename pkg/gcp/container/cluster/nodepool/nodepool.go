@@ -4,8 +4,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/model"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -88,13 +88,13 @@ func getOauthScopes() pulumi.StringArrayInput {
 }
 
 func GetNodePoolNameOutputName(nodePoolName string) string {
-	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, wordpb.Word_name.String())
+	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, englishword.EnglishWord_name.String())
 }
 
 func GetNodePoolMachineTypeOutputName(nodePoolName string) string {
-	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, wordpb.Word_machine.String(), wordpb.Word_type.String())
+	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, englishword.EnglishWord_machine.String(), englishword.EnglishWord_type.String())
 }
 
 func GetNodePoolIsSpotInstancesOutputName(nodePoolName string) string {
-	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, wordpb.Word_spot.String(), wordpb.Word_instances.String())
+	return puluminameoutputgcp.Name(container.NodePool{}, nodePoolName, englishword.EnglishWord_spot.String(), englishword.EnglishWord_instances.String())
 }

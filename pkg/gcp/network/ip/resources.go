@@ -2,15 +2,16 @@ package ip
 
 import (
 	"fmt"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/enums/ipaddressvisibility"
+	"strings"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	puluminamegcpoutput "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/network/ip/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strings"
 )
 
 type Input struct {
@@ -40,9 +41,9 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedIngressIpAddresses, err
 }
 
 func exportOutputs(ctx *pulumi.Context, kubeClusterId string, addedIpAddresses *AddedIngressIpAddresses) {
-	ctx.Export(getIngressIpOutputName(enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_EXTERNAL, kubeClusterId),
+	ctx.Export(getIngressIpOutputName(ipaddressvisibility.IpAddressVisibility_external, kubeClusterId),
 		addedIpAddresses.External.Address)
-	ctx.Export(getIngressIpOutputName(enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_INTERNAL, kubeClusterId),
+	ctx.Export(getIngressIpOutputName(ipaddressvisibility.IpAddressVisibility_internal, kubeClusterId),
 		addedIpAddresses.Internal.Address)
 }
 
@@ -69,7 +70,7 @@ func addExternalIp(ctx *pulumi.Context, input *Input, addedGcpProject *organizat
 		Name:        pulumi.String(ingIpName),
 		Project:     addedGcpProject.ProjectId,
 		Region:      pulumi.String(input.GcpRegion),
-		AddressType: pulumi.String(strings.ToUpper(wordpb.Word_external.String())),
+		AddressType: pulumi.String(strings.ToUpper(englishword.EnglishWord_external.String())),
 		Labels:      pulumi.ToStringMap(input.Labels),
 	}, pulumi.Parent(addedGcpProject), pulumi.DependsOn(dependencies))
 	if err != nil {
@@ -85,7 +86,7 @@ func addInternalIp(ctx *pulumi.Context, input *Input, addedGcpProject *organizat
 		Name:        pulumi.String(ingIpName),
 		Project:     addedGcpProject.ProjectId,
 		Region:      pulumi.String(input.GcpRegion),
-		AddressType: pulumi.String(strings.ToUpper(wordpb.Word_internal.String())),
+		AddressType: pulumi.String(strings.ToUpper(englishword.EnglishWord_internal.String())),
 		Subnetwork:  input.AddedSubnet.SelfLink,
 		Labels:      pulumi.ToStringMap(input.Labels),
 	}, pulumi.Parent(input.AddedSubnet), pulumi.DependsOn(dependencies))
@@ -96,18 +97,18 @@ func addInternalIp(ctx *pulumi.Context, input *Input, addedGcpProject *organizat
 }
 
 func getIngressExternalIpName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, wordpb.Word_external.String())
+	return fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, englishword.EnglishWord_external.String())
 }
 
 func getIngressInternalIpName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, wordpb.Word_internal.String())
+	return fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, englishword.EnglishWord_internal.String())
 }
 
-func getIngressIpOutputName(visibility enums.IpAddressVisibility, kubeClusterId string) string {
+func getIngressIpOutputName(visibility ipaddressvisibility.IpAddressVisibility, kubeClusterId string) string {
 	switch visibility {
-	case enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_EXTERNAL:
+	case ipaddressvisibility.IpAddressVisibility_external:
 		return GetIngressExternalIpOutputName(kubeClusterId)
-	case enums.IpAddressVisibility_IP_ADDRESS_VISIBILITY_INTERNAL:
+	case ipaddressvisibility.IpAddressVisibility_internal:
 		return GetIngressInternalIpOutputName(kubeClusterId)
 	}
 	return ""
@@ -115,10 +116,10 @@ func getIngressIpOutputName(visibility enums.IpAddressVisibility, kubeClusterId 
 
 func GetIngressExternalIpOutputName(kubeClusterId string) string {
 	return puluminamegcpoutput.Name(compute.Address{},
-		fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, wordpb.Word_external.String()))
+		fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, englishword.EnglishWord_external.String()))
 }
 
 func GetIngressInternalIpOutputName(kubeClusterId string) string {
 	return puluminamegcpoutput.Name(compute.Address{},
-		fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, wordpb.Word_internal.String()))
+		fmt.Sprintf("%s-%s-ingress-ip", kubeClusterId, englishword.EnglishWord_internal.String()))
 }

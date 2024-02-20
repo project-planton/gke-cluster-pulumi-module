@@ -2,10 +2,11 @@ package workloaddeployer
 
 import (
 	"fmt"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -128,5 +129,5 @@ func GetGsaEmailOutputName() string {
 }
 
 func GetGsaKeyOutputName() string {
-	return puluminameoutputgcp.Name(serviceaccount.Key{}, GsaName, enums.Word_key.String())
+	return puluminameoutputgcp.Name(serviceaccount.Key{}, GsaName, englishword.EnglishWord_key.String())
 }

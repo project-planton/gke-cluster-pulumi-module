@@ -2,11 +2,12 @@ package project
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects/apis"
 	puluminamegcpoutput "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/provider/cloud/gcp"
-	wordpb "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -133,19 +134,19 @@ func addProject(ctx *pulumi.Context, gcpProvider *pulumigcp.Provider, gcpBilling
 }
 
 func GetVpcNetworkProjectIdOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), wordpb.Word_id.String())
+	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_id.String())
 }
 
 func GetVpcNetworkProjectNumberOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), wordpb.Word_name.String())
+	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_name.String())
 }
 
 func GetContainerClusterProjectIdOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), wordpb.Word_id.String())
+	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_id.String())
 }
 
 func GetContainerClusterProjectNumberOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), wordpb.Word_name.String())
+	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_name.String())
 }
 
 func getVpcNetworkProjectName(kubeClusterId string) string {

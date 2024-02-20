@@ -2,7 +2,7 @@ package prometheus
 
 import (
 	"github.com/plantoncloud-inc/go-commons/kubernetes/helm"
-	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/code2cloud/deploy/kubecluster/stack/gcp/model"
+	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 )
 
 const (

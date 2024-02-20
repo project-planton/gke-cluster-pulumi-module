@@ -2,9 +2,10 @@ package router
 
 import (
 	"fmt"
+
 	"github.com/pkg/errors"
 	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	rpc "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/v1/commons/english/enums"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -33,7 +34,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*compute.Router, error) {
 }
 
 func GetRouterName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s-router", rpc.Word_kubernetes, kubeClusterId)
+	return fmt.Sprintf("%s-%s-router", englishword.EnglishWord_kubernetes, kubeClusterId)
 }
 
 func GetRouterSelfLinkOutputName(routerName string) string {
