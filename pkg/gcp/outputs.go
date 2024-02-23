@@ -23,10 +23,10 @@ func Outputs(ctx context.Context, input *c2cv1deployk8cstackgcpmodel.KubeCluster
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get stack output")
 	}
-	return Get(stackOutput, input), nil
+	return OutputMapTransformer(stackOutput, input), nil
 }
 
-func Get(stackOutput map[string]interface{}, input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackInput) *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs {
+func OutputMapTransformer(stackOutput map[string]interface{}, input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackInput) *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs {
 	if input.StackJob.Spec.OperationType != stackjoboperationtype.StackJobOperationType_apply || stackOutput == nil {
 		return &c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs{}
 	}
