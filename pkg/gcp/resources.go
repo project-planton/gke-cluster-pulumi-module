@@ -2,14 +2,14 @@ package gcp
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
-	pulumigcpprovider "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/automation/provider/google"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/network"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
+	pulumigcpprovider "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/automation/provider/google"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 

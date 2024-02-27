@@ -2,10 +2,10 @@ package nodepool
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
-	puluminameoutputgcp "github.com/plantoncloud-inc/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
 	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
+	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

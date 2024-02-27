@@ -2,7 +2,7 @@ package opencost
 
 import (
 	"github.com/plantoncloud-inc/go-commons/kubernetes/helm"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/prometheus"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/prometheus"
 )
 
 const (

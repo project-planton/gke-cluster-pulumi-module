@@ -2,11 +2,11 @@ package ingress
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/service"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/gateway"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/ingress/service"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/network/ip"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )

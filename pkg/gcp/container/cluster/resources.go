@@ -2,9 +2,9 @@ package cluster
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/cluster"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool"
-	"github.com/plantoncloud-inc/kube-cluster-pulumi-blueprint/pkg/gcp/network"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/cluster"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/network"
 	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
