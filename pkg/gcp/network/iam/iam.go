@@ -141,10 +141,10 @@ func addSubnetIam(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add gke service accounts as iam members for subnetwork")
 	}
-	return append([]pulumi.Resource{
+	return []pulumi.Resource{
 		addedIamMemberSubnetCloudServices,
 		addedIamMemberSubnetContainerEngine,
-	}), nil
+	}, nil
 }
 
 func addHostSvcAgentUserRoleBinding(ctx *pulumi.Context, addedSubnet *compute.Subnetwork, addedKubeClusterProjects *project.AddedKubeClusterProjects) ([]pulumi.Resource, error) {
