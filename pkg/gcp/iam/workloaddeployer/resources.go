@@ -2,12 +2,12 @@ package workloaddeployer
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -126,9 +126,9 @@ func addWorkloadDeployerRoleBinding(ctx *pulumi.Context, input *Input, addedGsa 
 }
 
 func GetGsaEmailOutputName() string {
-	return puluminameoutputgcp.Name(serviceaccount.Account{}, GsaName)
+	return pulumigoogleprovider.PulumiOutputName(serviceaccount.Account{}, GsaName)
 }
 
 func GetGsaKeyOutputName() string {
-	return puluminameoutputgcp.Name(serviceaccount.Key{}, GsaName, englishword.EnglishWord_key.String())
+	return pulumigoogleprovider.PulumiOutputName(serviceaccount.Key{}, GsaName, englishword.EnglishWord_key.String())
 }

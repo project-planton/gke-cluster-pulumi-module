@@ -2,6 +2,7 @@ package subnet
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 	"strings"
 
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/enums/gkepodservicesecondaryrangecidrsetnum"
@@ -9,7 +10,6 @@ import (
 	"github.com/pkg/errors"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -149,5 +149,5 @@ func GetPodsSecondaryRangeName(setNum gkepodservicesecondaryrangecidrsetnum.GkeP
 }
 
 func GetSubNetworkSelfLinkOutputName(subNetworkName string) string {
-	return puluminameoutputgcp.Name(compute.Subnetwork{}, subNetworkName)
+	return pulumigoogleprovider.PulumiOutputName(compute.Subnetwork{}, subNetworkName)
 }

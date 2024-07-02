@@ -2,12 +2,12 @@ package firewall
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutputname"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
-	"github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -68,9 +68,9 @@ func GetGkeWebhooksFirewallName(kubeClusterId string) string {
 }
 
 func GetContainerClusterApiServersCidrBlockOutputName() string {
-	return custom.Name("container-cluster-api-servers-cidr-block")
+	return pulumicustomoutputname.Name("container-cluster-api-servers-cidr-block")
 }
 
 func GetGkeWebhooksFirewallSelfLinkOutputName(firewallName string) string {
-	return puluminameoutputgcp.Name(compute.Firewall{}, firewallName)
+	return pulumigoogleprovider.PulumiOutputName(compute.Firewall{}, firewallName)
 }

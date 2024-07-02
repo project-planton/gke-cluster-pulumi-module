@@ -2,12 +2,12 @@ package certmanager
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/certmanager"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -57,7 +57,7 @@ func addWorkloadIdentityBinding(ctx *pulumi.Context, input *Input, gsa *servicea
 }
 
 func GetGsaEmailOutputName() string {
-	return puluminameoutputgcp.Name(serviceaccount.Account{}, certmanager.Ksa)
+	return pulumigoogleprovider.PulumiOutputName(serviceaccount.Account{}, certmanager.Ksa)
 }
 
 func getMembers(addedProject *organizations.Project, kubernetesNamespace, kubernetesServiceAccount string) []pulumi.StringInput {
