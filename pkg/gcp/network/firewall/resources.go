@@ -3,7 +3,7 @@ package firewall
 import (
 	"fmt"
 	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
-	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutputname"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutput"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster/nodepool/tag"
@@ -68,7 +68,7 @@ func GetGkeWebhooksFirewallName(kubeClusterId string) string {
 }
 
 func GetContainerClusterApiServersCidrBlockOutputName() string {
-	return pulumicustomoutputname.Name("container-cluster-api-servers-cidr-block")
+	return pulumicustomoutput.Name("container-cluster-api-servers-cidr-block")
 }
 
 func GetGkeWebhooksFirewallSelfLinkOutputName(firewallName string) string {

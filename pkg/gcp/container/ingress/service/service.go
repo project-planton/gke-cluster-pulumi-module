@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutputname"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutput"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/istio/ingress/controller"
@@ -166,11 +166,11 @@ func exportIpAddressOutputs(ctx *pulumi.Context, ingressIpAddress *ip.AddedIngre
 }
 
 func GetInternalIpOutputName() string {
-	return pulumicustomoutputname.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(),
+	return pulumicustomoutput.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(),
 		englishword.EnglishWord_internal.String(), englishword.EnglishWord_ip.String()))
 }
 
 func GetExternalIpOutputName() string {
-	return pulumicustomoutputname.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(),
+	return pulumicustomoutput.Name(fmt.Sprintf("%s-%s-%s", englishword.EnglishWord_ingress.String(),
 		englishword.EnglishWord_external.String(), englishword.EnglishWord_ip.String()))
 }
