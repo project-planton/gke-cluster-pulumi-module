@@ -8,8 +8,8 @@ import (
 	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
-	"github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/output/custom"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/pulumi/pulumicustomoutputname"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -140,17 +140,17 @@ func getClusterAutoScalingInput(input *code2cloudv1deployk8cmodel.KubeClusterGcp
 }
 
 func GetApiServerCidrBlockOutputName(clusterFullName string) string {
-	return custom.Name(clusterFullName, "api-server-ip-cidr")
+	return pulumicustomoutputname.Name(clusterFullName, "api-server-ip-cidr")
 }
 
 func GetClusterNameOutputName(clusterFullName string) string {
-	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, englishword.EnglishWord_name.String())
+	return pulumigoogleprovider.PulumiOutputName(container.Cluster{}, clusterFullName, englishword.EnglishWord_name.String())
 }
 
 func GetClusterEndpointOutputName(clusterFullName string) string {
-	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, englishword.EnglishWord_endpoint.String())
+	return pulumigoogleprovider.PulumiOutputName(container.Cluster{}, clusterFullName, englishword.EnglishWord_endpoint.String())
 }
 
 func GetClusterCaDataOutputName(clusterFullName string) string {
-	return puluminameoutputgcp.Name(container.Cluster{}, clusterFullName, "ca-data")
+	return pulumigoogleprovider.PulumiOutputName(container.Cluster{}, clusterFullName, "ca-data")
 }

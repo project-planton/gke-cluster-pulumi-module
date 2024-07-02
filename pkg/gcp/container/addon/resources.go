@@ -20,7 +20,7 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
 	code2cloudv1deployk8cmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/model"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
-	pulumikubernetesprovider "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/automation/provider/kubernetes"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/gke/pulumigkekubernetesprovider"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -40,7 +40,7 @@ type AddedResources struct {
 }
 
 func Resources(ctx *pulumi.Context, input *Input) (*AddedResources, error) {
-	kubernetesProvider, err := pulumikubernetesprovider.GetWithAddedClusterWithGsaKey(ctx, input.AddedIamResources.WorkloadDeployerGsaKey,
+	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithAddedClusterWithGsaKey(ctx, input.AddedIamResources.WorkloadDeployerGsaKey,
 		input.AddedContainerClusterResources.Cluster, input.AddedContainerClusterResources.NodePools)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to setup kubernetes provider")

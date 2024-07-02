@@ -9,7 +9,7 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/network"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
-	pulumigcpprovider "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/automation/provider/google"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -21,7 +21,7 @@ type ResourceStack struct {
 }
 
 func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
-	gcpProvider, err := pulumigcpprovider.Get(ctx, s.Input.CredentialsInput.Google)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, s.Input.CredentialsInput.Google)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
 	}

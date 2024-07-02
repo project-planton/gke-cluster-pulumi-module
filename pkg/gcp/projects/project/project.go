@@ -2,12 +2,12 @@ package project
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/project"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects/apis"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
-	puluminamegcpoutput "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
-	"github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/provider/cloud/gcp"
 	pulumigcp "github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -59,7 +59,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedProjectsResources, erro
 	}
 	ctx.Export(GetContainerClusterProjectIdOutputName(input.KubeClusterId), containerClusterProject.ProjectId)
 	ctx.Export(GetContainerClusterProjectNumberOutputName(input.KubeClusterId), containerClusterProject.Number)
-	addedContainerClusterProjectApis, err := gcp.AddApi(ctx, containerClusterProjectName, containerClusterProject,
+	addedContainerClusterProjectApis, err := project.AddApi(ctx, containerClusterProjectName, containerClusterProject,
 		apis.ContainerClusterProjectApis)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add services for %s project", containerClusterProjectName)
@@ -100,7 +100,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedProjectsResources, erro
 	}
 	ctx.Export(GetVpcNetworkProjectIdOutputName(input.KubeClusterId), vpcNetworkProject.ProjectId)
 	ctx.Export(GetVpcNetworkProjectNumberOutputName(input.KubeClusterId), vpcNetworkProject.Number)
-	addedVpcNetworkProjectApis, err := gcp.AddApi(ctx, vpcNetworkProjectName, vpcNetworkProject, apis.VpcNetworkProjectApis)
+	addedVpcNetworkProjectApis, err := project.AddApi(ctx, vpcNetworkProjectName, vpcNetworkProject, apis.VpcNetworkProjectApis)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add services for %s project", vpcNetworkProjectName)
 	}
@@ -134,19 +134,23 @@ func addProject(ctx *pulumi.Context, gcpProvider *pulumigcp.Provider, gcpBilling
 }
 
 func GetVpcNetworkProjectIdOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_id.String())
+	return pulumigoogleprovider.PulumiOutputName(&organizations.Project{},
+		getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_id.String())
 }
 
 func GetVpcNetworkProjectNumberOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_name.String())
+	return pulumigoogleprovider.PulumiOutputName(&organizations.Project{},
+		getVpcNetworkProjectName(kubeClusterId), englishword.EnglishWord_name.String())
 }
 
 func GetContainerClusterProjectIdOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_id.String())
+	return pulumigoogleprovider.PulumiOutputName(&organizations.Project{},
+		getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_id.String())
 }
 
 func GetContainerClusterProjectNumberOutputName(kubeClusterId string) string {
-	return puluminamegcpoutput.Name(&organizations.Project{}, getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_name.String())
+	return pulumigoogleprovider.PulumiOutputName(&organizations.Project{},
+		getContainerClusterProjectName(kubeClusterId), englishword.EnglishWord_name.String())
 }
 
 func getVpcNetworkProjectName(kubeClusterId string) string {

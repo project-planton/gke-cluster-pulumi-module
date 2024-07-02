@@ -2,12 +2,12 @@ package externalsecrets
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/externalsecrets"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -76,7 +76,7 @@ func addWorkloadIdentityBinding(ctx *pulumi.Context, input *Input, gsa *servicea
 }
 
 func GetGsaEmailOutputName() string {
-	return puluminameoutputgcp.Name(serviceaccount.Account{}, externalsecrets.Ksa)
+	return pulumigoogleprovider.PulumiOutputName(serviceaccount.Account{}, externalsecrets.Ksa)
 }
 
 func getMembers(addedContainerClusterProject *organizations.Project, kubernetesNamespace, kubernetesServiceAccount string) []pulumi.StringInput {

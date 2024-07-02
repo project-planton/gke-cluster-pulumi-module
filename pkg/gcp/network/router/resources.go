@@ -2,10 +2,10 @@ package router
 
 import (
 	"fmt"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
 
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
-	puluminameoutputgcp "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/name/provider/cloud/gcp/output"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -38,5 +38,5 @@ func GetRouterName(kubeClusterId string) string {
 }
 
 func GetRouterSelfLinkOutputName(routerName string) string {
-	return puluminameoutputgcp.Name(compute.Router{}, routerName)
+	return pulumigoogleprovider.PulumiOutputName(compute.Router{}, routerName)
 }

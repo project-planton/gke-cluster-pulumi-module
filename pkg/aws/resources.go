@@ -5,7 +5,7 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/aws/container/cluster"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/aws/network"
 	c2cv1deployk8cstackawsmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/aws/model"
-	pulumiawsnativeprovider "github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/automation/provider/aws"
+	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/aws/pulumiawsprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -18,7 +18,7 @@ type ResourceStack struct {
 func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	kubeCluster := s.Input.ResourceInput.KubeCluster
 
-	awsClassicProvider, err := pulumiawsnativeprovider.GetClassic(ctx,
+	awsClassicProvider, err := pulumiawsprovider.GetClassic(ctx,
 		s.Input.CredentialsInput.Aws, kubeCluster.Spec.Aws.Region)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup aws provider")
