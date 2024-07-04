@@ -753,10 +753,10 @@ github.com/plantoncloud-inc/go-commons v0.0.431 h1:Jl7egEU//rxymixoTVMlGlkPCvvDr
 github.com/plantoncloud-inc/go-commons v0.0.431/go.mod h1:RfAOMv4/x5xzgZoWVqvGVquiVqWXCYclU5tJGmrx0Oo=
 github.com/plantoncloud/planton-cloud-apis v0.0.204 h1:+22CmcjKpJm+Q6ngDB+hpVF7TOvqSGuJRIET1/7kmr4=
 github.com/plantoncloud/planton-cloud-apis v0.0.204/go.mod h1:y1LFk2+lhkY1KKqQ/t1R+WXPEwraH1aKfhOxVjZIaOY=
-github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240702151641-1f0f663273d0 h1:v9bu3cpZ7mb0dF+qTsrRL893grFSkkouAIMMKmJdtv0=
-github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240702151641-1f0f663273d0/go.mod h1:3BWo3kb7i7vK1Sl3yMrKpLf7bW8iYaYL9pAXfOXfboM=
-github.com/plantoncloud/pulumi-stack-runner-go-sdk v0.0.47 h1:H8YW2nGP2BnbBbl5VfddDE7XBv3J9Q8GCeC0C5E0Fw4=
-github.com/plantoncloud/pulumi-stack-runner-go-sdk v0.0.47/go.mod h1:fkG9MuAMmoRiU7S2DSufPsLwtPbRrZn1mkCstux/Wtk=
+github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240703120008-7827af7d39ec h1:KYaHSkDpUPx9UEQmjjVVZmZ/66lJsv5lI9GAL9P0INQ=
+github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240703120008-7827af7d39ec/go.mod h1:Q3oeTbpfXNydkhd1YFaxFuMpY8n8lXmyYJ50kY8Asoc=
+github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.49 h1:m2qJ3+DfchKS5V0Wa8Cu5r4Mldn56UHPaB2S5SbEe48=
+github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.49/go.mod h1:aGywoHALlCWfUHqwQteBgZE54QHQh+QaaCOKdCi7Ryw=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=

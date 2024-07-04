@@ -1,10 +1,12 @@
 module github.com/plantoncloud/kube-cluster-pulumi-blueprint
 
-go 1.21
+go 1.22
+
+toolchain go1.22.4
 
 //replace github.com/plantoncloud/planton-cloud-apis => /Users/swarup/scm/github.com/plantoncloud/planton-cloud-apis
 
-//replace github.com/plantoncloud/pulumi-stack-runner-go-sdk => /Users/swarup/scm/github.com/plantoncloud/pulumi-stack-runner-go-sdk
+//replace github.com/plantoncloud/stack-job-runner-golang-sdk => /Users/swarup/scm/github.com/plantoncloud/stack-job-runner-golang-sdk
 
 //replace github.com/plantoncloud-inc/go-commons => /Users/swarup/scm/github.com/plantoncloud-inc/go-commons
 
@@ -58,8 +60,8 @@ require (
 require (
 	github.com/plantoncloud-inc/go-commons v0.0.431
 	github.com/plantoncloud/planton-cloud-apis v0.0.204
-	github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240702151641-1f0f663273d0
-	github.com/plantoncloud/pulumi-stack-runner-go-sdk v0.0.47
+	github.com/plantoncloud/pulumi-blueprint-golang-commons v0.0.0-20240703120008-7827af7d39ec
+	github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.49
 	github.com/pulumi/pulumi-aws/sdk/v6 v6.42.1
 	github.com/pulumi/pulumi-awsx/sdk v1.0.5
 	github.com/pulumi/pulumi-eks/sdk v1.0.3

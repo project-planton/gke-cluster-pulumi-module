@@ -11,16 +11,11 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/network"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects"
 	c2cv1deployk8cstackgcpmodel "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/kubecluster/stack/gcp/model"
-	"github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/org"
-	"github.com/plantoncloud/pulumi-stack-runner-go-sdk/pkg/stack/output/backend"
+	"github.com/plantoncloud/stack-job-runner-golang-sdk/pkg/stack/output/backend"
 )
 
 func Outputs(ctx context.Context, input *c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackInput) (*c2cv1deployk8cstackgcpmodel.KubeClusterGcpStackOutputs, error) {
-	pulumiOrgName, err := org.GetOrgName()
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to get pulumi org name")
-	}
-	stackOutput, err := backend.StackOutput(pulumiOrgName, input.StackJob)
+	stackOutput, err := backend.StackOutput(input.StackJob)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to get stack output")
 	}
