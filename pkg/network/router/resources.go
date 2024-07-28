@@ -37,8 +37,3 @@ func Resources(ctx *pulumi.Context, input *Input) (*compute.Router, error) {
 func GetRouterName(kubeClusterId string) string {
 	return fmt.Sprintf("%s-%s-router", englishword.EnglishWord_kubernetes, kubeClusterId)
 }
-
-func GetRouterSelfLinkOutputName     routerName string) string {
-	return pulumigoogleprovider.PulumiOutputName
-	compute.Router{}, routerName)
-}

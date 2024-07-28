@@ -5,7 +5,6 @@ import (
 	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
@@ -21,13 +20,10 @@ type Input struct {
 }
 
 // Resources implements role creation as explained in the below blog post
-// //https://www.linkedin.com/pulse/fixing-gkes-load-balancing-permissions-when-using-shared-dmitri-lerko/
+// https://www.linkedin.com/pulse/fixing-gkes-load-balancing-permissions-when-using-shared-dmitri-lerko/
+// https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc#managing_firewall_resources
 func Resources(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) {
 	addedResources := make([]pulumi.Resource, 0)
-	_, err := addNetworkAdminRole(ctx, input.AddedSubnet, input.AddedKubeClusterProjects.VpcNetworkProject)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to add network admin role")
-	}
 
 	addedSubnetIamResources, err := addSubnetIam(ctx, input)
 	if err != nil {
@@ -39,37 +35,15 @@ func Resources(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add host svc agent roles")
 	}
+
 	addedResources = append(addedResources, addedSubnetServiceAgentUserRoleBindings...)
 
 	addedNetworkAdminPolicyBinding, err := addNetworkAdminIamPolicyBinding(ctx, input)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add iam policy binding for service project container bot service accounts")
 	}
-	return append(addedResources, addedNetworkAdminPolicyBinding), nil
-}
 
-func addNetworkAdminRole(ctx *pulumi.Context, snw *compute.Subnetwork, addedShareProject *organizations.Project) (*projects.IAMCustomRole, error) {
-	role, err := projects.NewIAMCustomRole(
-		ctx,
-		networkAdminRoleName,
-		&projects.IAMCustomRoleArgs{
-			Description: pulumi.String("This role allows to administer network and security of the host project. Intended for use by GKE automation on service projects."),
-			Project:     addedShareProject.ProjectId,
-			Permissions: pulumi.StringArray{
-				pulumi.String("compute.firewalls.create"),
-				pulumi.String("compute.firewalls.delete"),
-				pulumi.String("compute.firewalls.get"),
-				pulumi.String("compute.firewalls.list"),
-				pulumi.String("compute.firewalls.update"),
-				pulumi.String("compute.networks.updatePolicy"),
-			},
-			RoleId: pulumi.String(networkAdminRoleName),
-			Title:  pulumi.String("Host Project Network and Security Admin"),
-		}, pulumi.Parent(snw))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to add %s custom iam role", networkAdminRoleName)
-	}
-	return role, nil
+	return append(addedResources, addedNetworkAdminPolicyBinding), nil
 }
 
 // addNetworkAdminIamPolicyBinding binds network admin role to container engine robot service accounts
@@ -104,11 +78,8 @@ func getNetworkAdminIamBindingMembers(addedKubeClusterProjects *project.AddedKub
 	return resp
 }
 
-//   - serviceAccount:SERVICE_PROJECT_1_NUM@cloudservices.gserviceaccount.com
-//   - serviceAccount:service-SERVICE_PROJECT_1_NUM@container-engine-robot.iam.gserviceaccount.com
-//
-// https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc#enabling_and_granting_roles
 func addSubnetIam(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) {
+
 	addedIamMemberSubnetCloudServices, err := compute.NewSubnetworkIAMMember(
 		ctx,
 		"subnetwork-iam-policy-cloudservices",
@@ -125,6 +96,7 @@ func addSubnetIam(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add gke service accounts as iam members for subnetwork")
 	}
+
 	addedIamMemberSubnetContainerEngine, err := compute.NewSubnetworkIAMMember(
 		ctx,
 		"subnetwork-iam-policy-container-engine-robot",
@@ -141,6 +113,7 @@ func addSubnetIam(ctx *pulumi.Context, input *Input) ([]pulumi.Resource, error) 
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add gke service accounts as iam members for subnetwork")
 	}
+
 	return []pulumi.Resource{
 		addedIamMemberSubnetCloudServices,
 		addedIamMemberSubnetContainerEngine,

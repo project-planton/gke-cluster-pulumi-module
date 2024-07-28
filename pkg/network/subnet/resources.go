@@ -15,60 +15,6 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-//https://jodies.de/ipcalc?host=10.0.0.0&mask1=10&mask2=14
-
-//10.0.0.0/14 // primary subnetwork cidr
-//10.32.0.0/14 //primary subnetwork cidr(reserve)
-
-//pod range
-//10.4.0.0/14
-//10.8.0.0/14
-//10.12.0.0/14
-//10.16.0.0/14
-//10.20.0.0/14
-//10.24.0.0/14
-//10.28.0.0/14
-//service range
-//10.36.0.0/14
-//10.40.0.0/14
-//10.44.0.0/14
-//10.48.0.0/14
-//10.52.0.0/14
-//10.56.0.0/14
-//10.60.0.0/14
-
-const (
-	subNetworkCidr                     = "10.0.0.0/14"
-	secondaryIpRangeNamePodsPrefix     = "gke-pods"
-	secondaryIpRangeNameServicesPrefix = "gke-services"
-)
-
-var (
-	podCidrSecondaryRangeMap = map[gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum]*model.KubePodServiceSecondaryRangeCidr{
-		gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_one: {
-			Pod:     "10.4.0.0/14",
-			Service: "10.36.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_two: {
-			Pod:     "10.8.0.0/14",
-			Service: "10.40.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_three: {
-			Pod:     "10.12.0.0/14",
-			Service: "10.44.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_four: {
-			Pod:     "10.16.0.0/14",
-			Service: "10.48.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_five: {
-			Pod:     "10.20.0.0/14",
-			Service: "10.52.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_six: {
-			Pod:     "10.24.0.0/14",
-			Service: "10.56.0.0/14",
-		}, gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_seven: {
-			Pod:     "10.28.0.0/14",
-			Service: "10.60.0.0/14",
-		},
-	}
-)
 
 type Input struct {
 	KubeClusterId string
@@ -87,36 +33,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*compute.Subnetwork, error) {
 
 func addSubNetwork(ctx *pulumi.Context, input *Input) (*compute.Subnetwork, error) {
 	name := GetSubNetworkName(input.KubeClusterId)
-	sn, err := compute.NewSubnetwork(ctx, name, &compute.SubnetworkArgs{
-		Name:                  pulumi.String(name),
-		Project:               input.ShareProject.ProjectId,
-		Network:               input.VpcNetwork.ID(),
-		Region:                pulumi.String(input.GcpRegion),
-		IpCidrRange:           pulumi.String(subNetworkCidr),
-		PrivateIpGoogleAccess: pulumi.BoolPtr(true),
-		SecondaryIpRanges: &compute.SubnetworkSecondaryIpRangeArray{
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_one),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_one),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_two),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_two),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_three),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_three),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_four),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_four),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_five),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_five),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_six),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_six),
-			getPodSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_seven),
-			getServiceSecondaryRanges(gkepodservicesecondaryrangecidrsetnum.GkePodServiceSecondaryRangeCidrSetNum_seven),
-		},
-	}, pulumi.Parent(input.VpcNetwork))
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to add subnetwork")
-	}
-	ctx.Export(SubNetworkSelfLinkOutputName
-	name), sn.SelfLink)
-	return sn, nil
+
 }
 
 // todo: this is a suboptimal code as a workaround for in ability to create an pulumi input array with looping

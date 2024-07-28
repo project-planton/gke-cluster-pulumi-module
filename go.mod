@@ -7,6 +7,7 @@ replace github.com/plantoncloud/planton-cloud-apis => ../../plantoncloud/planton
 replace github.com/plantoncloud/stack-job-runner-golang-sdk => ../../plantoncloud/stack-job-runner-golang-sdk
 
 replace github.com/plantoncloud/pulumi-module-golang-commons => ../../plantoncloud/pulumi-module-golang-commons
+
 //these replacements are required in order to use external-secrets apis https://github.com/external-secrets/external-secrets/blob/main/go.mod
 replace (
 	github.com/go-check/check => github.com/go-check/check v0.0.0-20180628173108-788fd7840127
@@ -43,7 +44,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.7.1
 	github.com/pulumi/pulumi-random/sdk/v4 v4.14.0
-	github.com/pulumi/pulumi/sdk/v3 v3.122.0
+	github.com/pulumi/pulumi/sdk/v3 v3.124.0
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/zalando/postgres-operator v1.8.2
 	google.golang.org/grpc v1.63.2 // indirect
@@ -223,6 +224,7 @@ require (
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c // indirect
 	github.com/pkg/term v1.1.0 // indirect
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240725065835-ac24c213b464 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
 	github.com/pulumi/esc v0.9.1 // indirect
 	github.com/pulumi/pulumi-aws-native/sdk v0.109.0 // indirect

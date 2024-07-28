@@ -30,30 +30,11 @@ func Resources(ctx *pulumi.Context, input *Input) (*serviceaccount.Account, erro
 }
 
 func addGsa(ctx *pulumi.Context, addedContainerClusterProject *organizations.Project) (*serviceaccount.Account, error) {
-	gsa, err := serviceaccount.NewAccount(ctx, certmanager.Ksa, &serviceaccount.AccountArgs{
-		Project:     addedContainerClusterProject.ProjectId,
-		Description: pulumi.String("cert-manager service account for solving dns challenges to issue certificates"),
-		AccountId:   pulumi.String(certmanager.Ksa),
-		DisplayName: pulumi.String(certmanager.Ksa),
-	}, pulumi.Parent(addedContainerClusterProject))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed add new %s svc acct", certmanager.Ksa)
-	}
-	ctx.Export(GsaEmailOutputName), gsa.Email)
-	return gsa, nil
+
 }
 
 func addWorkloadIdentityBinding(ctx *pulumi.Context, input *Input, gsa *serviceaccount.Account) error {
-	_, err := serviceaccount.NewIAMBinding(ctx, fmt.Sprintf("%s-workload-identity", certmanager.Ksa), &serviceaccount.IAMBindingArgs{
-		ServiceAccountId: gsa.Name,
-		Role:             pulumi.String(standard.Iam_workloadIdentityUser),
-		Members:          pulumi.StringArray(getMembers(input.AddedContainerClusterProject, certmanager.Namespace, certmanager.Ksa)),
-	}, pulumi.Parent(gsa),
-		pulumi.DependsOn([]pulumi.Resource{input.AddedContainerClusterResources.Cluster}))
-	if err != nil {
-		return errors.Wrapf(err, "failed to add workload identity binding for external secrets ksa to %v gsa", gsa.Email)
-	}
-	return nil
+
 }
 
 func GetGsaEmailOutputName     ) string {

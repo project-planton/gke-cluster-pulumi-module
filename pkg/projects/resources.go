@@ -31,16 +31,17 @@ func Resources(ctx *pulumi.Context, input *Input) (*project.AddedProjectsResourc
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add kube-cluster folder")
 	}
-	addedProjectsResources, err := project.Resources(ctx, &project.Input{
-		AddedKubeClusterFolder: addedFolder,
-		IsSharedVpcEnabled:     input.IsCreateSharedVpc,
-		KubeClusterId:          input.KubeClusterId,
-		GcpRegion:              input.GcpRegion,
-		GcpZone:                input.GcpZone,
-		BillingAccountId:       input.BillingAccountId,
-		GcpProvider:            input.GcpProvider,
-		Labels:                 input.Labels,
-	})
+	addedProjectsResources, err := project.Resources(ctx,
+		&project.Input{
+			AddedKubeClusterFolder: addedFolder,
+			IsSharedVpcEnabled:     input.IsCreateSharedVpc,
+			KubeClusterId:          input.KubeClusterId,
+			GcpRegion:              input.GcpRegion,
+			GcpZone:                input.GcpZone,
+			BillingAccountId:       input.BillingAccountId,
+			GcpProvider:            input.GcpProvider,
+			Labels:                 input.Labels,
+		})
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add projects resources")
 	}

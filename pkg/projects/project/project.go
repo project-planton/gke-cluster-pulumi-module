@@ -116,18 +116,7 @@ func Resources(ctx *pulumi.Context, input *Input) (*AddedProjectsResources, erro
 
 func addProject(ctx *pulumi.Context, gcpProvider *pulumigcp.Provider, gcpBillingAccountId, gcpProjectName string,
 	gcpProjectId pulumi.StringOutput, addedKubeClusterFolder *organizations.Folder, labels map[string]string) (*organizations.Project, error) {
-	newProject, err := organizations.NewProject(ctx, gcpProjectName, &organizations.ProjectArgs{
-		BillingAccount:    pulumi.String(gcpBillingAccountId),
-		Name:              pulumi.String(gcpProjectName),
-		AutoCreateNetwork: pulumi.Bool(false),
-		Labels:            pulumi.ToStringMap(labels),
-		ProjectId:         gcpProjectId,
-		FolderId:          addedKubeClusterFolder.FolderId,
-	}, pulumi.Provider(gcpProvider))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to add %s project", gcpProjectName)
-	}
-	return newProject, nil
+
 }
 
 func getVpcNetworkProjectName(kubeClusterId string) string {

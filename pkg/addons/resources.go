@@ -1,4 +1,4 @@
-package addon
+package addons
 
 import (
 	"github.com/pkg/errors"
@@ -16,41 +16,23 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/solroperator"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/strimzi"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/addon/traefik"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/container/cluster"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/iam"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/model"
-	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/gke/pulumigkekubernetesprovider"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-type Input struct {
-	ContainerAddonInput            *model.Addons
-	WorkspaceDir                   string
-	AddedContainerClusterResources *cluster.AddedContainerClusterResources
-	AddedIamResources              *iam.AddedIamResources
-	AddedContainerClusterProject   *organizations.Project
-	KubeClusterAddons              *code2cloudv1deployk8cmodel.KubeClusterAddonsSpec
-}
-
-type AddedResources struct {
-	IstioAddedResources *istio.AddedResources
-}
-
-func Resources(ctx *pulumi.Context, input *Input) (*AddedResources, error) {
-	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithAddedClusterWithGsaKey(ctx, input.AddedIamResources.WorkloadDeployerGsaKey,
-		input.AddedContainerClusterResources.Cluster, input.AddedContainerClusterResources.NodePools)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to setup kubernetes provider")
-	}
-
-	addonAddedResources, err := clusterAddonResources(ctx, kubernetesProvider, input)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to add kube-cluster addon resources")
-	}
-	return addonAddedResources, nil
-}
+//func Resources(ctx *pulumi.Context, input *Input) (*AddedResources, error) {
+//	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithAddedClusterWithGsaKey(ctx, input.AddedIamResources.WorkloadDeployerGsaKey,
+//		input.AddedContainerClusterResources.Cluster, input.AddedContainerClusterResources.NodePools)
+//	if err != nil {
+//		return nil, errors.Wrap(err, "failed to setup kubernetes provider")
+//	}
+//
+//	addonAddedResources, err := clusterAddonResources(ctx, kubernetesProvider, input)
+//	if err != nil {
+//		return nil, errors.Wrap(err, "failed to add kube-cluster addon resources")
+//	}
+//	return addonAddedResources, nil
+//}
 
 func clusterAddonResources(ctx *pulumi.Context, kubernetesProvider *pulumikubernetes.Provider, input *Input) (*AddedResources, error) {
 	workspace := input.WorkspaceDir

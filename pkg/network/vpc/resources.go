@@ -2,8 +2,6 @@ package vpc
 
 import (
 	"fmt"
-	"github.com/plantoncloud/pulumi-blueprint-golang-commons/pkg/google/pulumigoogleprovider"
-
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/gcp/projects/project"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/english/enums/englishword"
@@ -65,25 +63,6 @@ func addSharedVpcHostProject(ctx *pulumi.Context, input *Input) (*compute.Shared
 }
 
 func addNetwork(ctx *pulumi.Context, input *Input) (*compute.Network, error) {
-	name := GetNetworkName(input.KubeClusterId)
-	nw, err := compute.NewNetwork(ctx, name, &compute.NetworkArgs{
-		Project:               input.AddedProjectsResources.KubeClusterProjects.VpcNetworkProject.ProjectId,
-		AutoCreateSubnetworks: pulumi.BoolPtr(false),
-	}, pulumi.Parent(input.AddedProjectsResources.KubeClusterProjects.VpcNetworkProject),
-		pulumi.DependsOn(input.AddedProjectsResources.AddedProjectApis.VpcNetworkProject))
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create network")
-	}
-	ctx.Export(NetworkSelfLinkOutputName
-	name), nw.SelfLink)
+
 	return nw, nil
-}
-
-func GetNetworkName(kubeClusterId string) string {
-	return fmt.Sprintf("%s-%s", englishword.EnglishWord_kubernetes, kubeClusterId)
-}
-
-func GetNetworkSelfLinkOutputName     networkName string) string {
-	return pulumigoogleprovider.PulumiOutputName
-	compute.Network{}, networkName)
 }

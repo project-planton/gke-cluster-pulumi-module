@@ -27,13 +27,6 @@ type Input struct {
 }
 
 func Resources(ctx *pulumi.Context, input *Input) error {
-	if input.CertManagerAddonInput == nil || !input.CertManagerAddonInput.Enabled {
-		return nil
-	}
-	addedNamespace, err := addNamespace(ctx, input)
-	if err != nil {
-		return errors.Wrap(err, "failed to add namespace")
-	}
 	addedServiceAccount, err := addServiceAccount(ctx, input, addedNamespace)
 	if err != nil {
 		return errors.Wrap(err, "failed to add service account")
@@ -85,20 +78,6 @@ func addHelmRelease(ctx *pulumi.Context, addedNamespace *pulk8scv1.Namespace, ad
 		return nil, errors.Wrapf(err, "failed to add %s helm release", helmChart.ReleaseName)
 	}
 	return r, nil
-}
-
-func addNamespace(ctx *pulumi.Context, input *Input) (*pulk8scv1.Namespace, error) {
-	ns, err := pulk8scv1.NewNamespace(ctx, Namespace, &pulk8scv1.NamespaceArgs{
-		ApiVersion: pulumi.String("v1"),
-		Kind:       pulumi.String("AddedNamespace"),
-		Metadata: v12.ObjectMetaPtrInput(&v12.ObjectMetaArgs{
-			Name: pulumi.String(Namespace),
-		}),
-	}, pulumi.Provider(input.KubernetesProvider))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to add %s namespace", Namespace)
-	}
-	return ns, nil
 }
 
 // addServiceAccount adds service account to be used by the cert-manager.
