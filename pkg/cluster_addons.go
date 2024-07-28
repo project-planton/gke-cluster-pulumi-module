@@ -37,7 +37,11 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallExternalSecrets {
-		if err := addons.ExternalSecrets(ctx); err != nil {
+		if err := addons.ExternalSecrets(ctx,
+			locals,
+			createdCluster,
+			gcpProvider,
+			kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install external-secrets resources")
 		}
 	}

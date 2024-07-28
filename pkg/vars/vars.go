@@ -37,17 +37,37 @@ var (
 	WorkloadDeployServiceAccountName = "workload-deployer"
 
 	CertManager = struct {
-		Namespace     string
-		KsaName       string
-		HelmChartRepo string
 		HelmChartName string
+		HelmChartRepo string
 		//https://github.com/cert-manager/cert-manager/releases/tag/v1.15.1
-		HelmChartVersion string
+		HelmChartVersion     string
+		KsaName              string
+		Namespace            string
+		SelfSignedIssuerName string
 	}{
 		"cert-manager",
-		"cert-manager",
 		"https://charts.jetstack.io",
-		"cert-manager",
 		"v1.15.1",
+		"cert-manager",
+		"cert-manager",
+		"self-signed",
+	}
+
+	ExternalSecrets = struct {
+		HelmChartName string
+		HelmChartRepo string
+		//https://github.com/cert-manager/cert-manager/releases/tag/v1.15.1
+		HelmChartVersion string
+		KsaName          string
+		Namespace        string
+		//caution: setting this frequency may incur additional charges on some platforms
+		SecretsPollingIntervalSeconds int
+	}{
+		"external-secrets",
+		"https://charts.external-secrets.io",
+		"v0.9.20",
+		"external-secrets",
+		"external-secrets",
+		10,
 	}
 )

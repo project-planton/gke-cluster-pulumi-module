@@ -6,12 +6,14 @@ import (
 )
 
 const (
+	CertManagerGsaEmail                 = "cert-manager-gsa-email"
 	ClusterCaData                       = "cluster-ca-data"
 	ClusterEndpoint                     = "cluster-endpoint"
 	ClusterName                         = "cluster-name"
 	ContainerClusterApiServersCidrBlock = "container-cluster-api-servers-cidr-block"
 	ContainerClusterProjectId           = "container-cluster-project-id"
 	ContainerClusterProjectNumber       = "container-cluster-project-number"
+	ExternalSecretsGsaEmail             = "external-secrets-gsa-email"
 	FolderDisplayName                   = "folder-name"
 	FolderId                            = "folder-id"
 	FolderParent                        = "folder-parent"
@@ -25,7 +27,6 @@ const (
 	VpcNetworkProjectNumber             = "vpc-network-project-number"
 	WorkloadDeployerGsaEmail            = "workload-deployer-gsa-email"
 	WorkloadDeployerGsaKey              = "workload-deployer-gsa-key"
-	CertManagerGsaEmail                 = "cert-manager-gsa-email"
 )
 
 func PulumiOutputToStackOutputsConverter(pulumiOutputs auto.OutputMap,

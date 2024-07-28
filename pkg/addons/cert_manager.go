@@ -7,6 +7,7 @@ import (
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
+	certmanagerv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/certmanager/certmanager/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -107,17 +108,17 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(180), // 3 minutes
 			Values: pulumi.Map{
-				"installCRDs": pulumi.String(fmt.Sprintf("%t", true)),
+				"installCRDs": pulumi.Sprintf("%t", true),
 				"extraArgs": pulumi.String(strings.Join([]string{
 					"--dns01-recursive-nameservers=\"1.1.1.1:53\"",
 					"--dns01-recursive-nameservers-only=true",
 				}, ",")),
 				"serviceAccount": pulumi.StringMap{
-					"create": pulumi.String(fmt.Sprintf("%t", false)),
-					"name":   pulumi.String("Ksa"),
+					"create": pulumi.Sprintf("%t", false),
+					"name":   pulumi.String(vars.CertManager.KsaName),
 				},
 				"startupapicheck": pulumi.StringMap{
-					"enabled": pulumi.String(fmt.Sprintf("%t", true)),
+					"enabled": pulumi.Sprintf("%t", true),
 					"timeout": pulumi.String("5m"),
 				},
 				"featureGates": pulumi.String("AdditionalCertificateOutputFormats=true"),
@@ -137,5 +138,19 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrap(err, "failed to create cert-manager helm release")
 	}
 
+	//create self-signed issuer
+	_, err = certmanagerv1.NewClusterIssuer(ctx, "self-signed",
+		&certmanagerv1.ClusterIssuerArgs{
+			Metadata: metav1.ObjectMetaArgs{
+				Name:   pulumi.String(vars.CertManager.SelfSignedIssuerName),
+				Labels: pulumi.ToStringMap(locals.KubernetesLabels),
+			},
+			Spec: certmanagerv1.ClusterIssuerSpecArgs{
+				SelfSigned: certmanagerv1.ClusterIssuerSpecSelfSignedArgs{},
+			},
+		})
+	if err != nil {
+		return errors.Wrap(err, "failed to create self-signed cluster-issuer")
+	}
 	return nil
 }
