@@ -13,7 +13,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func certManager(ctx *pulumi.Context, locals *localz.Locals,
+func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
 	createdGsa, err := serviceaccount.NewAccount(ctx,

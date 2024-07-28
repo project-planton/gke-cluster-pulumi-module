@@ -16,6 +16,7 @@ type Locals struct {
 	KubernetesLabels                      map[string]string
 	GcpLabels                             map[string]string
 	ContainerClusterLoggingComponentList  []string
+	NetworkTag                            string
 }
 
 func Initialize(ctx *pulumi.Context, stackInput *model.GkeClusterStackInput) *Locals {
@@ -28,6 +29,7 @@ func Initialize(ctx *pulumi.Context, stackInput *model.GkeClusterStackInput) *Lo
 
 	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("%s-pods", gkeCluster.Metadata.Id)
 	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("%s-services", gkeCluster.Metadata.Id)
+	locals.NetworkTag = gkeCluster.Metadata.Id
 
 	locals.ContainerClusterLoggingComponentList = []string{"SYSTEM_COMPONENTS"}
 

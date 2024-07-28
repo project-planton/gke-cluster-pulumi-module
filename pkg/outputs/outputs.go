@@ -6,18 +6,23 @@ import (
 )
 
 const (
-	ClusterCaData                 = "cluster-ca-data"
-	ClusterEndpoint               = "cluster-endpoint"
-	ClusterName                   = "cluster-name"
-	ContainerClusterProjectId     = "container-cluster-project-id"
-	ContainerClusterProjectNumber = "container-cluster-project-number"
-	FolderDisplayName             = "folder-name"
-	FolderId                      = "folder-id"
-	FolderParent                  = "folder-parent"
-	NetworkSelfLink               = "network-self-link"
-	SubNetworkSelfLink            = "sub-network-self-link"
-	VpcNetworkProjectId           = "vpc-network-project-id"
-	VpcNetworkProjectNumber       = "vpc-network-project-number"
+	ClusterCaData                       = "cluster-ca-data"
+	ClusterEndpoint                     = "cluster-endpoint"
+	ClusterName                         = "cluster-name"
+	ContainerClusterApiServersCidrBlock = "container-cluster-api-servers-cidr-block"
+	ContainerClusterProjectId           = "container-cluster-project-id"
+	ContainerClusterProjectNumber       = "container-cluster-project-number"
+	FolderDisplayName                   = "folder-name"
+	FolderId                            = "folder-id"
+	FolderParent                        = "folder-parent"
+	GkeWebhooksFirewallSelfLink         = "gke-webhooks-firewall-self-link"
+	NatIpAddress                        = "nat-ip-address"
+	NetworkSelfLink                     = "network-self-link"
+	RouterNatName                       = "router-nat-name"
+	RouterSelfLink                      = "router-self-link"
+	SubNetworkSelfLink                  = "sub-network-self-link"
+	VpcNetworkProjectId                 = "vpc-network-project-id"
+	VpcNetworkProjectNumber             = "vpc-network-project-number"
 )
 
 func PulumiOutputToStackOutputsConverter(pulumiOutputs auto.OutputMap,

@@ -13,6 +13,7 @@ var (
 		"secretmanager.googleapis.com",
 		"dns.googleapis.com",
 	}
+
 	CertManagerNamespace = "cert-manager"
 
 	// SubNetworkCidr 10.0.0.0/14
@@ -25,8 +26,9 @@ var (
 	// KubernetesServiceSecondaryIpRange https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#cluster_sizing_secondary_range_svcs
 	KubernetesServiceSecondaryIpRange = "10.2.0.0/15"
 
-	ApiServerIpCidr = "coming-soon" //todo: need to add this value
-
+	ApiServerIpCidr                                     = "172.16.0.0/24"
 	ClusterMasterAuthorizedNetworksCidrBlock            = "0.0.0.0/0"
 	ClusterMasterAuthorizedNetworksCidrBlockDescription = "kubectl-from-anywhere"
+	ApiServerWebhookPort                                = "8443"
+	IstioPilotWebhookPort                               = "15017"
 )

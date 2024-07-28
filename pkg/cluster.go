@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/enums/gkereleasechannel"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
@@ -100,6 +101,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		return nil, errors.Wrap(err, "failed to create network")
 	}
 
+	//export network self-link
+	ctx.Export(outputs.NetworkSelfLink, createdNetwork.SelfLink)
+
+	//create subnetwork
 	createdSubNetwork, err := compute.NewSubnetwork(ctx, "sub-network", &compute.SubnetworkArgs{
 		Name:                  pulumi.String(locals.GkeCluster.Metadata.Id),
 		Project:               createdNetworkProject.ProjectId,
@@ -123,10 +128,97 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		return nil, errors.Wrap(err, "failed to create subnetwork")
 	}
 
+	//export subnetwork self-link
+	ctx.Export(outputs.SubNetworkSelfLink, createdSubNetwork.SelfLink)
+
+	//create firewall
+	createdFirewall, err := compute.NewFirewall(ctx, "firewall", &compute.FirewallArgs{
+		Name:    pulumi.Sprintf("%s-gke-webhook", locals.GkeCluster.Metadata.Id),
+		Project: createdNetworkProject.ProjectId,
+		Network: createdNetwork.Name,
+		SourceRanges: pulumi.StringArray{
+			pulumi.String(vars.ApiServerIpCidr),
+		},
+		Allows: compute.FirewallAllowArray{
+			&compute.FirewallAllowArgs{
+				Protocol: pulumi.String("tcp"),
+				Ports: pulumi.StringArray{
+					pulumi.String(vars.ApiServerWebhookPort),
+					pulumi.String(vars.IstioPilotWebhookPort),
+				},
+			},
+		},
+		TargetTags: pulumi.StringArray{
+			pulumi.String(locals.NetworkTag),
+		},
+	}, pulumi.Parent(createdNetwork))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create firewall")
+	}
+
+	//export firewall self-link
+	ctx.Export(outputs.GkeWebhooksFirewallSelfLink, createdFirewall.SelfLink)
+
+	//create router
+	createdRouter, err := compute.NewRouter(ctx,
+		"router",
+		&compute.RouterArgs{
+			Name:    pulumi.String(locals.GkeCluster.Metadata.Id),
+			Network: createdNetwork.SelfLink,
+			Region:  pulumi.String(locals.GkeCluster.Spec.Region),
+			Project: createdNetworkProject.ProjectId,
+		}, pulumi.Parent(createdNetwork))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create router")
+	}
+
+	//export router self-link
+	ctx.Export(outputs.RouterSelfLink, createdRouter.SelfLink)
+
+	//create ip-address for router nat
+	createdRouterNatIp, err := compute.NewAddress(ctx,
+		"router-nat-ip",
+		&compute.AddressArgs{
+			Name:        pulumi.Sprintf("%s-router-nat", locals.GkeCluster.Metadata.Id),
+			Project:     createdNetworkProject.ProjectId,
+			Region:      createdRouter.Region,
+			AddressType: pulumi.String("external"),
+			Labels:      pulumi.ToStringMap(locals.GcpLabels),
+		}, pulumi.Parent(createdRouter))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to add new compute address")
+	}
+
+	//export router nat ip
+	ctx.Export(outputs.NatIpAddress, createdRouterNatIp.Address)
+
+	//create router nat
+	createdRouterNat, err := compute.NewRouterNat(ctx,
+		"nat-router",
+		&compute.RouterNatArgs{
+			Name:                          pulumi.String(locals.GkeCluster.Metadata.Id),
+			Router:                        createdRouter.Name,
+			Region:                        createdRouter.Region,
+			Project:                       createdNetworkProject.ProjectId,
+			NatIpAllocateOption:           pulumi.String("MANUAL_ONLY"),
+			NatIps:                        pulumi.StringArray{createdRouterNatIp.SelfLink},
+			SourceSubnetworkIpRangesToNat: pulumi.String("ALL_SUBNETWORKS_ALL_IP_RANGES"),
+		}, pulumi.Parent(createdRouter))
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create network router nat")
+	}
+
+	//export router nat name
+	ctx.Export(outputs.RouterNatName, createdRouterNat.Name)
+
 	createdSharedVpcIamResources := make([]pulumi.Resource, 0)
 
 	if locals.GkeCluster.Spec.IsCreateSharedVpc {
-		createdSharedVpcIamResources, err = sharedVpcIam(ctx, createdNetworkProject, createdSubNetwork)
+		createdSharedVpcIamResources, err = sharedVpcIam(ctx,
+			locals,
+			createdClusterProject,
+			createdNetworkProject,
+			createdSubNetwork)
 		if err != nil {
 			return nil, errors.Wrap(err, "failed to create shared vpc iam resources")
 		}
@@ -136,6 +228,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		Enabled: pulumi.Bool(false),
 	}
 
+	//determine autoscaling input based on gke-cluster input spec
 	if locals.GkeCluster.Spec.ClusterAutoscalingConfig != nil &&
 		locals.GkeCluster.Spec.ClusterAutoscalingConfig.IsEnabled {
 		clusterAutoscalingArgs = &container.ClusterClusterAutoscalingArgs{
@@ -156,6 +249,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		}
 	}
 
+	//create container cluster
 	createdCluster, err := container.NewCluster(ctx,
 		"cluster",
 		&container.ClusterArgs{
