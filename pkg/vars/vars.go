@@ -1,7 +1,7 @@
 package vars
 
 var (
-	VpcNetworkProjectApis = []string{
+	NetworkProjectApis = []string{
 		"compute.googleapis.com",
 		"container.googleapis.com",
 		"dns.googleapis.com",
@@ -31,4 +31,8 @@ var (
 	ClusterMasterAuthorizedNetworksCidrBlockDescription = "kubectl-from-anywhere"
 	ApiServerWebhookPort                                = "8443"
 	IstioPilotWebhookPort                               = "15017"
+
+	// WorkloadDeployServiceAccountName name of the google service account to
+	//be used for deploying workloads to the gke cluster.
+	WorkloadDeployServiceAccountName = "workload-deployer"
 )

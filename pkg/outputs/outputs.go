@@ -23,6 +23,8 @@ const (
 	SubNetworkSelfLink                  = "sub-network-self-link"
 	VpcNetworkProjectId                 = "vpc-network-project-id"
 	VpcNetworkProjectNumber             = "vpc-network-project-number"
+	WorkloadDeployerGsaEmail            = "workload-deployer-gsa-email"
+	WorkloadDeployerGsaKey              = "workload-deployer-gsa-key"
 )
 
 func PulumiOutputToStackOutputsConverter(pulumiOutputs auto.OutputMap,

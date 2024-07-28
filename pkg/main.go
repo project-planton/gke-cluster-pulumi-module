@@ -42,12 +42,20 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 		return errors.Wrap(err, "failed to create cluster node-pools")
 	}
 
+	createdWorkloadDeployerServiceAccountKey, err := workloadDeployer(ctx, createdCluster)
+	if err != nil {
+		return errors.Wrap(err, "failed to create workload-deployer resources")
+	}
+
 	if locals.GkeCluster.Spec.KubernetesAddons == nil {
 		return nil
 	}
 
+	//create kubernetes provider for the created cluster
 	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithCreatedGkeClusterAndCreatedGsaKey(ctx,
-		nil, createdCluster, createdNodePools)
+		createdWorkloadDeployerServiceAccountKey,
+		createdCluster,
+		createdNodePools)
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}

@@ -10,12 +10,15 @@ import (
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdFolder *organizations.Folder) (*container.Cluster, error) {
+
+	//create random suffix for container-cluster-project-id
 	clusterProjectRandomString, err := random.NewRandomString(ctx,
 		"cluster-project-id-suffix",
 		&random.RandomStringArgs{
@@ -29,12 +32,14 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		return nil, errors.Wrap(err, "failed to create random suffix for cluster-project-id")
 	}
 
+	//build container-cluster-project-id using the random-id suffix
 	clusterProjectId := clusterProjectRandomString.Result.ApplyT(func(suffix string) string {
 		//project id is created by prefixing character "c" to the random string.
 		//this is to easily distinguish between network project and cluster project in shared-vpc setup.
 		return fmt.Sprintf("%s-c%s", locals.GkeCluster.Metadata.Id, suffix)
 	}).(pulumi.StringOutput)
 
+	//create container-cluster project
 	createdClusterProject, err := organizations.NewProject(ctx,
 		"cluster-project",
 		&organizations.ProjectArgs{
@@ -56,6 +61,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		//in the same gcp project.
 		createdNetworkProject = createdClusterProject
 	} else {
+		//create random suffix for network-cluster-project-id
 		networkProjectRandomString, err := random.NewRandomString(ctx,
 			"network-project-id-suffix",
 			&random.RandomStringArgs{
@@ -69,12 +75,14 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 			return nil, errors.Wrap(err, "failed to create random suffix for network-project-id")
 		}
 
+		//build network-project-id suffix using its random-id suffix
 		networkProjectId := networkProjectRandomString.Result.ApplyT(func(suffix string) string {
 			//project id is created by prefixing character "c" to the random string.
 			//this is to easily distinguish between network project and cluster project in shared-vpc setup.
 			return fmt.Sprintf("%s-n%s", locals.GkeCluster.Metadata.Id, suffix)
 		}).(pulumi.StringOutput)
 
+		//create network project
 		createdNetworkProject, err = organizations.NewProject(ctx,
 			"network-project",
 			&organizations.ProjectArgs{
@@ -88,6 +96,39 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to create network project")
 		}
+	}
+
+	//keep track of all the apis enabled to add as dependencies
+	createdGoogleApiResources := make([]pulumi.Resource, 0)
+
+	//enable apis for container cluster project
+	for _, api := range vars.ContainerClusterProjectApis {
+		addedProjectService, err := projects.NewService(ctx,
+			fmt.Sprintf("container-cluster-%s", api),
+			&projects.ServiceArgs{
+				Project:                  createdClusterProject.ProjectId,
+				DisableDependentServices: pulumi.BoolPtr(true),
+				Service:                  pulumi.String(api),
+			}, pulumi.Parent(createdClusterProject))
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to enable %s api for container cluster project", api)
+		}
+		createdGoogleApiResources = append(createdGoogleApiResources, addedProjectService)
+	}
+
+	//enable apis for network project
+	for _, api := range vars.NetworkProjectApis {
+		addedProjectService, err := projects.NewService(ctx,
+			fmt.Sprintf("container-cluster-%s", api),
+			&projects.ServiceArgs{
+				Project:                  createdNetworkProject.ProjectId,
+				DisableDependentServices: pulumi.BoolPtr(true),
+				Service:                  pulumi.String(api),
+			}, pulumi.Parent(createdClusterProject))
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to enable %s api for network project", api)
+		}
+		createdGoogleApiResources = append(createdGoogleApiResources, addedProjectService)
 	}
 
 	//create vpc network
