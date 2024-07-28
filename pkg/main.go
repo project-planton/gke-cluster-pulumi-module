@@ -25,7 +25,7 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	}
 
 	//create gcp folder
-	createdFolder, err := s.folder(ctx, locals, gcpProvider)
+	createdFolder, err := folder(ctx, locals, gcpProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create folder")
 	}

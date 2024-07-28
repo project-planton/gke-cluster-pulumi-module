@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-func (s *ResourceStack) folder(ctx *pulumi.Context,
+func folder(ctx *pulumi.Context,
 	locals *localz.Locals,
 	gcpProvider *gcp.Provider) (*organizations.Folder, error) {
 	//create a random suffix to be used for naming the folder
