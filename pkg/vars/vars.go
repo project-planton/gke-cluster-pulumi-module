@@ -14,7 +14,7 @@ var (
 		"dns.googleapis.com",
 	}
 
-	CertManagerNamespace = "cert-manager"
+	WorkloadIdentityKubeAnnotationKey = "iam.gke.io/gcp-service-account"
 
 	// SubNetworkCidr 10.0.0.0/14
 	// this subnet will be divided into two equal halves for pod-secondary-ip-range and service-secondary-ip-range
@@ -35,4 +35,19 @@ var (
 	// WorkloadDeployServiceAccountName name of the google service account to
 	//be used for deploying workloads to the gke cluster.
 	WorkloadDeployServiceAccountName = "workload-deployer"
+
+	CertManager = struct {
+		Namespace     string
+		KsaName       string
+		HelmChartRepo string
+		HelmChartName string
+		//https://github.com/cert-manager/cert-manager/releases/tag/v1.15.1
+		HelmChartVersion string
+	}{
+		"cert-manager",
+		"cert-manager",
+		"https://charts.jetstack.io",
+		"cert-manager",
+		"v1.15.1",
+	}
 )

@@ -42,11 +42,13 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 		return errors.Wrap(err, "failed to create cluster node-pools")
 	}
 
+	//create workload-deployer google service account resources
 	createdWorkloadDeployerServiceAccountKey, err := workloadDeployer(ctx, createdCluster)
 	if err != nil {
 		return errors.Wrap(err, "failed to create workload-deployer resources")
 	}
 
+	//if kubernetes-addons is nil, nothing more to do
 	if locals.GkeCluster.Spec.KubernetesAddons == nil {
 		return nil
 	}
@@ -61,7 +63,7 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	}
 
 	//create addons
-	if err := clusterAddons(ctx, locals, gcpProvider, kubernetesProvider); err != nil {
+	if err := clusterAddons(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create addons")
 	}
 	return nil

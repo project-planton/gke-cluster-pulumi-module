@@ -25,6 +25,7 @@ const (
 	VpcNetworkProjectNumber             = "vpc-network-project-number"
 	WorkloadDeployerGsaEmail            = "workload-deployer-gsa-email"
 	WorkloadDeployerGsaKey              = "workload-deployer-gsa-key"
+	CertManagerGsaEmail                 = "cert-manager-gsa-email"
 )
 
 func PulumiOutputToStackOutputsConverter(pulumiOutputs auto.OutputMap,
