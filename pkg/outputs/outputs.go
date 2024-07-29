@@ -7,6 +7,7 @@ import (
 
 const (
 	CertManagerGsaEmail                 = "cert-manager-gsa-email"
+	ExternalDnsGsaEmail                 = "external-dns-gsa-email"
 	ClusterCaData                       = "cluster-ca-data"
 	ClusterEndpoint                     = "cluster-endpoint"
 	ClusterName                         = "cluster-name"

@@ -3,7 +3,6 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
@@ -65,7 +64,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 		fmt.Sprintf("%s-workload-identity", vars.ExternalSecrets.KsaName),
 		&serviceaccount.IAMBindingArgs{
 			ServiceAccountId: createdGoogleServiceAccount.Name,
-			Role:             pulumi.String(standard.Iam_workloadIdentityUser),
+			Role:             pulumi.String("roles/iam.workloadIdentityUser"),
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]",
 					createdCluster.Project,

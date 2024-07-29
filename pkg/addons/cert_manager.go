@@ -3,7 +3,6 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
@@ -67,7 +66,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		fmt.Sprintf("%s-workload-identity", vars.CertManager.KsaName),
 		&serviceaccount.IAMBindingArgs{
 			ServiceAccountId: createdGoogleServiceAccount.Name,
-			Role:             pulumi.String(standard.Iam_workloadIdentityUser),
+			Role:             pulumi.String("roles/iam.workloadIdentityUser"),
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]",
 					createdCluster.Project,
@@ -174,5 +173,46 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	if err != nil {
 		return errors.Wrap(err, "failed to create self-signed cluster-issuer")
 	}
+
+	//for each ingress-domain, create a cluster-issuer
+	for _, i := range locals.GkeCluster.Spec.IngressDnsDomains {
+		_, err := certmanagerv1.NewClusterIssuer(ctx,
+			i.Name,
+			&certmanagerv1.ClusterIssuerArgs{
+				Metadata: metav1.ObjectMetaArgs{
+					Name:   pulumi.String(i.Name),
+					Labels: pulumi.ToStringMap(locals.KubernetesLabels),
+				},
+				Spec: certmanagerv1.ClusterIssuerSpecArgs{
+					Acme: certmanagerv1.ClusterIssuerSpecAcmeArgs{
+						PreferredChain: pulumi.String(""),
+						PrivateKeySecretRef: certmanagerv1.ClusterIssuerSpecAcmePrivateKeySecretRefArgs{
+							Name: pulumi.String(vars.CertManager.LetsEncryptClusterIssuerSecretName),
+						},
+						Server: pulumi.String(vars.CertManager.LetsEncryptServer),
+						Solvers: certmanagerv1.ClusterIssuerSpecAcmeSolversArray{
+							certmanagerv1.ClusterIssuerSpecAcmeSolversArgs{
+								Dns01: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01Args{
+									CloudDNS: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01CloudDnsArgs{
+										Project: pulumi.String(i.DnsZoneGcpProjectId),
+									},
+								},
+							},
+							certmanagerv1.ClusterIssuerSpecAcmeSolversArgs{
+								Http01: certmanagerv1.ClusterIssuerSpecAcmeSolversHttp01Args{
+									Ingress: certmanagerv1.ClusterIssuerSpecAcmeSolversHttp01IngressArgs{
+										Class: pulumi.String(vars.CertManager.Http01ChallengeSolverIngressClass),
+									},
+								},
+							},
+						},
+					},
+				},
+			})
+		if err != nil {
+			return errors.Wrapf(err, "failed to create cluster-issuer for %s ingress-domain", i.Name)
+		}
+	}
+
 	return nil
 }

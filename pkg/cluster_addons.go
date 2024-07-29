@@ -71,7 +71,7 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallExternalDns {
-		if err := addons.ExternalDns(ctx); err != nil {
+		if err := addons.ExternalDns(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install external-dns resources")
 		}
 	}
