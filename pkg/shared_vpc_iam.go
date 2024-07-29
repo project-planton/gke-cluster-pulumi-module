@@ -9,10 +9,27 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
-// sharedVpcIam sets up IAM permissions as explained in
+// sharedVpcIam sets up IAM permissions to allow the Google Kubernetes Engine (GKE) service accounts in the
+// cluster project to update firewall rules in the network project. This is part of setting up a shared VPC.
 // https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-shared-vpc#managing_firewall_resources
-// create iam resources to allow the Google container engine service account in kube-cluster project to update
-// firewall rules in shared project
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdClusterProject: The project where the GKE cluster is created.
+// - createdNetworkProject: The project where the shared VPC network is created.
+// - createdSubNetwork: The subnetwork that will be used by the GKE cluster.
+//
+// Returns:
+// - []pulumi.Resource: A slice of created IAM resources.
+// - error: An error object if there is any issue during the IAM resource creation.
+//
+// The function performs the following steps:
+//  1. Creates a custom IAM role in the network project to administer network and security settings.
+//  2. Adds the GKE service accounts from the cluster project as IAM members with the 'compute.networkUser' role
+//     for the subnetwork in the network project.
+//  3. Grants the container-engine-robot service account the container.hostServiceAgentUser role in the network project.
+//  4. Binds the custom network admin role to the container-engine-robot service accounts from the cluster project.
 func sharedVpcIam(ctx *pulumi.Context,
 	locals *localz.Locals,
 	createdClusterProject, createdNetworkProject *organizations.Project,

@@ -15,6 +15,23 @@ type ResourceStack struct {
 	KubernetesLabels map[string]string
 }
 
+// Resources function is the pulumi program that deploys GKE cluster along with chosen addons.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+//
+// Returns:
+// - error: An error object if there is any issue during the resource creation.
+//
+// The function performs the following steps:
+// 1. Initializes local variables and configuration from the input.
+// 2. Sets up the GCP provider using the provided GCP credentials.
+// 3. Creates a GCP folder for organizing the projects.
+// 4. Creates the GKE cluster within the specified folder.
+// 5. Creates the node pools for the GKE cluster.
+// 6. Creates a service account and key for deploying workloads to the cluster.
+// 7. If Kubernetes addons are specified, creates a Kubernetes provider for the cluster.
+// 8. Installs the specified Kubernetes addons using the created providers.
 func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	locals := localz.Initialize(ctx, s.Input)
 
