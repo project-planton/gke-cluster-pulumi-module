@@ -15,7 +15,7 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallIngressNginx {
-		if err := addons.Istio(ctx); err != nil {
+		if err := addons.IngressNginx(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install ingress-nginx resources")
 		}
 	}

@@ -37,9 +37,8 @@ var (
 	WorkloadDeployServiceAccountName = "workload-deployer"
 
 	CertManager = struct {
-		HelmChartName string
-		HelmChartRepo string
-		//https://github.com/cert-manager/cert-manager/releases/tag/v1.15.1
+		HelmChartName        string
+		HelmChartRepo        string
 		HelmChartVersion     string
 		KsaName              string
 		Namespace            string
@@ -54,13 +53,11 @@ var (
 	}
 
 	ExternalSecrets = struct {
-		HelmChartName string
-		HelmChartRepo string
-		//https://github.com/cert-manager/cert-manager/releases/tag/v1.15.1
-		HelmChartVersion string
-		KsaName          string
-		Namespace        string
-		//caution: setting this frequency may incur additional charges on some platforms
+		HelmChartName                           string
+		HelmChartRepo                           string
+		HelmChartVersion                        string
+		KsaName                                 string
+		Namespace                               string
 		SecretsPollingIntervalSeconds           int
 		GcpSecretsManagerClusterSecretStoreName string
 	}{
@@ -69,7 +66,21 @@ var (
 		"v0.9.20",
 		"external-secrets",
 		"external-secrets",
+		//caution: polling interval frequency may have effect on provider costs on some platforms
 		10,
 		"gcp-secrets-manager",
+	}
+
+	IngressNginx = struct {
+		HelmChartName    string
+		HelmChartRepo    string
+		HelmChartVersion string
+		Namespace        string
+	}{
+		"ingress-nginx",
+		"https://kubernetes.github.io/ingress-nginx",
+		//https://github.com/kubernetes/ingress-nginx/blob/main/charts/ingress-nginx/Chart.yaml#L26C9-L26C14
+		"4.11.1",
+		"ingress-nginx",
 	}
 )

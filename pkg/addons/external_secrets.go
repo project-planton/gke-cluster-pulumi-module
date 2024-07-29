@@ -69,7 +69,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
-		return errors.Wrapf(err, "failed to create external-secrets namespace")
+		return errors.Wrapf(err, "failed  namespace")
 	}
 
 	//create kubernetes service account to be used by the external-secrets.
@@ -93,7 +93,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrap(err, "failed to create kubernetes service account")
 	}
 
-	//created helm-release
+	//create helm-release
 	_, err = helm.NewRelease(ctx, "external-secrets",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.ExternalSecrets.HelmChartName),
@@ -134,7 +134,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 		pulumi.DependsOn([]pulumi.Resource{createdKubernetesServiceAccount}),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
-		return errors.Wrap(err, "failed to create external-secrets helm release")
+		return errors.Wrap(err, "failed to create helm release")
 	}
 
 	//create cluster-secret-store to configure the gcp project from which the secrets need to be looked up
