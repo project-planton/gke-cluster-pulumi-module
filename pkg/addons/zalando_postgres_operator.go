@@ -16,7 +16,7 @@ func ZalandoPostgresOperator(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource
 	createdNamespace, err := corev1.NewNamespace(ctx,
-		vars.ExternalSecrets.Namespace,
+		vars.ZalandoPostgresOperator.Namespace,
 		&corev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(
 				&metav1.ObjectMetaArgs{

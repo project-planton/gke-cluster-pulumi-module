@@ -15,7 +15,7 @@ func StrimziKafkaOperator(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource
 	createdNamespace, err := corev1.NewNamespace(ctx,
-		vars.ExternalSecrets.Namespace,
+		vars.StrimziKafkaOperator.Namespace,
 		&corev1.NamespaceArgs{
 			Metadata: metav1.ObjectMetaPtrInput(
 				&metav1.ObjectMetaArgs{
@@ -40,7 +40,9 @@ func StrimziKafkaOperator(ctx *pulumi.Context, locals *localz.Locals,
 			CleanupOnFail:   pulumi.Bool(true),
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(180),
-			Values:          pulumi.Map{},
+			Values: pulumi.Map{
+				"watchAnyNamespace": pulumi.Bool(true),
+			},
 			RepositoryOpts: helm.RepositoryOptsArgs{
 				Repo: pulumi.String(vars.StrimziKafkaOperator.HelmChartRepo),
 			},

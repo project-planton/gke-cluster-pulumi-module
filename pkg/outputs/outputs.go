@@ -14,6 +14,8 @@ const (
 	ContainerClusterProjectId           = "container-cluster-project-id"
 	ContainerClusterProjectNumber       = "container-cluster-project-number"
 	ExternalSecretsGsaEmail             = "external-secrets-gsa-email"
+	IngressExternalIp                   = "ingress-external-ip"
+	IngressInternalIp                   = "ingress-internal-ip"
 	FolderDisplayName                   = "folder-name"
 	FolderId                            = "folder-id"
 	FolderParent                        = "folder-parent"
