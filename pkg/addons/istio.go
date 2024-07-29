@@ -137,32 +137,25 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
 				"service": pulumi.Map{
-					"type":           pulumi.String("ClusterIP"),
-					"loadBalancerIP": pulumi.String(""), // No LoadBalancer IP specified in the example
+					"type": pulumi.String("ClusterIP"),
 					"ports": pulumi.StringMapArray{
 						pulumi.StringMap{
 							"name":       pulumi.String("status-port"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 15021),
-							"targetPort": pulumi.Sprintf("%d", 15021),
+							"port":       pulumi.Sprintf("%d", vars.Istio.IstiodStatusPort),
+							"targetPort": pulumi.Sprintf("%d", vars.Istio.IstiodStatusPort),
 						},
 						pulumi.StringMap{
 							"name":       pulumi.String("http2"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 80),
-							"targetPort": pulumi.Sprintf("%d", 80),
+							"port":       pulumi.Sprintf("%d", vars.Istio.HttpPort),
+							"targetPort": pulumi.Sprintf("%d", vars.Istio.HttpPort),
 						},
 						pulumi.StringMap{
 							"name":       pulumi.String("https"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 443),
-							"targetPort": pulumi.Sprintf("%d", 443),
-						},
-						pulumi.StringMap{
-							"name":       pulumi.String("debug"),
-							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 5005),
-							"targetPort": pulumi.Sprintf("%d", 5005),
+							"port":       pulumi.Sprintf("%d", vars.Istio.HttpsPort),
+							"targetPort": pulumi.Sprintf("%d", vars.Istio.HttpsPort),
 						},
 					},
 				},

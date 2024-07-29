@@ -160,7 +160,8 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//create self-signed issuer
-	_, err = certmanagerv1.NewClusterIssuer(ctx, "self-signed",
+	_, err = certmanagerv1.NewClusterIssuer(ctx,
+		"self-signed",
 		&certmanagerv1.ClusterIssuerArgs{
 			Metadata: metav1.ObjectMetaArgs{
 				Name:   pulumi.String(vars.CertManager.SelfSignedIssuerName),
