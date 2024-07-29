@@ -97,7 +97,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 	_, err = helm.NewRelease(ctx, "external-secrets",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.ExternalSecrets.HelmChartName),
-			Namespace:       pulumi.String(vars.ExternalSecrets.Namespace),
+			Namespace:       createdNamespace.Metadata.Name(),
 			Chart:           pulumi.String(vars.ExternalSecrets.HelmChartName),
 			Version:         pulumi.String(vars.ExternalSecrets.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),

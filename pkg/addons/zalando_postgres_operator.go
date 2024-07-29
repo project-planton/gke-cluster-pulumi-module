@@ -33,7 +33,7 @@ func ZalandoPostgresOperator(ctx *pulumi.Context, locals *localz.Locals,
 	_, err = helm.NewRelease(ctx, "zalando-postgres-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.ZalandoPostgresOperator.HelmChartName),
-			Namespace:       pulumi.String(vars.ZalandoPostgresOperator.Namespace),
+			Namespace:       createdNamespace.Metadata.Name(),
 			Chart:           pulumi.String(vars.ZalandoPostgresOperator.HelmChartName),
 			Version:         pulumi.String(vars.ZalandoPostgresOperator.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),

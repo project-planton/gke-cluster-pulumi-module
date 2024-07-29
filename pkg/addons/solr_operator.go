@@ -43,7 +43,7 @@ func SolrOperator(ctx *pulumi.Context, locals *localz.Locals,
 	_, err = helm.NewRelease(ctx, "solr-operator",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.SolrOperator.HelmChartName),
-			Namespace:       pulumi.String(vars.SolrOperator.Namespace),
+			Namespace:       createdNamespace.Metadata.Name(),
 			Chart:           pulumi.String(vars.SolrOperator.HelmChartName),
 			Version:         pulumi.String(vars.SolrOperator.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),

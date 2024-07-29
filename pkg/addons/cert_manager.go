@@ -99,7 +99,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	_, err = helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.CertManager.HelmChartName),
-			Namespace:       pulumi.String(vars.CertManager.Namespace),
+			Namespace:       createdNamespace.Metadata.Name(),
 			Chart:           pulumi.String(vars.CertManager.HelmChartName),
 			Version:         pulumi.String(vars.CertManager.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),

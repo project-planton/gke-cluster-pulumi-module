@@ -34,8 +34,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 	//build container-cluster-project-id using the random-id suffix
 	clusterProjectId := clusterProjectRandomString.Result.ApplyT(func(suffix string) string {
-		//project id is created by prefixing character "c" to the random string.
-		//this is to easily distinguish between network project and cluster project in shared-vpc setup.
+		//project id is created by prefixing character "c" to the random string to indicate that
+		//this is cluster project in shared-vpc setup.
 		return fmt.Sprintf("%s-c%s", locals.GkeCluster.Metadata.Id, suffix)
 	}).(pulumi.StringOutput)
 
@@ -77,8 +77,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 		//build network-project-id suffix using its random-id suffix
 		networkProjectId := networkProjectRandomString.Result.ApplyT(func(suffix string) string {
-			//project id is created by prefixing character "c" to the random string.
-			//this is to easily distinguish between network project and cluster project in shared-vpc setup.
+			//project id is created by prefixing character "n" to the random string to indicate that
+			//this is network project in shared-vpc setup.
 			return fmt.Sprintf("%s-n%s", locals.GkeCluster.Metadata.Id, suffix)
 		}).(pulumi.StringOutput)
 
@@ -137,7 +137,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		&compute.NetworkArgs{
 			Project:               createdNetworkProject.ProjectId,
 			AutoCreateSubnetworks: pulumi.BoolPtr(false),
-		}, pulumi.Parent(createdNetworkProject))
+		}, pulumi.Parent(createdNetworkProject), pulumi.DependsOn(createdGoogleApiResources))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create network")
 	}

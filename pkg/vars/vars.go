@@ -112,4 +112,18 @@ var (
 		"0.8.1",
 		"solr-operator",
 	}
+
+	StrimziKafkaOperator = struct {
+		HelmChartName    string
+		HelmChartRepo    string
+		HelmChartVersion string
+		Namespace        string
+	}{
+		"strimzi-kafka-operator",
+		//https://artifacthub.io/packages/helm/strimzi/strimzi-kafka-operator
+		"https://strimzi.io/charts/",
+		//check artifact-hub for the latest version
+		"0.42.0",
+		"strimzi-operator",
+	}
 )

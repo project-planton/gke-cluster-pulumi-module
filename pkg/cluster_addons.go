@@ -65,8 +65,8 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallKafkaOperator {
-		if err := addons.StrimziOperator(ctx); err != nil {
-			return errors.Wrap(err, "failed to install strimzi kafka-operator resources")
+		if err := addons.StrimziKafkaOperator(ctx, locals, kubernetesProvider); err != nil {
+			return errors.Wrap(err, "failed to install strimzi-kafka-operator resources")
 		}
 	}
 

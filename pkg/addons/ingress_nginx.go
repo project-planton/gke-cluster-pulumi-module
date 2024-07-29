@@ -32,7 +32,7 @@ func IngressNginx(ctx *pulumi.Context, locals *localz.Locals,
 	_, err = helm.NewRelease(ctx, "ingress-nginx",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.IngressNginx.HelmChartName),
-			Namespace:       pulumi.String(vars.IngressNginx.Namespace),
+			Namespace:       createdNamespace.Metadata.Name(),
 			Chart:           pulumi.String(vars.IngressNginx.HelmChartName),
 			Version:         pulumi.String(vars.IngressNginx.HelmChartVersion),
 			CreateNamespace: pulumi.Bool(false),
