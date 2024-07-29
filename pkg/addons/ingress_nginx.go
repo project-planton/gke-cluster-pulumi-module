@@ -11,6 +11,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// IngressNginx installs the Ingress Nginx controller in the Kubernetes cluster using Helm.
+// It creates a namespace for the Ingress Nginx resources and then deploys the Helm chart.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates a namespace for the Ingress Nginx resources, applying any necessary labels from the locals.
+// 2. Deploys the Ingress Nginx Helm chart into the created namespace with specific configurations for the controller service and ingress class resource.
+// 3. Uses Helm chart repository and version specified in the vars package.
+// 4. Handles errors and returns any errors encountered during the namespace creation or Helm release deployment.
 func IngressNginx(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource

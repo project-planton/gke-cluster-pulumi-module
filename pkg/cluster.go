@@ -15,6 +15,30 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// cluster creates a GKE cluster by setting up the necessary Google Cloud projects, network resources,
+// and enabling required APIs. It also configures various aspects of the cluster, including autoscaling,
+// network policies, and logging.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdFolder: The Google Cloud Folder where the projects for the GKE cluster will be grouped.
+//
+// Returns:
+// - *container.Cluster: A pointer to the created GKE Cluster object.
+// - error: An error object if there is any issue during the cluster creation.
+//
+// The function performs the following steps:
+//  1. Generates a random suffix to ensure the cluster project ID is unique on Google Cloud.
+//  2. Creates the Google Cloud project for the GKE cluster.
+//  3. If shared VPC is required, creates a separate network project with a unique ID.
+//  4. Enables necessary APIs for the cluster and network projects.
+//  5. Creates the VPC network, subnetwork, firewall rules, and router.
+//  6. Configures NAT for the router with an external IP address.
+//  7. Creates shared VPC IAM resources if shared VPC is enabled.
+//  8. Configures the cluster with autoscaling, network policies, logging, and other settings.
+//  9. Exports important attributes of the created resources, such as network self-link, subnetwork self-link,
+//     firewall self-link, router self-link, NAT IP address, and cluster name.
 func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdFolder *organizations.Folder) (*container.Cluster, error) {
 

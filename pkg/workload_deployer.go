@@ -11,6 +11,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// workloadDeployer creates a service account for deploying workloads to the GKE cluster and assigns it necessary roles.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - createdCluster: The GKE cluster to which workloads will be deployed.
+//
+// Returns:
+// - *serviceaccount.Key: A pointer to the created service account key.
+// - error: An error object if there is any issue during the service account or key creation.
+//
+// The function performs the following steps:
+// 1. Creates a service account with a description and display name for deploying workloads.
+// 2. Exports the email of the created service account.
+// 3. Creates a key for the service account and exports the private key.
+// 4. Creates IAM bindings to grant the service account the roles of container admin and cluster admin.
+// 5. Handles errors and returns the created service account key and any errors encountered.
 func workloadDeployer(ctx *pulumi.Context, createdCluster *container.Cluster) (*serviceaccount.Key, error) {
 	//create workload deployer service account
 	createdWorkloadDeployerServiceAccount, err := serviceaccount.NewAccount(ctx,

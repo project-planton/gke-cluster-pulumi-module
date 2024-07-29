@@ -15,6 +15,30 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// Istio installs the Istio service mesh in the Kubernetes cluster using Helm. It creates the necessary namespaces,
+// installs the Helm charts for Istio base, Istiod, and gateway components, and sets up load balancers for ingress.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdCluster: The GKE cluster where Istio will be installed.
+// - gcpProvider: The GCP provider for Pulumi.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates the `istio-system` namespace and labels it with metadata from locals.
+// 2. Deploys the Istio base Helm chart into the `istio-system` namespace.
+// 3. Deploys the Istiod Helm chart into the `istio-system` namespace with specific mesh configuration.
+// 4. Creates the Istio gateway namespace and labels it with metadata from locals.
+// 5. Deploys the Istio gateway Helm chart into the gateway namespace, configuring service ports for HTTP, HTTPS, and other protocols.
+// 6. Creates a compute IP address for the internal load balancer and exports its address.
+// 7. Creates a Kubernetes service for the internal load balancer using the created IP address and service port configurations.
+// 8. Creates a compute IP address for the external load balancer and exports its address.
+// 9. Creates a Kubernetes service for the external load balancer using the created IP address and service port configurations.
+// 10. Handles errors and returns any errors encountered during the namespace creation, Helm release deployment, or service setup.
 func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {

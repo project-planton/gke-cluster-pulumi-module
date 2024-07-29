@@ -12,6 +12,22 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// ZalandoPostgresOperator installs the Zalando Postgres Operator in the Kubernetes cluster using Helm.
+// It creates the necessary namespace and deploys the Helm chart with specific values.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates a namespace for the Zalando Postgres Operator and labels it with metadata from locals.
+// 2. Deploys the Zalando Postgres Operator Helm chart into the created namespace with specific inherited labels and other configurations.
+// 3. Uses Helm chart repository and version specified in the vars package.
+// 4. Handles errors and returns any errors encountered during the namespace creation or Helm release deployment.
 func ZalandoPostgresOperator(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource

@@ -19,6 +19,28 @@ import (
 	"strings"
 )
 
+// CertManager installs Cert Manager in the Kubernetes cluster using Helm, sets up the necessary Google Service Account (GSA),
+// Kubernetes Service Account (KSA), and creates a self-signed ClusterIssuer.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdCluster: The GKE cluster where Cert Manager will be installed.
+// - gcpProvider: The GCP provider for Pulumi.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates a Google Service Account (GSA) for Cert Manager with a description and display name.
+// 2. Exports the email of the created GSA.
+// 3. Creates a Workload Identity binding for the GSA to allow it to act as the Kubernetes Service Account (KSA).
+// 4. Creates a namespace for Cert Manager and labels it with metadata from locals.
+// 5. Creates a Kubernetes Service Account (KSA) and adds the Google Workload Identity annotation with the GSA email.
+// 6. Deploys the Cert Manager Helm chart into the created namespace with specific values for CRDs, service account, and feature gates.
+// 7. Creates a self-signed ClusterIssuer for Cert Manager.
+// 8. Handles errors and returns any errors encountered during the creation of resources or Helm release deployment.
 func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster,
 	gcpProvider *gcp.Provider,

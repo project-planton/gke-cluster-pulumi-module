@@ -10,6 +10,30 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// clusterAddons installs the specified Kubernetes addons for the created GKE cluster.
+// It checks the configuration and installs addons such as Ingress Nginx, Istio, Cert Manager, External Secrets,
+// External DNS, Postgres Operator, Solr Operator, and Kafka Operator.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdCluster: The GKE cluster where the addons will be installed.
+// - gcpProvider: The GCP provider for Pulumi.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation of the addons.
+//
+// The function performs the following steps:
+// 1. Checks if Ingress Nginx addon is to be installed and installs it if required.
+// 2. Checks if Istio addon is to be installed and installs it if required.
+// 3. Checks if Cert Manager addon is to be installed and installs it if required.
+// 4. Checks if External Secrets addon is to be installed and installs it if required.
+// 5. Checks if External DNS addon is to be installed and installs it if required.
+// 6. Checks if Postgres Operator addon is to be installed and installs it if required.
+// 7. Checks if Solr Operator addon is to be installed and installs it if required.
+// 8. Checks if Kafka Operator addon is to be installed and installs it if required.
+// 9. Returns any errors encountered during the installation process.
 func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
