@@ -10,6 +10,23 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// folder creates a Google Cloud Folder to group the projects created for the GKE cluster.
+// In a shared VPC setup, this function creates a folder to group both the host and guest projects.
+// Even if a shared VPC is not used, the folder is created to maintain a consistent structure.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - gcpProvider: The GCP provider for Pulumi.
+//
+// Returns:
+// - *organizations.Folder: A pointer to the created Google Cloud Folder object.
+// - error: An error object if there is any issue during the folder creation.
+//
+// The function performs the following steps:
+// 1. Generates a random suffix to ensure the folder name is unique on Google Cloud.
+// 2. Creates the Google Cloud folder using the provided GCP credentials and organization ID.
+// 3. Exports important attributes of the created folder, such as Folder ID, Display Name, and Parent.
 func folder(ctx *pulumi.Context,
 	locals *localz.Locals,
 	gcpProvider *gcp.Provider) (*organizations.Folder, error) {

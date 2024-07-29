@@ -3,7 +3,6 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud-inc/go-commons/cloud/gcp/iam/roles/standard"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
@@ -18,6 +17,28 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// ExternalSecrets installs the External Secrets operator in the Kubernetes cluster using Helm, sets up the necessary
+// Google Service Account (GSA), Kubernetes Service Account (KSA), and creates a ClusterSecretStore for GCP Secrets Manager.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdCluster: The GKE cluster where External Secrets will be installed.
+// - gcpProvider: The GCP provider for Pulumi.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates a Google Service Account (GSA) for External Secrets with a description and display name.
+// 2. Exports the email of the created GSA.
+// 3. Creates a Workload Identity binding for the GSA to allow it to act as the Kubernetes Service Account (KSA).
+// 4. Creates a namespace for External Secrets and labels it with metadata from locals.
+// 5. Creates a Kubernetes Service Account (KSA) and adds the Google Workload Identity annotation with the GSA email.
+// 6. Deploys the External Secrets Helm chart into the created namespace with specific values for CRDs, environment variables, and RBAC.
+// 7. Creates a ClusterSecretStore to configure the GCP project from which secrets need to be looked up.
+// 8. Handles errors and returns any errors encountered during the creation of resources or Helm release deployment.
 func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
@@ -43,7 +64,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 		fmt.Sprintf("%s-workload-identity", vars.ExternalSecrets.KsaName),
 		&serviceaccount.IAMBindingArgs{
 			ServiceAccountId: createdGoogleServiceAccount.Name,
-			Role:             pulumi.String(standard.Iam_workloadIdentityUser),
+			Role:             pulumi.String("roles/iam.workloadIdentityUser"),
 			Members: pulumi.StringArray{
 				pulumi.Sprintf("serviceAccount:%s.svc.id.goog[%s/%s]",
 					createdCluster.Project,

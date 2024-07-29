@@ -7,6 +7,26 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// clusterNodePools creates node pools for the given GKE cluster based on the specifications provided.
+// It iterates over each node pool specification and configures the node pool with autoscaling, management, and node settings.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - createdCluster: The GKE cluster for which the node pools are being created.
+//
+// Returns:
+// - []pulumi.Resource: A slice of created node pool resources.
+// - error: An error object if there is any issue during the node pool creation.
+//
+// The function performs the following steps:
+//  1. Iterates over each node pool specification provided in the locals.
+//  2. Creates a node pool with the specified configuration, including location, project, cluster, node count,
+//     autoscaling, management, node configuration, and upgrade settings.
+//  3. Adds OAuth scopes, machine type, labels, metadata, tags, and workload metadata configuration to the node config.
+//  4. Sets node pool management options, such as auto-repair and auto-upgrade.
+//  5. Configures upgrade settings for the node pool with max surge and max unavailable settings.
+//  6. Handles errors and returns a slice of created node pool resources and any errors encountered.
 func clusterNodePools(ctx *pulumi.Context,
 	locals *localz.Locals,
 	createdCluster *container.Cluster) ([]pulumi.Resource, error) {

@@ -37,19 +37,41 @@ var (
 	WorkloadDeployServiceAccountName = "workload-deployer"
 
 	CertManager = struct {
-		Namespace            string
-		HelmChartName        string
-		HelmChartRepo        string
-		HelmChartVersion     string
-		KsaName              string
-		SelfSignedIssuerName string
+		Namespace                          string
+		HelmChartName                      string
+		HelmChartRepo                      string
+		HelmChartVersion                   string
+		KsaName                            string
+		SelfSignedIssuerName               string
+		LetsEncryptServer                  string
+		LetsEncryptClusterIssuerSecretName string
+		Http01ChallengeSolverIngressClass  string
 	}{
-		Namespace:            "cert-manager",
-		HelmChartName:        "cert-manager",
-		HelmChartRepo:        "https://charts.jetstack.io",
-		HelmChartVersion:     "v1.15.1",
-		KsaName:              "cert-manager",
-		SelfSignedIssuerName: "self-signed",
+		Namespace:                          "cert-manager",
+		HelmChartName:                      "cert-manager",
+		HelmChartRepo:                      "https://charts.jetstack.io",
+		HelmChartVersion:                   "v1.15.1",
+		KsaName:                            "cert-manager",
+		SelfSignedIssuerName:               "self-signed",
+		LetsEncryptServer:                  "https://acme-v02.api.letsencrypt.org/directory",
+		LetsEncryptClusterIssuerSecretName: "letsencrypt-production",
+		Http01ChallengeSolverIngressClass:  "istio",
+	}
+
+	ExternalDns = struct {
+		Namespace               string
+		HelmChartName           string
+		HelmChartRepo           string
+		HelmChartVersion        string
+		KsaName                 string
+		GcpCloudDnsProviderName string
+	}{
+		Namespace:               "external-dns",
+		HelmChartName:           "external-dns",
+		HelmChartRepo:           "https://kubernetes-sigs.github.io/external-dns/",
+		HelmChartVersion:        "1.14.4", //https://github.com/kubernetes-sigs/external-dns/blob/v0.14.2/charts/external-dns/Chart.yaml#L5
+		KsaName:                 "external-dns",
+		GcpCloudDnsProviderName: "google",
 	}
 
 	ExternalSecrets = struct {
@@ -151,7 +173,6 @@ var (
 		HttpPort         int
 		HttpsPort        int
 		IstiodStatusPort int
-		JavaDebugPort    int
 		PostgresPort     int
 		RedisPort        int
 	}{
@@ -196,7 +217,6 @@ var (
 		HttpPort:         80,
 		HttpsPort:        443,
 		IstiodStatusPort: 15021,
-		JavaDebugPort:    5005,
 		PostgresPort:     5432,
 		RedisPort:        6789,
 	}

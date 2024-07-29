@@ -12,6 +12,23 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+// SolrOperator installs the Solr Operator in the Kubernetes cluster using Helm.
+// It creates the necessary namespace, applies CRD resources, and deploys the Helm chart.
+//
+// Parameters:
+// - ctx: The Pulumi context used for defining cloud resources.
+// - locals: A struct containing local configuration and metadata.
+// - kubernetesProvider: The Kubernetes provider for Pulumi.
+//
+// Returns:
+// - error: An error object if there is any issue during the installation.
+//
+// The function performs the following steps:
+// 1. Creates a namespace for the Solr Operator and labels it with metadata from locals.
+// 2. Applies the Solr Operator CRDs by downloading and adding the manifest file.
+// 3. Deploys the Solr Operator Helm chart into the created namespace with specific values.
+// 4. Uses Helm chart repository and version specified in the vars package.
+// 5. Handles errors and returns any errors encountered during the namespace creation, CRD application, or Helm release deployment.
 func SolrOperator(ctx *pulumi.Context, locals *localz.Locals,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create namespace resource
