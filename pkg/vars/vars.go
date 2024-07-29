@@ -151,7 +151,6 @@ var (
 		HttpPort         int
 		HttpsPort        int
 		IstiodStatusPort int
-		JavaDebugPort    int
 		PostgresPort     int
 		RedisPort        int
 	}{
@@ -196,7 +195,6 @@ var (
 		HttpPort:         80,
 		HttpsPort:        443,
 		IstiodStatusPort: 15021,
-		JavaDebugPort:    5005,
 		PostgresPort:     5432,
 		RedisPort:        6789,
 	}

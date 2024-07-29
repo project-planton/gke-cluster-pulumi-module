@@ -123,8 +123,8 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrapf(err, "failed to create istio-system namespace")
 	}
 
-	//create istiod helm-release
-	_, err = helm.NewRelease(ctx, "istiod",
+	//create istio-gateway helm-release
+	_, err = helm.NewRelease(ctx, "istio-gateway",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.Istio.GatewayHelmChartName),
 			Namespace:       createdIstioGatewayNamespace.Metadata.Name(),
@@ -213,12 +213,6 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 			Protocol:   pulumi.String("TCP"),
 			Port:       pulumi.Int(vars.Istio.PostgresPort),
 			TargetPort: pulumi.Int(vars.Istio.PostgresPort),
-		},
-		&corev1.ServicePortArgs{
-			Name:       pulumi.String("debug"),
-			Protocol:   pulumi.String("TCP"),
-			Port:       pulumi.Int(vars.Istio.JavaDebugPort),
-			TargetPort: pulumi.Int(vars.Istio.JavaDebugPort),
 		},
 		&corev1.ServicePortArgs{
 			Name:       pulumi.String("redis"),
