@@ -61,7 +61,8 @@ var (
 		KsaName          string
 		Namespace        string
 		//caution: setting this frequency may incur additional charges on some platforms
-		SecretsPollingIntervalSeconds int
+		SecretsPollingIntervalSeconds           int
+		GcpSecretsManagerClusterSecretStoreName string
 	}{
 		"external-secrets",
 		"https://charts.external-secrets.io",
@@ -69,5 +70,6 @@ var (
 		"external-secrets",
 		"external-secrets",
 		10,
+		"gcp-secrets-manager",
 	}
 )
