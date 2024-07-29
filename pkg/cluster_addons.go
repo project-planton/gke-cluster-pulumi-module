@@ -53,7 +53,7 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallPostgresOperator {
-		if err := addons.ZalandoOperator(ctx); err != nil {
+		if err := addons.ZalandoPostgresOperator(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install zalando postgres-operator resources")
 		}
 	}

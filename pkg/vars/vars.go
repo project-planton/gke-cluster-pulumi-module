@@ -83,4 +83,17 @@ var (
 		"4.11.1",
 		"ingress-nginx",
 	}
+
+	ZalandoPostgresOperator = struct {
+		HelmChartName    string
+		HelmChartRepo    string
+		HelmChartVersion string
+		Namespace        string
+	}{
+		"postgres-operator",
+		"https://opensource.zalando.com/postgres-operator/charts/postgres-operator",
+		//https://github.com/zalando/postgres-operator/blob/v1.12.2/charts/postgres-operator/Chart.yaml#L3
+		"1.12.2",
+		"postgres-operator",
+	}
 )
