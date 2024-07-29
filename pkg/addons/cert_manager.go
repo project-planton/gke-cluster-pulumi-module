@@ -106,7 +106,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			Atomic:          pulumi.Bool(false),
 			CleanupOnFail:   pulumi.Bool(true),
 			WaitForJobs:     pulumi.Bool(true),
-			Timeout:         pulumi.Int(180), // 3 minutes
+			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
 				"installCRDs": pulumi.Sprintf("%t", true),
 				"extraArgs": pulumi.String(strings.Join([]string{

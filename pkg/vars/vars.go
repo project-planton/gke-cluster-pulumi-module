@@ -96,4 +96,20 @@ var (
 		"1.12.2",
 		"postgres-operator",
 	}
+
+	SolrOperator = struct {
+		CrdManifestDownloadUrl string
+		HelmChartName          string
+		HelmChartRepo          string
+		HelmChartVersion       string
+		Namespace              string
+	}{
+		//version in the url should match the helm-chart version and should be prefixed with 'v'
+		"https://solr.apache.org/operator/downloads/crds/v0.8.1/all-with-dependencies.yaml",
+		"solr-operator",
+		"https://solr.apache.org/charts",
+		//https://github.com/apache/solr-operator/blob/v0.8.1/helm/solr-operator/Chart.yaml#L18
+		"0.8.1",
+		"solr-operator",
+	}
 )

@@ -59,7 +59,7 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallSolrOperator {
-		if err := addons.SolrOperator(ctx); err != nil {
+		if err := addons.SolrOperator(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install solr-operator resources")
 		}
 	}

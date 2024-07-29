@@ -39,7 +39,7 @@ func IngressNginx(ctx *pulumi.Context, locals *localz.Locals,
 			Atomic:          pulumi.Bool(false),
 			CleanupOnFail:   pulumi.Bool(true),
 			WaitForJobs:     pulumi.Bool(true),
-			Timeout:         pulumi.Int(180), // 3 minutes
+			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
 				"controller": pulumi.Map{
 					"service": pulumi.StringMap{
