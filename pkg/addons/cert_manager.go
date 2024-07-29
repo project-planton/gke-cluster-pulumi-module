@@ -116,7 +116,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrap(err, "failed to create kubernetes service account")
 	}
 
-	//created helm-release
+	//create helm-release
 	_, err = helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.CertManager.HelmChartName),

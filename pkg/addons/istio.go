@@ -298,5 +298,12 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrapf(err, "failed to create ingress-external kubernetes service")
 	}
 
+	for _, i := range locals.GkeCluster.Spec.IstioHttpEndpoints {
+		//create virtual-service
+		//create gateway
+		//create a kubernetes-service with istio-ingress selectors and external-dns annotation
+		//create certificate when tls is enabled
+	}
+
 	return nil
 }
