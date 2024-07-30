@@ -2,7 +2,7 @@ package pkg
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/localz"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/model"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigoogleprovider"

@@ -3,9 +3,9 @@ package pkg
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/outputs"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/vars"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/enums/gkereleasechannel"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"

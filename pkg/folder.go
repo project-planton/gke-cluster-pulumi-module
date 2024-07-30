@@ -2,8 +2,8 @@ package pkg
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/outputs"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
