@@ -32,7 +32,7 @@ const (
 	WorkloadDeployerGsaKey              = "workload-deployer-gsa-key"
 )
 
-func PulumiOutputToStackOutputsConverter(pulumiOutputs auto.OutputMap,
+func PulumiOutputsToStackOutputsConverter(pulumiOutputs auto.OutputMap,
 	input *model.GkeClusterStackInput) *model.GkeClusterStackOutputs {
 	return &model.GkeClusterStackOutputs{
 		Folder:                       nil,
