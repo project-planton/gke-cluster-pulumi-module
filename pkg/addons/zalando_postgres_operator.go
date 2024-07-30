@@ -3,8 +3,8 @@ package addons
 import (
 	"github.com/pkg/errors"
 	kuberneteslabels "github.com/plantoncloud-inc/go-commons/kubernetes/labels"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/vars"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"

@@ -1,4 +1,4 @@
-module github.com/plantoncloud/kube-cluster-pulumi-blueprint
+module github.com/plantoncloud/gke-cluster-pulumi-blueprint
 
 go 1.22
 

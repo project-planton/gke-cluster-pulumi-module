@@ -3,9 +3,9 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/localz"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/outputs"
-	"github.com/plantoncloud/kube-cluster-pulumi-blueprint/pkg/vars"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/localz"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/outputs"
+	"github.com/plantoncloud/gke-cluster-pulumi-blueprint/pkg/vars"
 	certmanagerv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/certmanager/certmanager/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
