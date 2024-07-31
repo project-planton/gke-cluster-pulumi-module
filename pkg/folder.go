@@ -49,7 +49,7 @@ func folder(ctx *pulumi.Context,
 		&organizations.FolderArgs{
 			DisplayName: pulumi.Sprintf("%s-%s-%s",
 				vars.GoogleFolderAndProjectPlantonCloudPrefix,
-				locals.GkeCluster.Metadata.Id, randomString.Result),
+				locals.GkeCluster.Metadata.Name, randomString.Result),
 			Parent: pulumi.Sprintf("organizations/%s", locals.GcpCredential.Spec.GcpOrganizationId),
 		}, pulumi.Provider(gcpProvider))
 	if err != nil {
