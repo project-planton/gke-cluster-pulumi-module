@@ -60,7 +60,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	clusterProjectId := clusterProjectRandomString.Result.ApplyT(func(suffix string) string {
 		//project id is created by prefixing character "c" to the random string to indicate that
 		//this is cluster project in shared-vpc setup.
-		return fmt.Sprintf("%s-c%s", locals.GkeCluster.Metadata.Name, suffix)
+		return fmt.Sprintf("%s-%s-c%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
+			locals.GkeCluster.Metadata.Name, suffix)
 	}).(pulumi.StringOutput)
 
 	//create container-cluster project
@@ -103,7 +104,9 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		networkProjectId := networkProjectRandomString.Result.ApplyT(func(suffix string) string {
 			//project id is created by prefixing character "n" to the random string to indicate that
 			//this is network project in shared-vpc setup.
-			return fmt.Sprintf("%s-n%s", locals.GkeCluster.Metadata.Name, suffix)
+			return fmt.Sprintf("%s-%s-n%s",
+				vars.GoogleFolderAndProjectPlantonCloudPrefix,
+				locals.GkeCluster.Metadata.Name, suffix)
 		}).(pulumi.StringOutput)
 
 		//create network project

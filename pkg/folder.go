@@ -4,6 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
+	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
@@ -46,8 +47,10 @@ func folder(ctx *pulumi.Context,
 	//create google cloud folder with the organization from gcp-creadential
 	createdFolder, err := organizations.NewFolder(ctx, "folder",
 		&organizations.FolderArgs{
-			DisplayName: pulumi.Sprintf("%s-%s", locals.GkeCluster.Metadata.Id, randomString.Result),
-			Parent:      pulumi.Sprintf("organizations/%s", locals.GcpCredential.Spec.GcpOrganizationId),
+			DisplayName: pulumi.Sprintf("%s-%s-%s",
+				vars.GoogleFolderAndProjectPlantonCloudPrefix,
+				locals.GkeCluster.Metadata.Id, randomString.Result),
+			Parent: pulumi.Sprintf("organizations/%s", locals.GcpCredential.Spec.GcpOrganizationId),
 		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add cloud account folder")
