@@ -176,6 +176,10 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 
 	//for each ingress-domain, create a cluster-issuer
 	for _, i := range locals.GkeCluster.Spec.IngressDnsDomains {
+		//do not create a cluster-issuer resource if tls is not enabled.
+		if !i.IsTlsEnabled {
+			continue
+		}
 		_, err := certmanagerv1.NewClusterIssuer(ctx,
 			i.Name,
 			&certmanagerv1.ClusterIssuerArgs{

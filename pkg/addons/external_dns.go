@@ -92,11 +92,12 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrap(err, "failed to create kubernetes service account")
 	}
 
-	for _, i := range locals.GkeCluster.Spec.IngressDnsDomains {
+	for index, i := range locals.GkeCluster.Spec.IngressDnsDomains {
 		//created helm-release
-		_, err := helm.NewRelease(ctx, "cert-manager",
+		_, err := helm.NewRelease(ctx,
+			fmt.Sprintf("external-dns-%d", index),
 			&helm.ReleaseArgs{
-				Name:            pulumi.String(vars.ExternalDns.HelmChartName),
+				Name:            pulumi.Sprintf("external-dns-%s", strings.ReplaceAll(".", "-", i.Name)),
 				Namespace:       createdNamespace.Metadata.Name(),
 				Chart:           pulumi.String(vars.ExternalDns.HelmChartName),
 				Version:         pulumi.String(vars.ExternalDns.HelmChartVersion),
