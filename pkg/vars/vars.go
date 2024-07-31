@@ -22,11 +22,11 @@ var (
 	SubNetworkCidr = "10.0.0.0/14"
 
 	// KubernetesPodSecondaryIpRange https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#cluster_sizing_secondary_range_pods
-	KubernetesPodSecondaryIpRange = "10.0.0.0/15"
+	KubernetesPodSecondaryIpRange = "10.4.0.0/16"
 	// KubernetesServiceSecondaryIpRange https://cloud.google.com/kubernetes-engine/docs/concepts/alias-ips#cluster_sizing_secondary_range_svcs
-	KubernetesServiceSecondaryIpRange = "10.2.0.0/15"
+	KubernetesServiceSecondaryIpRange = "10.5.0.0/16"
 
-	ApiServerIpCidr                                     = "172.16.0.0/24"
+	ApiServerIpCidr                                     = "172.16.0.0/28"
 	ClusterMasterAuthorizedNetworksCidrBlock            = "0.0.0.0/0"
 	ClusterMasterAuthorizedNetworksCidrBlockDescription = "kubectl-from-anywhere"
 	ApiServerWebhookPort                                = "8443"
