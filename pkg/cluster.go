@@ -7,7 +7,6 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/enums/gkereleasechannel"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
@@ -42,6 +41,7 @@ import (
 //     firewall self-link, router self-link, NAT IP address, and cluster name.
 func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdFolder *organizations.Folder) (*container.Cluster, error) {
+
 	//create random suffix for container-cluster-project-id
 	clusterProjectRandomString, err := random.NewRandomString(ctx,
 		"cluster-project-id-suffix",
@@ -116,6 +116,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 				Labels:            pulumi.ToStringMap(locals.GcpLabels),
 				ProjectId:         networkProjectId,
 				FolderId:          createdFolder.FolderId,
+			}, pulumi.Parent(createdFolder))
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to create network project")
 		}
@@ -127,7 +128,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	//enable apis for container cluster project
 	for _, api := range vars.ContainerClusterProjectApis {
 		addedProjectService, err := projects.NewService(ctx,
-			fmt.Sprintf("container-cluster-project-%s", api),
+			fmt.Sprintf("container-cluster-%s", api),
 			&projects.ServiceArgs{
 				Project:                  createdClusterProject.ProjectId,
 				DisableDependentServices: pulumi.BoolPtr(true),
@@ -139,9 +140,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		createdGoogleApiResources = append(createdGoogleApiResources, addedProjectService)
 	}
 
-	//enable google apis on network project only if it is a different
+	//enable google-apis for network project if it is different from cluster project
 	if createdClusterProject.ProjectId != createdNetworkProject.ProjectId {
-		//enable apis for network project
 		for _, api := range vars.NetworkProjectApis {
 			addedProjectService, err := projects.NewService(ctx,
 				fmt.Sprintf("network-project-%s", api),
@@ -385,7 +385,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 					EnableComponents: pulumi.ToStringArray(locals.ContainerClusterLoggingComponentList),
 				}),
 		},
-		pulumi.Parent(createdClusterProject),
+		pulumi.Parent(createdFolder),
 		pulumi.DependsOn(createdSharedVpcIamResources))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add container cluster")
