@@ -2,9 +2,9 @@ package addons
 
 import (
 	"github.com/pkg/errors"
-	kuberneteslabels "github.com/plantoncloud-inc/go-commons/kubernetes/labels"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/kubernetes/kuberneteslabelkeys"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
@@ -61,11 +61,11 @@ func ZalandoPostgresOperator(ctx *pulumi.Context, locals *localz.Locals,
 				"configKubernetes": pulumi.Map{
 					"inherited_labels": pulumi.ToStringArray(
 						[]string{
-							kuberneteslabels.Resource,
-							kuberneteslabels.Organization,
-							kuberneteslabels.Environment,
-							kuberneteslabels.ResourceKind,
-							kuberneteslabels.ResourceId,
+							kuberneteslabelkeys.Resource,
+							kuberneteslabelkeys.Organization,
+							kuberneteslabelkeys.Environment,
+							kuberneteslabelkeys.ResourceKind,
+							kuberneteslabelkeys.ResourceId,
 						},
 					),
 				},
