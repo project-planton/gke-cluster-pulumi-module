@@ -3,7 +3,7 @@ package vars
 var (
 	// GoogleFolderAndProjectPlantonCloudPrefix will be prefixed for all ids of folders and projects
 	//created by this module for easy identification
-	GoogleFolderAndProjectPlantonCloudPrefix = "pc"
+	GoogleFolderAndProjectPlantonCloudPrefix = "gke"
 	NetworkProjectApis                       = []string{
 		"compute.googleapis.com",
 		"container.googleapis.com",
