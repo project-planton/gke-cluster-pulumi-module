@@ -53,7 +53,7 @@ var (
 		Namespace:                          "cert-manager",
 		HelmChartName:                      "cert-manager",
 		HelmChartRepo:                      "https://charts.jetstack.io",
-		HelmChartVersion:                   "v1.15.1",
+		HelmChartVersion:                   "v1.15.2",
 		KsaName:                            "cert-manager",
 		SelfSignedIssuerName:               "self-signed",
 		LetsEncryptServer:                  "https://acme-v02.api.letsencrypt.org/directory",
