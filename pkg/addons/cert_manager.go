@@ -117,7 +117,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//created helm-release
-	_, err = helm.NewRelease(ctx, "cert-manager",
+	createdCertManagerHelmRelease, err := helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.CertManager.HelmChartName),
 			Namespace:       createdNamespace.Metadata.Name(),
@@ -169,7 +169,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			Spec: certmanagerv1.ClusterIssuerSpecArgs{
 				SelfSigned: certmanagerv1.ClusterIssuerSpecSelfSignedArgs{},
 			},
-		})
+		}, pulumi.Parent(createdCertManagerHelmRelease))
 	if err != nil {
 		return errors.Wrap(err, "failed to create self-signed cluster-issuer")
 	}
@@ -212,7 +212,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 						},
 					},
 				},
-			})
+			}, pulumi.Parent(createdCertManagerHelmRelease))
 		if err != nil {
 			return errors.Wrapf(err, "failed to create cluster-issuer for %s ingress-domain", i.Name)
 		}
