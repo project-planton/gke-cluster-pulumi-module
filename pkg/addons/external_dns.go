@@ -97,7 +97,7 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 		_, err := helm.NewRelease(ctx,
 			fmt.Sprintf("external-dns-%s", i.Name),
 			&helm.ReleaseArgs{
-				Name:            pulumi.Sprintf("external-dns-%s", strings.ReplaceAll(".", "-", i.Name)),
+				Name:            pulumi.Sprintf("external-dns-%s", strings.ReplaceAll(i.Name, ".", "-")),
 				Namespace:       createdNamespace.Metadata.Name(),
 				Chart:           pulumi.String(vars.ExternalDns.HelmChartName),
 				Version:         pulumi.String(vars.ExternalDns.HelmChartVersion),
@@ -108,19 +108,21 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 				Timeout:         pulumi.Int(180),
 				Values: pulumi.Map{
 					"txtOwnerId": pulumi.String(locals.GkeCluster.Metadata.Id),
-					"serviceAccount": pulumi.StringMap{
-						"create": pulumi.String(fmt.Sprintf("%t", false)),
+					"serviceAccount": pulumi.Map{
+						"create": pulumi.Bool(false),
 						"name":   pulumi.String(vars.ExternalDns.KsaName),
 					},
 					"domainFilters": pulumi.ToStringArray([]string{
 						i.Name,
 					}),
-					"sources":  pulumi.String("service"),
+					"sources": pulumi.StringArray{
+						pulumi.String("service"),
+					},
 					"provider": pulumi.String(vars.ExternalDns.GcpCloudDnsProviderName),
-					"extraArgs": pulumi.String(strings.Join([]string{
-						"--google-zone-visibility=public",
-						fmt.Sprintf("--google-project=%s", i.DnsZoneGcpProjectId),
-					}, ",")),
+					"extraArgs": pulumi.StringArray{
+						pulumi.String("--google-zone-visibility=public"),
+						pulumi.Sprintf("--google-project=%s", i.DnsZoneGcpProjectId),
+					},
 				},
 				RepositoryOpts: helm.RepositoryOptsArgs{
 					Repo: pulumi.String(vars.ExternalDns.HelmChartRepo),
