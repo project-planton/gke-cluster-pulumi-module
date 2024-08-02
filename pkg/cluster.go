@@ -394,5 +394,9 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		return nil, errors.Wrap(err, "failed to add container cluster")
 	}
 
+	//export cluster attributes
+	ctx.Export(outputs.ClusterEndpoint, createdCluster.Endpoint)
+	ctx.Export(outputs.ClusterCaData, createdCluster.MasterAuth.ClusterCaCertificate())
+
 	return createdCluster, nil
 }
