@@ -35,7 +35,7 @@ const (
 func PulumiOutputsToStackOutputsConverter(pulumiOutputs auto.OutputMap,
 	input *model.GkeClusterStackInput) *model.GkeClusterStackOutputs {
 	return &model.GkeClusterStackOutputs{
-		Folder:                       nil,
+		FolderId:                     "",
 		ContainerClusterProject:      nil,
 		VpcNetworkProject:            nil,
 		ClusterEndpoint:              "",
