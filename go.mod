@@ -50,7 +50,7 @@ require (
 require (
 	github.com/plantoncloud/kubernetes-crd-pulumi-types v0.0.0-20240728135705-0a8ddbf00a91
 	github.com/plantoncloud/planton-cloud-apis v0.0.211
-	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240725065835-ac24c213b464
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240801150944-e149dc5e0403
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
 )
 
