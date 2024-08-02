@@ -214,8 +214,8 @@ var (
 			InternalListenerPortNumber:        9094,
 		},
 		SelectorLabels: map[string]string{
-			"app":   "istio-ingress",
-			"istio": "ingress",
+			"app":   "gateway",
+			"istio": "gateway",
 		},
 		HttpPort:         80,
 		HttpsPort:        443,

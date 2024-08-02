@@ -137,32 +137,31 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
 				"service": pulumi.Map{
-					"type":           pulumi.String("ClusterIP"),
-					"loadBalancerIP": pulumi.String(""), // No LoadBalancer IP specified in the example
-					"ports": pulumi.StringMapArray{
-						pulumi.StringMap{
+					"type": pulumi.String("ClusterIP"),
+					"ports": pulumi.MapArray{
+						pulumi.Map{
 							"name":       pulumi.String("status-port"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 15021),
-							"targetPort": pulumi.Sprintf("%d", 15021),
+							"port":       pulumi.Int(15021),
+							"targetPort": pulumi.Int(15021),
 						},
-						pulumi.StringMap{
+						pulumi.Map{
 							"name":       pulumi.String("http2"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 80),
-							"targetPort": pulumi.Sprintf("%d", 80),
+							"port":       pulumi.Int(80),
+							"targetPort": pulumi.Int(80),
 						},
-						pulumi.StringMap{
+						pulumi.Map{
 							"name":       pulumi.String("https"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 443),
-							"targetPort": pulumi.Sprintf("%d", 443),
+							"port":       pulumi.Int(443),
+							"targetPort": pulumi.Int(443),
 						},
-						pulumi.StringMap{
+						pulumi.Map{
 							"name":       pulumi.String("debug"),
 							"protocol":   pulumi.String("TCP"),
-							"port":       pulumi.Sprintf("%d", 5005),
-							"targetPort": pulumi.Sprintf("%d", 5005),
+							"port":       pulumi.Int(5005),
+							"targetPort": pulumi.Int(5005),
 						},
 					},
 				},
@@ -231,6 +230,7 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 			Region:      pulumi.String(locals.GkeCluster.Spec.Region),
 			AddressType: pulumi.String("INTERNAL"),
 			Labels:      pulumi.ToStringMap(locals.GcpLabels),
+			Subnetwork:  createdCluster.Subnetwork,
 		}, pulumi.Parent(createdCluster))
 	if err != nil {
 		return errors.Wrap(err, "failed to create ip address for ingress-internal load-balancer")
