@@ -41,9 +41,8 @@ import (
 // 7. Creates a self-signed ClusterIssuer for Cert Manager.
 // 8. Handles errors and returns any errors encountered during the creation of resources or Helm release deployment.
 func CertManager(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster,
-	gcpProvider *gcp.Provider,
-	kubernetesProvider *pulumikubernetes.Provider) error {
+	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
+	kubernetesProvider *pulumikubernetes.Provider) (createdCertManagerHelmRelease *helm.Release, err error) {
 
 	//create google service account required to create workload identity binding
 	createdGoogleServiceAccount, err := serviceaccount.NewAccount(ctx,
@@ -55,7 +54,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			DisplayName: pulumi.String(vars.CertManager.KsaName),
 		}, pulumi.Parent(createdCluster), pulumi.Provider(gcpProvider))
 	if err != nil {
-		return errors.Wrap(err, "failed to create cert-manager google service account")
+		return nil, errors.Wrap(err, "failed to create cert-manager google service account")
 	}
 
 	//export cert-manager gsa email
@@ -77,7 +76,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		pulumi.Parent(createdGoogleServiceAccount),
 		pulumi.DependsOn([]pulumi.Resource{createdCluster}))
 	if err != nil {
-		return errors.Wrap(err, "failed to create workload-identity binding for cert-manager")
+		return nil, errors.Wrap(err, "failed to create workload-identity binding for cert-manager")
 	}
 
 	//create namespace resource
@@ -92,7 +91,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		},
 		pulumi.Provider(kubernetesProvider))
 	if err != nil {
-		return errors.Wrapf(err, "failed to create cert-manager namespace")
+		return nil, errors.Wrapf(err, "failed to create cert-manager namespace")
 	}
 
 	//create kubernetes service account to be used by the cert-manager.
@@ -113,11 +112,11 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 				}),
 		}, pulumi.Parent(createdNamespace))
 	if err != nil {
-		return errors.Wrap(err, "failed to create kubernetes service account")
+		return nil, errors.Wrap(err, "failed to create kubernetes service account")
 	}
 
 	//create helm-release
-	_, err = helm.NewRelease(ctx, "cert-manager",
+	createdCertManagerHelmRelease, err = helm.NewRelease(ctx, "cert-manager",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.CertManager.HelmChartName),
 			Namespace:       createdNamespace.Metadata.Name(),
@@ -156,7 +155,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		pulumi.DependsOn([]pulumi.Resource{createdKubernetesServiceAccount}),
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
-		return errors.Wrap(err, "failed to create cert-manager helm release")
+		return nil, errors.Wrap(err, "failed to create cert-manager helm release")
 	}
 
 	//create self-signed issuer
@@ -172,11 +171,15 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			},
 		})
 	if err != nil {
-		return errors.Wrap(err, "failed to create self-signed cluster-issuer")
+		return nil, errors.Wrap(err, "failed to create self-signed cluster-issuer")
 	}
 
 	//for each ingress-domain, create a cluster-issuer
 	for _, i := range locals.GkeCluster.Spec.IngressDnsDomains {
+		//do not create a cluster-issuer resource if tls is not enabled.
+		if !i.IsTlsEnabled {
+			continue
+		}
 		_, err := certmanagerv1.NewClusterIssuer(ctx,
 			i.Name,
 			&certmanagerv1.ClusterIssuerArgs{
@@ -211,9 +214,10 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 				},
 			})
 		if err != nil {
-			return errors.Wrapf(err, "failed to create cluster-issuer for %s ingress-domain", i.Name)
+			return nil,
+				errors.Wrapf(err, "failed to create cluster-issuer for %s ingress-domain", i.Name)
 		}
 	}
 
-	return nil
+	return createdCertManagerHelmRelease, nil
 }

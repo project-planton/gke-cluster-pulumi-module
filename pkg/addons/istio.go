@@ -5,6 +5,7 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	certmanagerv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/certmanager/certmanager/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
@@ -13,6 +14,7 @@ import (
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"strings"
 )
 
 // Istio installs the Istio service mesh in the Kubernetes cluster using Helm. It creates the necessary namespaces,
@@ -291,11 +293,35 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrapf(err, "failed to create ingress-external kubernetes service")
 	}
 
+	//create istio resources for istio-htto-endpoints
 	for _, i := range locals.GkeCluster.Spec.IstioHttpEndpoints {
 		//create virtual-service
 		//create gateway
 		//create a kubernetes-service with istio-ingress selectors and external-dns annotation
 		//create certificate when tls is enabled
+		if i.IsTlsEnabled {
+			//create certificate
+			createdCertificate, err := certmanagerv1.NewCertificate(ctx,
+				"ingress-certificate",
+				&certmanagerv1.CertificateArgs{
+					Metadata: metav1.ObjectMetaArgs{
+						Name:      pulumi.String(strings.ReplaceAll(".", "-", i.EndpointDomainName)),
+						Namespace: createdIstioGatewayNamespace.Metadata.Name(),
+						Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
+					},
+					Spec: certmanagerv1.CertificateSpecArgs{
+						DnsNames:   pulumi.ToStringArray([]string{i.EndpointDomainName}),
+						SecretName: pulumi.Sprintf("cert-%s", i.EndpointDomainName),
+						IssuerRef: certmanagerv1.CertificateSpecIssuerRefArgs{
+							Kind: pulumi.String("ClusterIssuer"),
+							Name: pulumi.String(locals.IngressCertClusterIssuerName),
+						},
+					},
+				})
+			if err != nil {
+				return errors.Wrap(err, "error creating certificate")
+			}
+		}
 	}
 
 	return nil

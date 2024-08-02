@@ -74,7 +74,7 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithCreatedGkeClusterAndCreatedGsaKey(ctx,
 		createdWorkloadDeployerServiceAccountKey,
 		createdCluster,
-		createdNodePools)
+		createdNodePools, "gke-cluster")
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
@@ -83,5 +83,7 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	if err := clusterAddons(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
 		return errors.Wrap(err, "failed to create addons")
 	}
+
+	istioHttpEndpoints(ctx, locals)
 	return nil
 }

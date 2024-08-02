@@ -7,6 +7,7 @@ import (
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -35,28 +36,33 @@ import (
 // 8. Checks if Kafka Operator addon is to be installed and installs it if required.
 // 9. Returns any errors encountered during the installation process.
 func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
-	kubernetesProvider *pulumikubernetes.Provider) error {
+	createdCluster *container.Cluster,
+	gcpProvider *gcp.Provider,
+	kubernetesProvider *pulumikubernetes.Provider) (createdIstioGatewayHelmRelease,
+	createdCertManagerHelmRelease *helm.Release, err error) {
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallIngressNginx {
 		if err := addons.IngressNginx(ctx, locals, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install ingress-nginx resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install ingress-nginx resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallIstio {
 		if err := addons.Istio(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install istio resources")
+			return nil, nil, errors.Wrap(err, "failed to install istio resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallCertManager {
-		if err := addons.CertManager(ctx,
+		createdCertManagerHelmRelease, err = addons.CertManager(ctx,
 			locals,
 			createdCluster,
 			gcpProvider,
-			kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install cert-manager resources")
+			kubernetesProvider)
+		if err != nil {
+			return nil, nil,
+				errors.Wrap(err, "failed to install cert-manager resources")
 		}
 	}
 
@@ -66,33 +72,38 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 			createdCluster,
 			gcpProvider,
 			kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install external-secrets resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install external-secrets resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallExternalDns {
 		if err := addons.ExternalDns(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install external-dns resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install external-dns resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallPostgresOperator {
 		if err := addons.ZalandoPostgresOperator(ctx, locals, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install zalando postgres-operator resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install zalando postgres-operator resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallSolrOperator {
 		if err := addons.SolrOperator(ctx, locals, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install solr-operator resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install solr-operator resources")
 		}
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallKafkaOperator {
 		if err := addons.StrimziKafkaOperator(ctx, locals, kubernetesProvider); err != nil {
-			return errors.Wrap(err, "failed to install strimzi-kafka-operator resources")
+			return nil, nil,
+				errors.Wrap(err, "failed to install strimzi-kafka-operator resources")
 		}
 	}
 
-	return nil
+	return nil, nil, nil
 }
