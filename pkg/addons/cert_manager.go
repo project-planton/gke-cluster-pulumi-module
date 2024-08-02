@@ -15,7 +15,6 @@ import (
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"
 	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"strings"
 )
 
 // CertManager installs Cert Manager in the Kubernetes cluster using Helm, sets up the necessary Google Service Account (GSA),
@@ -37,9 +36,7 @@ import (
 // 3. Creates a Workload Identity binding for the GSA to allow it to act as the Kubernetes Service Account (KSA).
 // 4. Creates a namespace for Cert Manager and labels it with metadata from locals.
 // 5. Creates a Kubernetes Service Account (KSA) and adds the Google Workload Identity annotation with the GSA email.
-// 6. Deploys the Cert Manager Helm chart into the created namespace with specific values for CRDs, service account, and feature gates.
-// 7. Creates a self-signed ClusterIssuer for Cert Manager.
-// 8. Handles errors and returns any errors encountered during the creation of resources or Helm release deployment.
+// 6. Deploys the Cert Manager Helm chart into the created namespace with specific values for CRDs, service account.
 func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster,
 	gcpProvider *gcp.Provider,
@@ -95,7 +92,6 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		return errors.Wrapf(err, "failed to create cert-manager namespace")
 	}
 
-	//create kubernetes service account to be used by the cert-manager.
 	//it is not straight forward to add the gsa email as one of the helm values.
 	// so, instead, disable service account creation in helm release and create it separately add
 	// the Google workload identity annotation to the service account which requires the email id
@@ -129,24 +125,16 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
-				"installCRDs": pulumi.Sprintf("%t", true),
-				"extraArgs": pulumi.String(strings.Join([]string{
-					"--dns01-recursive-nameservers=\"1.1.1.1:53\"",
-					"--dns01-recursive-nameservers-only=true",
-				}, ",")),
-				"serviceAccount": pulumi.StringMap{
-					"create": pulumi.Sprintf("%t", false),
+				"installCRDs": pulumi.Bool(true),
+				//https://cert-manager.io/docs/configuration/acme/dns01/#setting-nameservers-for-dns01-self-check
+				//https://github.com/cert-manager/cert-manager/issues/1163#issuecomment-484171354
+				"extraArgs": pulumi.StringArray{
+					pulumi.String("--dns01-recursive-nameservers-only=true"),
+					pulumi.String("--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53"),
+				},
+				"serviceAccount": pulumi.Map{
+					"create": pulumi.Bool(false),
 					"name":   pulumi.String(vars.CertManager.KsaName),
-				},
-				"startupapicheck": pulumi.StringMap{
-					"enabled": pulumi.Sprintf("%t", true),
-					"timeout": pulumi.String("5m"),
-				},
-				"featureGates": pulumi.String("AdditionalCertificateOutputFormats=true"),
-				"webhook": pulumi.StringMap{
-					"extraArgs": pulumi.String(strings.Join([]string{
-						"--feature-gates=AdditionalCertificateOutputFormats=true",
-					}, ",")),
 				},
 			},
 			RepositoryOpts: helm.RepositoryOptsArgs{
@@ -157,21 +145,6 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 		pulumi.IgnoreChanges([]string{"status", "description", "resourceNames"}))
 	if err != nil {
 		return errors.Wrap(err, "failed to create cert-manager helm release")
-	}
-
-	//create self-signed issuer
-	_, err = certmanagerv1.NewClusterIssuer(ctx, "self-signed",
-		&certmanagerv1.ClusterIssuerArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:   pulumi.String(vars.CertManager.SelfSignedIssuerName),
-				Labels: pulumi.ToStringMap(locals.KubernetesLabels),
-			},
-			Spec: certmanagerv1.ClusterIssuerSpecArgs{
-				SelfSigned: certmanagerv1.ClusterIssuerSpecSelfSignedArgs{},
-			},
-		}, pulumi.Parent(createdCertManagerHelmRelease))
-	if err != nil {
-		return errors.Wrap(err, "failed to create self-signed cluster-issuer")
 	}
 
 	//for each ingress-domain, create a cluster-issuer
