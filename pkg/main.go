@@ -71,10 +71,12 @@ func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
 	}
 
 	//create kubernetes provider for the created cluster
-	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithCreatedGkeClusterAndCreatedGsaKey(ctx,
+	kubernetesProvider, err := pulumigkekubernetesprovider.GetWithCreatedGkeClusterAndCreatedGsaKey(
+		ctx,
 		createdWorkloadDeployerServiceAccountKey,
 		createdCluster,
-		createdNodePools)
+		createdNodePools,
+		"gke-cluster")
 	if err != nil {
 		return errors.Wrap(err, "failed to create kubernetes provider")
 	}
