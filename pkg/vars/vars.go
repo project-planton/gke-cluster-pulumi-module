@@ -131,11 +131,11 @@ var (
 	}{
 		Namespace: "solr-operator",
 		//version in the url should match the helm-chart version and should be prefixed with 'v'
-		CrdManifestDownloadUrl: "https://solr.apache.org/operator/downloads/crds/v0.8.1/all-with-dependencies.yaml",
+		CrdManifestDownloadUrl: "https://solr.apache.org/operator/downloads/crds/v0.7.0/all-with-dependencies.yaml",
 		HelmChartName:          "solr-operator",
 		HelmChartRepo:          "https://solr.apache.org/charts",
 		//https://github.com/apache/solr-operator/blob/v0.8.1/helm/solr-operator/Chart.yaml#L18
-		HelmChartVersion: "0.8.1",
+		HelmChartVersion: "0.7.0",
 	}
 
 	StrimziKafkaOperator = struct {
