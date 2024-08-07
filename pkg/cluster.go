@@ -79,6 +79,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		return nil, errors.Wrapf(err, "failed to create cluster project")
 	}
 
+	//export container-cluster project attributes
+	ctx.Export(outputs.ContainerClusterProjectId, createdClusterProject.ProjectId)
+	ctx.Export(outputs.ContainerClusterProjectId, createdClusterProject.Number)
+
 	var createdNetworkProject *organizations.Project
 
 	if !locals.GkeCluster.Spec.IsCreateSharedVpc {
@@ -124,6 +128,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 			return nil, errors.Wrapf(err, "failed to create network project")
 		}
 	}
+
+	//export network-cluster project attributes
+	ctx.Export(outputs.VpcNetworkProjectId, createdNetworkProject.ProjectId)
+	ctx.Export(outputs.VpcNetworkProjectNumber, createdNetworkProject.Number)
 
 	//keep track of all the apis enabled to add as dependencies
 	createdGoogleApiResources := make([]pulumi.Resource, 0)

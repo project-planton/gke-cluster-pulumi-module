@@ -43,7 +43,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.15.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.14.0
-	github.com/pulumi/pulumi/sdk/v3 v3.126.0
+	github.com/pulumi/pulumi/sdk/v3 v3.127.0
 	google.golang.org/grpc v1.63.2 // indirect
 )
 
@@ -51,6 +51,7 @@ require (
 	github.com/plantoncloud/kubernetes-crd-pulumi-types v0.0.0-20240728135705-0a8ddbf00a91
 	github.com/plantoncloud/planton-cloud-apis v0.0.211
 	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240801150944-e149dc5e0403
+	github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.0-00010101000000-000000000000
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
 )
 
@@ -134,7 +135,7 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311173647-c811ad7063a7 // indirect
-	google.golang.org/protobuf v1.34.1 // indirect
+	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
