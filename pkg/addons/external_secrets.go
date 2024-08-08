@@ -144,7 +144,7 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 					"create": pulumi.Bool(false),
 					"name":   pulumi.String(vars.ExternalSecrets.KsaName),
 				},
-				"replicaCount": pulumi.Sprintf("%d", 1),
+				"replicaCount": pulumi.Int(1),
 			},
 			RepositoryOpts: helm.RepositoryOptsArgs{
 				Repo: pulumi.String(vars.ExternalSecrets.HelmChartRepo),
