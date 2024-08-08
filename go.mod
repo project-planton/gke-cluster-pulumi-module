@@ -2,11 +2,11 @@ module github.com/plantoncloud/gke-cluster-pulumi-module
 
 go 1.22
 
-replace github.com/plantoncloud/planton-cloud-apis => ../../plantoncloud/planton-cloud-apis
+//replace github.com/plantoncloud/planton-cloud-apis => ../../plantoncloud/planton-cloud-apis
 
-replace github.com/plantoncloud/stack-job-runner-golang-sdk => ../../plantoncloud/stack-job-runner-golang-sdk
+//replace github.com/plantoncloud/stack-job-runner-golang-sdk => ../../plantoncloud/stack-job-runner-golang-sdk
 
-replace github.com/plantoncloud/pulumi-module-golang-commons => ../../plantoncloud/pulumi-module-golang-commons
+//replace github.com/plantoncloud/pulumi-module-golang-commons => ../../plantoncloud/pulumi-module-golang-commons
 
 //these replacements are required in order to use external-secrets apis https://github.com/external-secrets/external-secrets/blob/main/go.mod
 replace (
@@ -49,9 +49,9 @@ require (
 
 require (
 	github.com/plantoncloud/kubernetes-crd-pulumi-types v0.0.0-20240728135705-0a8ddbf00a91
-	github.com/plantoncloud/planton-cloud-apis v0.0.211
-	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240801150944-e149dc5e0403
-	github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.0-00010101000000-000000000000
+	github.com/plantoncloud/planton-cloud-apis v0.1.0
+	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240808151947-30fe31a468ca
+	github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.56
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
 )
 
