@@ -127,24 +127,22 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 			WaitForJobs:     pulumi.Bool(true),
 			Timeout:         pulumi.Int(180),
 			Values: pulumi.Map{
-				"customResourceManagerDisabled": pulumi.Sprintf("%t", false),
-				"crds": pulumi.StringMap{
-					"create": pulumi.Sprintf("%t", true),
+				"customResourceManagerDisabled": pulumi.Bool(false),
+				"crds": pulumi.Map{
+					"create": pulumi.Bool(true),
 				},
-				"env": pulumi.StringMap{
-					"POLLER_INTERVAL_MILLISECONDS": pulumi.Sprintf("%d",
-						vars.ExternalSecrets.SecretsPollingIntervalSeconds*1000),
-					"LOG_LEVEL":       pulumi.String("info"),
-					"LOG_MESSAGE_KEY": pulumi.String("msg"),
-					"METRICS_PORT":    pulumi.Sprintf("%d", 3001),
+				"env": pulumi.Map{
+					"POLLER_INTERVAL_MILLISECONDS": pulumi.Int(vars.ExternalSecrets.SecretsPollingIntervalSeconds * 1000),
+					"LOG_LEVEL":                    pulumi.String("info"),
+					"LOG_MESSAGE_KEY":              pulumi.String("msg"),
+					"METRICS_PORT":                 pulumi.Int(3001),
 				},
-				"rbac": pulumi.StringMap{
-					"create": pulumi.Sprintf("%t", true),
+				"rbac": pulumi.Map{
+					"create": pulumi.Bool(true),
 				},
-				"serviceAccount": pulumi.StringMap{
-					"create":      pulumi.Sprintf("%t", false),
-					"name":        pulumi.String(vars.ExternalSecrets.KsaName),
-					"annotations": pulumi.String(""),
+				"serviceAccount": pulumi.Map{
+					"create": pulumi.Bool(false),
+					"name":   pulumi.String(vars.ExternalSecrets.KsaName),
 				},
 				"replicaCount": pulumi.Sprintf("%d", 1),
 			},

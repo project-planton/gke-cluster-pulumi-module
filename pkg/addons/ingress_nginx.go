@@ -61,8 +61,8 @@ func IngressNginx(ctx *pulumi.Context, locals *localz.Locals,
 					"service": pulumi.StringMap{
 						"type": pulumi.String("ClusterIP"),
 					},
-					"ingressClassResource": pulumi.StringMap{
-						"default": pulumi.Sprintf("%t", true),
+					"ingressClassResource": pulumi.Map{
+						"default": pulumi.Bool(true),
 					},
 				},
 			},
