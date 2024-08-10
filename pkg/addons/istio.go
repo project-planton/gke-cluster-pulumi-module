@@ -5,6 +5,7 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	istiov1alpha3 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/istio/networking/v1alpha3"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
@@ -124,7 +125,8 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//create istio-gateway helm-release
-	_, err = helm.NewRelease(ctx, "istio-gateway",
+	createdIstioGatewayHelmRelease, err := helm.NewRelease(ctx,
+		"istio-gateway",
 		&helm.ReleaseArgs{
 			Name:            pulumi.String(vars.Istio.GatewayHelmChartName),
 			Namespace:       createdIstioGatewayNamespace.Metadata.Name(),
@@ -174,6 +176,50 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 	if err != nil {
 		return errors.Wrap(err, "failed to create istio-gateway helm release")
 	}
+
+	//create grpc-web envoy filter to support grpc-web clients
+	_, err = istiov1alpha3.NewEnvoyFilter(ctx,
+		"grpc-web",
+		&istiov1alpha3.EnvoyFilterArgs{
+			Metadata: metav1.ObjectMetaArgs{
+				Name:      pulumi.String("grpc-web"),
+				Namespace: createdIstioGatewayNamespace.Metadata.Name(),
+				Labels:    pulumi.ToStringMap(locals.KubernetesLabels),
+			},
+			Spec: istiov1alpha3.EnvoyFilterSpecArgs{
+				ConfigPatches: istiov1alpha3.EnvoyFilterSpecConfigPatchesArray{
+					istiov1alpha3.EnvoyFilterSpecConfigPatchesArgs{
+						ApplyTo: pulumi.String("HTTP_FILTER"),
+						Match: pulumi.Map{
+							"context": pulumi.String("GATEWAY"),
+							"listener": pulumi.Map{
+								"filterChain": pulumi.Map{
+									"filter": pulumi.Map{
+										"name": pulumi.String("envoy.filters.network.http_connection_manager"),
+										"subFilter": pulumi.Map{
+											"name": pulumi.String("envoy.filters.http.cors"),
+										},
+									},
+								},
+							},
+						},
+						Patch: istiov1alpha3.EnvoyFilterSpecConfigPatchesPatchArgs{
+							Operation: pulumi.String("INSERT_BEFORE"),
+							Value: pulumi.Map{
+								"name": pulumi.String("envoy.filters.http.grpc_web"),
+								"typed_config": pulumi.Map{
+									"@type": pulumi.String("type.googleapis.com/envoy.extensions.filters.http.grpc_web.v3.GrpcWeb"),
+								},
+							},
+						},
+					},
+				},
+				WorkloadSelector: &istiov1alpha3.EnvoyFilterSpecWorkloadSelectorArgs{
+					Labels: pulumi.ToStringMap(vars.Istio.SelectorLabels),
+				},
+			},
+		}, pulumi.Parent(createdIstioGatewayNamespace),
+		pulumi.DependsOn([]pulumi.Resource{createdIstioGatewayHelmRelease}))
 
 	//define array of ports to be configured for both internal and external ingress services
 	loadBalancerServicePortArray := corev1.ServicePortArray{
