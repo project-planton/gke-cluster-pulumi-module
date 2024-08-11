@@ -118,7 +118,6 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 					//https://kubernetes-sigs.github.io/external-dns/v0.13.1/tutorials/gateway-api/#manifest-with-rbac
 					"sources": pulumi.StringArray{
 						pulumi.String("gateway-httproute"),
-						pulumi.String("gateway-grpcroute"),
 						pulumi.String("gateway-tlsroute"),
 						pulumi.String("gateway-tcproute"),
 						pulumi.String("gateway-udproute"),
