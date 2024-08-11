@@ -38,6 +38,10 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 
+	if err := addons.GatewayApis(ctx, kubernetesProvider); err != nil {
+		return errors.Wrap(err, "failed to add gateway-api resources")
+	}
+
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallIngressNginx {
 		if err := addons.IngressNginx(ctx, locals, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install ingress-nginx resources")

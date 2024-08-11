@@ -39,6 +39,21 @@ var (
 	//be used for deploying workloads to the gke cluster.
 	WorkloadDeployServiceAccountName = "workload-deployer"
 
+	GatewayApis = struct {
+		CrdDownloadBaseUrl string
+		CrdFiles           []string
+	}{
+		//version is included in the base-url
+		CrdDownloadBaseUrl: "https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.1.0/config/crd/standard",
+		CrdFiles: []string{
+			"gateway.networking.k8s.io_gatewayclasses.yaml",
+			"gateway.networking.k8s.io_gateways.yaml",
+			"gateway.networking.k8s.io_grpcroutes.yaml",
+			"gateway.networking.k8s.io_httproutes.yaml",
+			"gateway.networking.k8s.io_referencegrants.yaml",
+		},
+	}
+
 	CertManager = struct {
 		Namespace                          string
 		HelmChartName                      string
