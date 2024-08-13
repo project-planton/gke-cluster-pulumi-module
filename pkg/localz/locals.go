@@ -3,14 +3,14 @@ package localz
 
 import (
 	"fmt"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/model"
-	gcpcredential "github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/connect/v1/gcpcredential/model"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/connect/v1/gcpcredential"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Locals struct {
 	GcpCredential                         *gcpcredential.GcpCredential
-	GkeCluster                            *model.GkeCluster
+	GkeCluster                            *gkecluster.GkeCluster
 	KubernetesPodSecondaryIpRangeName     string
 	KubernetesServiceSecondaryIpRangeName string
 	KubernetesLabels                      map[string]string
@@ -19,7 +19,7 @@ type Locals struct {
 	NetworkTag                            string
 }
 
-func Initialize(ctx *pulumi.Context, stackInput *model.GkeClusterStackInput) *Locals {
+func Initialize(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput) *Locals {
 	gkeCluster := stackInput.ApiResource
 
 	locals := &Locals{}

@@ -1,7 +1,7 @@
 package outputs
 
 import (
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/model"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
 	"github.com/plantoncloud/stack-job-runner-golang-sdk/pkg/automationapi/autoapistackoutput"
 	"github.com/pulumi/pulumi/sdk/v3/go/auto"
 )
@@ -32,14 +32,14 @@ const (
 )
 
 func PulumiOutputsToStackOutputsConverter(pulumiOutputs auto.OutputMap,
-	input *model.GkeClusterStackInput) *model.GkeClusterStackOutputs {
-	return &model.GkeClusterStackOutputs{
+	input *gkecluster.GkeClusterStackInput) *gkecluster.GkeClusterStackOutputs {
+	return &gkecluster.GkeClusterStackOutputs{
 		FolderId: autoapistackoutput.GetVal(pulumiOutputs, FolderId),
-		ContainerClusterProject: &model.GcpProject{
+		ContainerClusterProject: &gkecluster.GcpProject{
 			Id:     autoapistackoutput.GetVal(pulumiOutputs, ContainerClusterProjectId),
 			Number: autoapistackoutput.GetVal(pulumiOutputs, ContainerClusterProjectNumber),
 		},
-		VpcNetworkProject: &model.GcpProject{
+		VpcNetworkProject: &gkecluster.GcpProject{
 			Id:     autoapistackoutput.GetVal(pulumiOutputs, VpcNetworkProjectId),
 			Number: autoapistackoutput.GetVal(pulumiOutputs, VpcNetworkProjectNumber),
 		},
