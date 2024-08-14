@@ -49,7 +49,7 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallIstio {
-		if err := addons.Istio(ctx, locals, createdCluster, gcpProvider, kubernetesProvider); err != nil {
+		if err := addons.Istio(ctx, locals, createdCluster, kubernetesProvider); err != nil {
 			return errors.Wrap(err, "failed to install istio resources")
 		}
 	}

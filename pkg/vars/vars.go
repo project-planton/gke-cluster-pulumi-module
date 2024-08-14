@@ -180,20 +180,10 @@ var (
 		IngressExternalLoadBalancerServiceName string
 		IngressExternalServiceAnnotations      map[string]string
 		IngressInternalServiceAnnotations      map[string]string
-		KafkaConfig                            struct {
-			GatewayName                       string
-			ExternalPublicListenerName        string
-			ExternalPublicListenerPortNumber  int //this port is intended to be used by clients output the private network and outside the container cluster
-			ExternalPrivateListenerName       string
-			ExternalPrivateListenerPortNumber int //this port is intended to be used by clients inside the private network but outside the container cluster
-			InternalListenerPortNumber        int //this port is intended to be used by clients inside the container cluster
-		}
-		SelectorLabels   map[string]string
-		HttpPort         int
-		HttpsPort        int
-		IstiodStatusPort int
-		PostgresPort     int
-		RedisPort        int
+		SelectorLabels                         map[string]string
+		HttpPort                               int
+		HttpsPort                              int
+		IstiodStatusPort                       int
 	}{
 		SystemNamespace:  "istio-system",
 		GatewayNamespace: "istio-ingress",
@@ -214,21 +204,6 @@ var (
 		IngressInternalServiceAnnotations: map[string]string{
 			"cloud.google.com/load-balancer-type": "internal",
 		},
-		KafkaConfig: struct {
-			GatewayName                       string
-			ExternalPublicListenerName        string
-			ExternalPublicListenerPortNumber  int
-			ExternalPrivateListenerName       string
-			ExternalPrivateListenerPortNumber int
-			InternalListenerPortNumber        int
-		}{
-			GatewayName:                       "kafka",
-			ExternalPublicListenerName:        "extpub",
-			ExternalPublicListenerPortNumber:  9092,
-			ExternalPrivateListenerName:       "extpvt",
-			ExternalPrivateListenerPortNumber: 9093,
-			InternalListenerPortNumber:        9094,
-		},
 		SelectorLabels: map[string]string{
 			"app":   "gateway",
 			"istio": "gateway",
@@ -236,7 +211,5 @@ var (
 		HttpPort:         80,
 		HttpsPort:        443,
 		IstiodStatusPort: 15021,
-		PostgresPort:     5432,
-		RedisPort:        6789,
 	}
 )
