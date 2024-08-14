@@ -4,8 +4,12 @@ package localz
 import (
 	"fmt"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
+	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/commons/apiresource/enums/apiresourcekind"
 	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/connect/v1/gcpcredential"
+	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/gcplabelkeys"
+	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
+	"strconv"
 )
 
 type Locals struct {
@@ -26,6 +30,20 @@ func Initialize(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput
 
 	locals.GcpCredential = stackInput.GcpCredential
 	locals.GkeCluster = stackInput.ApiResource
+
+	locals.GcpLabels = map[string]string{
+		gcplabelkeys.Resource:     strconv.FormatBool(true),
+		gcplabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
+		gcplabelkeys.ResourceKind: apiresourcekind.ApiResourceKind_gke_cluster.String(),
+		gcplabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
+	}
+
+	locals.KubernetesLabels = map[string]string{
+		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
+		kuberneteslabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
+		kuberneteslabelkeys.ResourceKind: apiresourcekind.ApiResourceKind_gke_cluster.String(),
+		kuberneteslabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
+	}
 
 	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("%s-pods", gkeCluster.Metadata.Id)
 	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("%s-services", gkeCluster.Metadata.Id)

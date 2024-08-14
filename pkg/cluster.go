@@ -80,7 +80,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 	//export container-cluster project attributes
 	ctx.Export(outputs.ContainerClusterProjectId, createdClusterProject.ProjectId)
-	ctx.Export(outputs.ContainerClusterProjectId, createdClusterProject.Number)
+	ctx.Export(outputs.ContainerClusterProjectNumber, createdClusterProject.Number)
 
 	var createdNetworkProject *organizations.Project
 

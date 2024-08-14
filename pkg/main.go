@@ -10,9 +10,7 @@ import (
 )
 
 type ResourceStack struct {
-	Input            *gkecluster.GkeClusterStackInput
-	GcpLabels        map[string]string
-	KubernetesLabels map[string]string
+	StackInput *gkecluster.GkeClusterStackInput
 }
 
 // Resources function is the pulumi program that deploys GKE cluster along with chosen addons.
@@ -33,10 +31,10 @@ type ResourceStack struct {
 // 7. If Kubernetes addons are specified, creates a Kubernetes provider for the cluster.
 // 8. Installs the specified Kubernetes addons using the created providers.
 func (s *ResourceStack) Resources(ctx *pulumi.Context) error {
-	locals := localz.Initialize(ctx, s.Input)
+	locals := localz.Initialize(ctx, s.StackInput)
 
 	//create gcp-provider using the gcp-credential from input
-	gcpProvider, err := pulumigoogleprovider.Get(ctx, s.Input.GcpCredential)
+	gcpProvider, err := pulumigoogleprovider.Get(ctx, s.StackInput.GcpCredential)
 	if err != nil {
 		return errors.Wrap(err, "failed to setup google provider")
 	}
