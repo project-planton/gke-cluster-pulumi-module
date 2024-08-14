@@ -6,7 +6,6 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
 	istiov1alpha3 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/istio/networking/v1alpha3"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
@@ -41,7 +40,7 @@ import (
 // 9. Creates a Kubernetes service for the external load balancer using the created IP address and service port configurations.
 // 10. Handles errors and returns any errors encountered during the namespace creation, Helm release deployment, or service setup.
 func Istio(ctx *pulumi.Context, locals *localz.Locals,
-	createdCluster *container.Cluster, gcpProvider *gcp.Provider,
+	createdCluster *container.Cluster,
 	kubernetesProvider *pulumikubernetes.Provider) error {
 	//create istio-system namespace resource
 	createdIstioSystemNamespace, err := corev1.NewNamespace(ctx,
@@ -240,30 +239,6 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 			Protocol:   pulumi.String("TCP"),
 			Port:       pulumi.Int(vars.Istio.HttpsPort),
 			TargetPort: pulumi.Int(vars.Istio.HttpsPort),
-		},
-		&corev1.ServicePortArgs{
-			Name:       pulumi.String("kafka-private"),
-			Protocol:   pulumi.String("TCP"),
-			Port:       pulumi.Int(vars.Istio.KafkaConfig.ExternalPrivateListenerPortNumber),
-			TargetPort: pulumi.Int(vars.Istio.KafkaConfig.ExternalPrivateListenerPortNumber),
-		},
-		&corev1.ServicePortArgs{
-			Name:       pulumi.String("kafka-public"),
-			Protocol:   pulumi.String("TCP"),
-			Port:       pulumi.Int(vars.Istio.KafkaConfig.ExternalPublicListenerPortNumber),
-			TargetPort: pulumi.Int(vars.Istio.KafkaConfig.ExternalPublicListenerPortNumber),
-		},
-		&corev1.ServicePortArgs{
-			Name:       pulumi.String("postgres"),
-			Protocol:   pulumi.String("TCP"),
-			Port:       pulumi.Int(vars.Istio.PostgresPort),
-			TargetPort: pulumi.Int(vars.Istio.PostgresPort),
-		},
-		&corev1.ServicePortArgs{
-			Name:       pulumi.String("redis"),
-			Protocol:   pulumi.String("TCP"),
-			Port:       pulumi.Int(vars.Istio.RedisPort),
-			TargetPort: pulumi.Int(vars.Istio.RedisPort),
 		},
 	}
 
