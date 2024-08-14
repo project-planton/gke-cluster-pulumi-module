@@ -6,7 +6,6 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster/enums/gkereleasechannel"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
@@ -346,7 +345,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 			InitialNodeCount: pulumi.Int(1),
 			ReleaseChannel: container.ClusterReleaseChannelPtrInput(
 				&container.ClusterReleaseChannelArgs{
-					Channel: pulumi.String(gkereleasechannel.GkeReleaseChannel_STABLE.String()),
+					Channel: pulumi.String(vars.GkeReleaseChannel),
 				}),
 			VerticalPodAutoscaling: container.ClusterVerticalPodAutoscalingPtrInput(
 				&container.ClusterVerticalPodAutoscalingArgs{Enabled: pulumi.Bool(true)}),

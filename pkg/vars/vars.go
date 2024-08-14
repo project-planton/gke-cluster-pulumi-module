@@ -1,6 +1,7 @@
 package vars
 
 var (
+	GkeReleaseChannel = "STABLE"
 	// GoogleFolderAndProjectPlantonCloudPrefix will be prefixed for all ids of folders and projects
 	//created by this module for easy identification
 	GoogleFolderAndProjectPlantonCloudPrefix = "gke"
