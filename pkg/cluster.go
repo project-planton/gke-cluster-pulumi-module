@@ -42,7 +42,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdFolder *organizations.Folder) (*container.Cluster, error) {
 
 	//create random suffix for container-cluster-project-id
-	clusterProjectRandomString, err := random.NewRandomString(ctx,
+	createdClusterProjectRandomString, err := random.NewRandomString(ctx,
 		"cluster-project-id-suffix",
 		&random.RandomStringArgs{
 			Special: pulumi.Bool(false),
@@ -56,12 +56,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	}
 
 	//build container-cluster-project-id using the random-id suffix
-	clusterProjectId := clusterProjectRandomString.Result.ApplyT(func(suffix string) string {
-		//project id is created by prefixing character "c" to the random string to indicate that
-		//this is cluster project in shared-vpc setup.
-		return fmt.Sprintf("%s-%s-c%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
-			locals.GkeCluster.Metadata.Name, suffix)
-	}).(pulumi.StringOutput)
+	//project id is created by prefixing character "c" to the random string to indicate that
+	//this is cluster project in shared-vpc setup.
+	clusterProjectId := pulumi.Sprintf("%s-%s-c%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
+		locals.GkeCluster.Metadata.Name, createdClusterProjectRandomString.Result)
 
 	//create container-cluster project
 	createdClusterProject, err := organizations.NewProject(ctx,
@@ -90,7 +88,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		createdNetworkProject = createdClusterProject
 	} else {
 		//create random suffix for network-cluster-project-id
-		networkProjectRandomString, err := random.NewRandomString(ctx,
+		createdNetworkProjectRandomString, err := random.NewRandomString(ctx,
 			"network-project-id-suffix",
 			&random.RandomStringArgs{
 				Special: pulumi.Bool(false),
@@ -104,13 +102,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		}
 
 		//build network-project-id suffix using its random-id suffix
-		networkProjectId := networkProjectRandomString.Result.ApplyT(func(suffix string) string {
-			//project id is created by prefixing character "n" to the random string to indicate that
-			//this is network project in shared-vpc setup.
-			return fmt.Sprintf("%s-%s-n%s",
-				vars.GoogleFolderAndProjectPlantonCloudPrefix,
-				locals.GkeCluster.Metadata.Name, suffix)
-		}).(pulumi.StringOutput)
+		//project id is created by prefixing character "n" to the random string to indicate that
+		//this is network project in shared-vpc setup.
+		networkProjectId := pulumi.Sprintf("%s-%s-n%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
+			locals.GkeCluster.Metadata.Name, createdNetworkProjectRandomString.Result)
 
 		//create network project
 		createdNetworkProject, err = organizations.NewProject(ctx,
@@ -326,11 +321,28 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		}
 	}
 
+	//create random suffix for container-cluster name
+	createdClusterNameRandomString, err := random.NewRandomString(ctx,
+		"cluster-name-suffix",
+		&random.RandomStringArgs{
+			Special: pulumi.Bool(false),
+			Lower:   pulumi.Bool(true),
+			Upper:   pulumi.Bool(false),
+			Numeric: pulumi.Bool(true),
+			Length:  pulumi.Int(2), //increasing this can result in violation of project name length <30
+		})
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to create random suffix for cluster-name")
+	}
+
+	clusterName := pulumi.Sprintf("%s-%s", locals.GkeCluster.Metadata.Name,
+		createdClusterNameRandomString.Result)
+
 	//create container cluster
 	createdCluster, err := container.NewCluster(ctx,
 		"cluster",
 		&container.ClusterArgs{
-			Name:                  pulumi.String(locals.GkeCluster.Metadata.Id),
+			Name:                  clusterName,
 			Project:               createdClusterProject.ProjectId,
 			Location:              pulumi.String(locals.GkeCluster.Spec.Zone),
 			Network:               createdNetwork.SelfLink,
