@@ -9,6 +9,7 @@ import (
 	externalsecretsv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/externalsecrets/externalsecrets/v1beta1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
@@ -58,6 +59,20 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 
 	//export external-secrets gsa email
 	ctx.Export(outputs.ExternalSecretsGsaEmail, createdGoogleServiceAccount.Email)
+
+	//add iam binding for secrets accessor role
+	_, err = projects.NewIAMBinding(ctx,
+		"external-secrets-secrets-accessor-binding",
+		&projects.IAMBindingArgs{
+			Members: pulumi.StringArray{
+				pulumi.Sprintf("serviceAccount:%s", createdGoogleServiceAccount.Email),
+			},
+			Project: createdCluster.Project,
+			Role:    pulumi.String("roles/secretmanager.secretAccessor"),
+		}, pulumi.Parent(createdGoogleServiceAccount))
+	if err != nil {
+		return errors.Wrap(err, "failed to add secrets accessor IAM binding")
+	}
 
 	//create workload-identity binding
 	_, err = serviceaccount.NewIAMBinding(ctx,
