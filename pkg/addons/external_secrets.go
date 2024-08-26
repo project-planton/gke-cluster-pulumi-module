@@ -171,7 +171,8 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 				},
 				RefreshInterval: pulumi.Int(vars.ExternalSecrets.SecretsPollingIntervalSeconds),
 			},
-		})
+		}, pulumi.Parent(createdNamespace),
+		pulumi.DependsOn([]pulumi.Resource{createdKubernetesServiceAccount}))
 	if err != nil {
 		return errors.Wrap(err, "failed to create cluster-secret-store")
 	}
