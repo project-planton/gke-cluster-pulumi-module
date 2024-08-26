@@ -6,7 +6,6 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
-	externalsecretsv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/externalsecrets/externalsecrets/v1beta1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -155,27 +154,5 @@ func ExternalSecrets(ctx *pulumi.Context, locals *localz.Locals,
 	if err != nil {
 		return errors.Wrap(err, "failed to create helm release")
 	}
-
-	//create cluster-secret-store to configure the gcp project from which the secrets need to be looked up
-	_, err = externalsecretsv1.NewClusterSecretStore(ctx, "cluster-secret-store",
-		&externalsecretsv1.ClusterSecretStoreArgs{
-			Metadata: metav1.ObjectMetaArgs{
-				Name:   pulumi.String(vars.ExternalSecrets.GcpSecretsManagerClusterSecretStoreName),
-				Labels: pulumi.ToStringMap(locals.KubernetesLabels),
-			},
-			Spec: externalsecretsv1.ClusterSecretStoreSpecArgs{
-				Provider: externalsecretsv1.ClusterSecretStoreSpecProviderArgs{
-					Gcpsm: externalsecretsv1.ClusterSecretStoreSpecProviderGcpsmArgs{
-						ProjectID: createdCluster.Project,
-					},
-				},
-				RefreshInterval: pulumi.Int(vars.ExternalSecrets.SecretsPollingIntervalSeconds),
-			},
-		}, pulumi.Parent(createdNamespace),
-		pulumi.DependsOn([]pulumi.Resource{createdKubernetesServiceAccount}))
-	if err != nil {
-		return errors.Wrap(err, "failed to create cluster-secret-store")
-	}
-
 	return nil
 }
