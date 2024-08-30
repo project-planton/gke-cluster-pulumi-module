@@ -98,5 +98,11 @@ func clusterAddons(ctx *pulumi.Context, locals *localz.Locals,
 		}
 	}
 
+	if locals.GkeCluster.Spec.KubernetesAddons.IsInstallElasticOperator {
+		if err := addons.ElasticOperator(ctx, locals, kubernetesProvider); err != nil {
+			return errors.Wrap(err, "failed to install elastic-operator resources")
+		}
+	}
+
 	return nil
 }

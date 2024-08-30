@@ -1,6 +1,6 @@
 module github.com/plantoncloud/gke-cluster-pulumi-module
 
-go 1.22
+go 1.22.6
 
 //replace github.com/plantoncloud/planton-cloud-apis => ../../plantoncloud/planton-cloud-apis
 
@@ -44,12 +44,12 @@ require (
 	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.15.0
 	github.com/pulumi/pulumi-random/sdk/v4 v4.14.0
 	github.com/pulumi/pulumi/sdk/v3 v3.127.0
-	google.golang.org/grpc v1.63.2 // indirect
+	google.golang.org/grpc v1.65.0 // indirect
 )
 
 require (
 	github.com/plantoncloud/kubernetes-crd-pulumi-types v0.0.0-20240811054507-35b7232001a0
-	github.com/plantoncloud/planton-cloud-apis v0.1.7
+	github.com/plantoncloud/planton-cloud-apis v0.1.30
 	github.com/plantoncloud/pulumi-module-golang-commons v0.0.0-20240813091317-49da3b41a14f
 	github.com/plantoncloud/stack-job-runner-golang-sdk v0.0.57
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
@@ -81,7 +81,7 @@ require (
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
 	github.com/go-git/go-git/v5 v5.12.0 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/glog v1.2.0 // indirect
+	github.com/golang/glog v1.2.1 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645 // indirect
@@ -134,7 +134,7 @@ require (
 	golang.org/x/term v0.21.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.22.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240311173647-c811ad7063a7 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect

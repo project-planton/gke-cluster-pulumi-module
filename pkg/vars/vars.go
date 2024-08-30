@@ -212,4 +212,17 @@ var (
 		HttpsPort:        443,
 		IstiodStatusPort: 15021,
 	}
+
+	ElasticOperator = struct {
+		Namespace        string
+		HelmChartName    string
+		HelmChartRepo    string
+		HelmChartVersion string
+	}{
+		Namespace:     "elastic-system",
+		HelmChartName: "eck-operator",
+		HelmChartRepo: "https://helm.elastic.co",
+		//https://github.com/elastic/cloud-on-k8s/blob/main/deploy/eck-operator/values.yaml
+		HelmChartVersion: "2.14.0",
+	}
 )
