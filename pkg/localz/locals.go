@@ -13,7 +13,7 @@ import (
 )
 
 type Locals struct {
-	GcpCredential                         *gcpcredential.GcpCredential
+	GcpCredentialSpec                     *gcpcredential.GcpCredentialSpec
 	GkeCluster                            *gkecluster.GkeCluster
 	KubernetesPodSecondaryIpRangeName     string
 	KubernetesServiceSecondaryIpRangeName string
@@ -24,12 +24,12 @@ type Locals struct {
 }
 
 func Initialize(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput) *Locals {
-	gkeCluster := stackInput.ApiResource
+	gkeCluster := stackInput.Target
 
 	locals := &Locals{}
 
-	locals.GcpCredential = stackInput.GcpCredential
-	locals.GkeCluster = stackInput.ApiResource
+	locals.GcpCredentialSpec = stackInput.GcpCredential
+	locals.GkeCluster = stackInput.Target
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),

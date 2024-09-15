@@ -50,7 +50,7 @@ func folder(ctx *pulumi.Context,
 			DisplayName: pulumi.Sprintf("%s-%s-%s",
 				vars.GoogleFolderAndProjectPlantonCloudPrefix,
 				locals.GkeCluster.Metadata.Name, randomString.Result),
-			Parent: pulumi.Sprintf("organizations/%s", locals.GcpCredential.Spec.GcpOrganizationId),
+			Parent: pulumi.Sprintf("organizations/%s", locals.GcpCredentialSpec.GcpOrganizationId),
 		}, pulumi.Provider(gcpProvider))
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to add cloud account folder")
