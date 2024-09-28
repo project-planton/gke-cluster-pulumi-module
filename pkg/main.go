@@ -3,7 +3,7 @@ package pkg
 import (
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
-	"github.com/plantoncloud/planton-cloud-apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
+	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
