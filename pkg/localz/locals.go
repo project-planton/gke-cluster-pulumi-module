@@ -2,10 +2,9 @@
 package localz
 
 import (
+	gcpcredentialv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/apis/credential/gcpcredential/v1"
+	gkeclusterv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/apis/provider/gcp/gkecluster/v1"
 	"fmt"
-	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
-	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/commons/apiresource/enums/apiresourcekind"
-	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/connect/v1/gcpcredential"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/gcplabelkeys"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -13,8 +12,8 @@ import (
 )
 
 type Locals struct {
-	GcpCredentialSpec                     *gcpcredential.GcpCredentialSpec
-	GkeCluster                            *gkecluster.GkeCluster
+	GcpCredentialSpec                     *gcpcredentialv1.GcpCredentialSpec
+	GkeCluster                            *gkeclusterv1.GkeCluster
 	KubernetesPodSecondaryIpRangeName     string
 	KubernetesServiceSecondaryIpRangeName string
 	KubernetesLabels                      map[string]string
@@ -23,7 +22,7 @@ type Locals struct {
 	NetworkTag                            string
 }
 
-func Initialize(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput) *Locals {
+func Initialize(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) *Locals {
 	gkeCluster := stackInput.Target
 
 	locals := &Locals{}
@@ -34,14 +33,14 @@ func Initialize(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
 		gcplabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
-		gcplabelkeys.ResourceKind: apiresourcekind.ApiResourceKind_gke_cluster.String(),
+		gcplabelkeys.ResourceKind: "gke_cluster",
 		gcplabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
 	}
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
 		kuberneteslabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
-		kuberneteslabelkeys.ResourceKind: apiresourcekind.ApiResourceKind_gke_cluster.String(),
+		kuberneteslabelkeys.ResourceKind: "gke_cluster",
 		kuberneteslabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
 	}
 

@@ -1,9 +1,9 @@
 package pkg
 
 import (
+	gkeclusterv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/apis/provider/gcp/gkecluster/v1"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
-	"github.com/plantoncloud/project-planton/apis/zzgo/cloud/planton/apis/code2cloud/v1/gcp/gkecluster"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigkekubernetesprovider"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/provider/gcp/pulumigoogleprovider"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
@@ -26,7 +26,7 @@ import (
 // 6. Creates a service account and key for deploying workloads to the cluster.
 // 7. If Kubernetes addons are specified, creates a Kubernetes provider for the cluster.
 // 8. Installs the specified Kubernetes addons using the created providers.
-func Resources(ctx *pulumi.Context, stackInput *gkecluster.GkeClusterStackInput) error {
+func Resources(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInput) error {
 	locals := localz.Initialize(ctx, stackInput)
 
 	//create gcp-provider using the gcp-credential from input
