@@ -1,7 +1,7 @@
 package main
 
 import (
-	gkeclusterv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/apis/provider/gcp/gkecluster/v1"
+	gkeclusterv1 "buf.build/gen/go/plantoncloud/project-planton/protocolbuffers/go/project/planton/provider/gcp/gkecluster/v1"
 	"github.com/pkg/errors"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg"
 	"github.com/plantoncloud/pulumi-module-golang-commons/pkg/stackinput"
