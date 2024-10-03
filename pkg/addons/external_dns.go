@@ -107,7 +107,7 @@ func ExternalDns(ctx *pulumi.Context, locals *localz.Locals,
 				WaitForJobs:     pulumi.Bool(true),
 				Timeout:         pulumi.Int(180),
 				Values: pulumi.Map{
-					"txtOwnerId": pulumi.String(locals.GkeCluster.Metadata.Id),
+					"txtOwnerId": pulumi.String(locals.GkeCluster.Metadata.Name),
 					"serviceAccount": pulumi.Map{
 						"create": pulumi.Bool(false),
 						"name":   pulumi.String(vars.ExternalDns.KsaName),
