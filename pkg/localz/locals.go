@@ -32,16 +32,22 @@ func Initialize(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInp
 
 	locals.GcpLabels = map[string]string{
 		gcplabelkeys.Resource:     strconv.FormatBool(true),
-		gcplabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
-		gcplabelkeys.ResourceKind: "gke_cluster",
-		gcplabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
+		gcplabelkeys.ResourceKind: "gke-cluster",
 	}
 
 	locals.KubernetesLabels = map[string]string{
 		kuberneteslabelkeys.Resource:     strconv.FormatBool(true),
-		kuberneteslabelkeys.Organization: locals.GkeCluster.Spec.EnvironmentInfo.OrgId,
-		kuberneteslabelkeys.ResourceKind: "gke_cluster",
-		kuberneteslabelkeys.ResourceId:   locals.GkeCluster.Metadata.Id,
+		kuberneteslabelkeys.ResourceKind: "gke-cluster",
+	}
+
+	if locals.GkeCluster.Spec.EnvironmentInfo != nil && locals.GkeCluster.Spec.EnvironmentInfo.OrgId != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = locals.GkeCluster.Spec.EnvironmentInfo.OrgId
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GkeCluster.Spec.EnvironmentInfo.OrgId
+	}
+
+	if locals.GkeCluster.Metadata.Id != "" {
+		locals.GcpLabels[gcplabelkeys.ResourceId] = locals.GkeCluster.Metadata.Id
+		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = locals.GkeCluster.Metadata.Id
 	}
 
 	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("%s-pods", gkeCluster.Metadata.Id)

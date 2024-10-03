@@ -6,11 +6,10 @@ import (
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
 	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
-	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/organizations"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/projects"
-	"github.com/pulumi/pulumi-random/sdk/v4/go/random"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -38,94 +37,7 @@ import (
 //  8. Configures the cluster with autoscaling, network policies, logging, and other settings.
 //  9. Exports important attributes of the created resources, such as network self-link, subnetwork self-link,
 //     firewall self-link, router self-link, NAT IP address, and cluster name.
-func cluster(ctx *pulumi.Context, locals *localz.Locals,
-	createdFolder *organizations.Folder) (*container.Cluster, error) {
-
-	//create random suffix for container-cluster-project-id
-	createdClusterProjectRandomString, err := random.NewRandomString(ctx,
-		"cluster-project-id-suffix",
-		&random.RandomStringArgs{
-			Special: pulumi.Bool(false),
-			Lower:   pulumi.Bool(true),
-			Upper:   pulumi.Bool(false),
-			Numeric: pulumi.Bool(true),
-			Length:  pulumi.Int(2), //increasing this can result in violation of project name length <30
-		})
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create random suffix for cluster-project-id")
-	}
-
-	//build container-cluster-project-id using the random-id suffix
-	//project id is created by prefixing character "c" to the random string to indicate that
-	//this is cluster project in shared-vpc setup.
-	clusterProjectId := pulumi.Sprintf("%s-%s-c%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
-		locals.GkeCluster.Metadata.Name, createdClusterProjectRandomString.Result)
-
-	//create container-cluster project
-	createdClusterProject, err := organizations.NewProject(ctx,
-		"cluster-project",
-		&organizations.ProjectArgs{
-			BillingAccount:    pulumi.String(locals.GkeCluster.Spec.BillingAccountId),
-			Name:              clusterProjectId,
-			AutoCreateNetwork: pulumi.Bool(false),
-			Labels:            pulumi.ToStringMap(locals.GcpLabels),
-			ProjectId:         clusterProjectId,
-			FolderId:          createdFolder.FolderId,
-		}, pulumi.Parent(createdFolder))
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to create cluster project")
-	}
-
-	//export container-cluster project attributes
-	ctx.Export(outputs.ContainerClusterProjectId, createdClusterProject.ProjectId)
-	ctx.Export(outputs.ContainerClusterProjectNumber, createdClusterProject.Number)
-
-	var createdNetworkProject *organizations.Project
-
-	if !locals.GkeCluster.Spec.IsCreateSharedVpc {
-		//when the cluster does not need to have shared-vpc, both cluster and network are created
-		//in the same gcp project.
-		createdNetworkProject = createdClusterProject
-	} else {
-		//create random suffix for network-cluster-project-id
-		createdNetworkProjectRandomString, err := random.NewRandomString(ctx,
-			"network-project-id-suffix",
-			&random.RandomStringArgs{
-				Special: pulumi.Bool(false),
-				Lower:   pulumi.Bool(true),
-				Upper:   pulumi.Bool(false),
-				Numeric: pulumi.Bool(true),
-				Length:  pulumi.Int(2), //increasing this can result in violation of project name length <30
-			})
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to create random suffix for network-project-id")
-		}
-
-		//build network-project-id suffix using its random-id suffix
-		//project id is created by prefixing character "n" to the random string to indicate that
-		//this is network project in shared-vpc setup.
-		networkProjectId := pulumi.Sprintf("%s-%s-n%s", vars.GoogleFolderAndProjectPlantonCloudPrefix,
-			locals.GkeCluster.Metadata.Name, createdNetworkProjectRandomString.Result)
-
-		//create network project
-		createdNetworkProject, err = organizations.NewProject(ctx,
-			"network-project",
-			&organizations.ProjectArgs{
-				BillingAccount:    pulumi.String(locals.GkeCluster.Spec.BillingAccountId),
-				Name:              networkProjectId,
-				AutoCreateNetwork: pulumi.Bool(false),
-				Labels:            pulumi.ToStringMap(locals.GcpLabels),
-				ProjectId:         networkProjectId,
-				FolderId:          createdFolder.FolderId,
-			}, pulumi.Parent(createdFolder))
-		if err != nil {
-			return nil, errors.Wrapf(err, "failed to create network project")
-		}
-	}
-
-	//export network-cluster project attributes
-	ctx.Export(outputs.VpcNetworkProjectId, createdNetworkProject.ProjectId)
-	ctx.Export(outputs.VpcNetworkProjectNumber, createdNetworkProject.Number)
+func cluster(ctx *pulumi.Context, locals *localz.Locals, gcpProvider *gcp.Provider) (*container.Cluster, error) {
 
 	//keep track of all the apis enabled to add as dependencies
 	createdGoogleApiResources := make([]pulumi.Resource, 0)
@@ -135,40 +47,24 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		addedProjectService, err := projects.NewService(ctx,
 			fmt.Sprintf("container-cluster-%s", api),
 			&projects.ServiceArgs{
-				Project:                  createdClusterProject.ProjectId,
+				Project:                  pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 				DisableDependentServices: pulumi.BoolPtr(true),
 				Service:                  pulumi.String(api),
-			}, pulumi.Parent(createdClusterProject))
+			}, pulumi.Provider(gcpProvider))
 		if err != nil {
 			return nil, errors.Wrapf(err, "failed to enable %s api for container cluster project", api)
 		}
 		createdGoogleApiResources = append(createdGoogleApiResources, addedProjectService)
 	}
 
-	//enable google-apis for network project if it is different from cluster project
-	if createdClusterProject.ProjectId != createdNetworkProject.ProjectId {
-		for _, api := range vars.NetworkProjectApis {
-			addedProjectService, err := projects.NewService(ctx,
-				fmt.Sprintf("network-project-%s", api),
-				&projects.ServiceArgs{
-					Project:                  createdNetworkProject.ProjectId,
-					DisableDependentServices: pulumi.BoolPtr(true),
-					Service:                  pulumi.String(api),
-				}, pulumi.Parent(createdClusterProject))
-			if err != nil {
-				return nil, errors.Wrapf(err, "failed to enable %s api for network project", api)
-			}
-			createdGoogleApiResources = append(createdGoogleApiResources, addedProjectService)
-		}
-	}
-
 	//create vpc network
 	createdNetwork, err := compute.NewNetwork(ctx,
 		"vpc",
 		&compute.NetworkArgs{
-			Project:               createdNetworkProject.ProjectId,
+			Project:               pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 			AutoCreateSubnetworks: pulumi.BoolPtr(false),
-		}, pulumi.Parent(createdNetworkProject), pulumi.DependsOn(createdGoogleApiResources))
+		}, pulumi.Provider(gcpProvider),
+		pulumi.DependsOn(createdGoogleApiResources))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create network")
 	}
@@ -178,8 +74,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 	//create subnetwork
 	createdSubNetwork, err := compute.NewSubnetwork(ctx, "sub-network", &compute.SubnetworkArgs{
-		Name:                  pulumi.String(locals.GkeCluster.Metadata.Id),
-		Project:               createdNetworkProject.ProjectId,
+		Name:                  pulumi.String(locals.GkeCluster.Metadata.Name),
+		Project:               pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 		Network:               createdNetwork.ID(),
 		Region:                pulumi.String(locals.GkeCluster.Spec.Region),
 		IpCidrRange:           pulumi.String(vars.SubNetworkCidr),
@@ -205,8 +101,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 	//create firewall
 	createdFirewall, err := compute.NewFirewall(ctx, "firewall", &compute.FirewallArgs{
-		Name:    pulumi.Sprintf("%s-gke-webhook", locals.GkeCluster.Metadata.Id),
-		Project: createdNetworkProject.ProjectId,
+		Name:    pulumi.Sprintf("%s-gke-webhook", locals.GkeCluster.Metadata.Name),
+		Project: pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 		Network: createdNetwork.Name,
 		SourceRanges: pulumi.StringArray{
 			pulumi.String(vars.ApiServerIpCidr),
@@ -235,10 +131,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdRouter, err := compute.NewRouter(ctx,
 		"router",
 		&compute.RouterArgs{
-			Name:    pulumi.String(locals.GkeCluster.Metadata.Id),
+			Name:    pulumi.String(locals.GkeCluster.Metadata.Name),
 			Network: createdNetwork.SelfLink,
 			Region:  pulumi.String(locals.GkeCluster.Spec.Region),
-			Project: createdNetworkProject.ProjectId,
+			Project: pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 		}, pulumi.Parent(createdNetwork))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to create router")
@@ -251,8 +147,8 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdRouterNatIp, err := compute.NewAddress(ctx,
 		"router-nat-ip",
 		&compute.AddressArgs{
-			Name:        pulumi.Sprintf("%s-router-nat", locals.GkeCluster.Metadata.Id),
-			Project:     createdNetworkProject.ProjectId,
+			Name:        pulumi.Sprintf("%s-router-nat", locals.GkeCluster.Metadata.Name),
+			Project:     pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 			Region:      createdRouter.Region,
 			AddressType: pulumi.String("EXTERNAL"),
 			Labels:      pulumi.ToStringMap(locals.GcpLabels),
@@ -268,10 +164,10 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 	createdRouterNat, err := compute.NewRouterNat(ctx,
 		"nat-router",
 		&compute.RouterNatArgs{
-			Name:                          pulumi.String(locals.GkeCluster.Metadata.Id),
+			Name:                          pulumi.String(locals.GkeCluster.Metadata.Name),
 			Router:                        createdRouter.Name,
 			Region:                        createdRouter.Region,
-			Project:                       createdNetworkProject.ProjectId,
+			Project:                       pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 			NatIpAllocateOption:           pulumi.String("MANUAL_ONLY"),
 			NatIps:                        pulumi.StringArray{createdRouterNatIp.SelfLink},
 			SourceSubnetworkIpRangesToNat: pulumi.String("ALL_SUBNETWORKS_ALL_IP_RANGES"),
@@ -282,19 +178,6 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 
 	//export router nat name
 	ctx.Export(outputs.RouterNatName, createdRouterNat.Name)
-
-	createdSharedVpcIamResources := make([]pulumi.Resource, 0)
-
-	if locals.GkeCluster.Spec.IsCreateSharedVpc {
-		createdSharedVpcIamResources, err = sharedVpcIam(ctx,
-			locals,
-			createdClusterProject,
-			createdNetworkProject,
-			createdSubNetwork)
-		if err != nil {
-			return nil, errors.Wrap(err, "failed to create shared vpc iam resources")
-		}
-	}
 
 	clusterAutoscalingArgs := &container.ClusterClusterAutoscalingArgs{
 		Enabled: pulumi.Bool(false),
@@ -321,29 +204,12 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 		}
 	}
 
-	//create random suffix for container-cluster name
-	createdClusterNameRandomString, err := random.NewRandomString(ctx,
-		"cluster-name-suffix",
-		&random.RandomStringArgs{
-			Special: pulumi.Bool(false),
-			Lower:   pulumi.Bool(true),
-			Upper:   pulumi.Bool(false),
-			Numeric: pulumi.Bool(true),
-			Length:  pulumi.Int(2), //increasing this can result in violation of project name length <30
-		})
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create random suffix for cluster-name")
-	}
-
-	clusterName := pulumi.Sprintf("%s-%s", locals.GkeCluster.Metadata.Name,
-		createdClusterNameRandomString.Result)
-
 	//create container cluster
 	createdCluster, err := container.NewCluster(ctx,
 		"cluster",
 		&container.ClusterArgs{
-			Name:                  clusterName,
-			Project:               createdClusterProject.ProjectId,
+			Name:                  pulumi.String(locals.GkeCluster.Metadata.Name),
+			Project:               pulumi.String(locals.GkeCluster.Spec.ClusterProjectId),
 			Location:              pulumi.String(locals.GkeCluster.Spec.Zone),
 			Network:               createdNetwork.SelfLink,
 			Subnetwork:            createdSubNetwork.SelfLink,
@@ -351,7 +217,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 			DeletionProtection:    pulumi.Bool(false),
 			WorkloadIdentityConfig: container.ClusterWorkloadIdentityConfigPtrInput(
 				&container.ClusterWorkloadIdentityConfigArgs{
-					WorkloadPool: pulumi.Sprintf("%s.svc.id.goog", createdClusterProject.ProjectId),
+					WorkloadPool: pulumi.Sprintf("%s.svc.id.goog", locals.GkeCluster.Spec.ClusterProjectId),
 				}),
 			//warning: cluster is not coming into ready state with value set to 0
 			InitialNodeCount: pulumi.Int(1),
@@ -407,8 +273,7 @@ func cluster(ctx *pulumi.Context, locals *localz.Locals,
 					EnableComponents: pulumi.ToStringArray(locals.ContainerClusterLoggingComponentList),
 				}),
 		},
-		pulumi.Parent(createdFolder),
-		pulumi.DependsOn(createdSharedVpcIamResources))
+		pulumi.Provider(gcpProvider))
 	if err != nil {
 		return nil, errors.Wrap(err, "failed to add container cluster")
 	}

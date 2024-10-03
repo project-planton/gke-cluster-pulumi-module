@@ -35,14 +35,8 @@ func Resources(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInpu
 		return errors.Wrap(err, "failed to setup google provider")
 	}
 
-	//create gcp folder
-	createdFolder, err := folder(ctx, locals, gcpProvider)
-	if err != nil {
-		return errors.Wrap(err, "failed to create folder")
-	}
-
 	//create cluster
-	createdCluster, err := cluster(ctx, locals, createdFolder)
+	createdCluster, err := cluster(ctx, locals, gcpProvider)
 	if err != nil {
 		return errors.Wrap(err, "failed to create container cluster")
 	}
