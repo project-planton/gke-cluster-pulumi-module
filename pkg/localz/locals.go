@@ -50,9 +50,9 @@ func Initialize(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInp
 		locals.KubernetesLabels[kuberneteslabelkeys.ResourceId] = locals.GkeCluster.Metadata.Id
 	}
 
-	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("%s-pods", gkeCluster.Metadata.Id)
-	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("%s-services", gkeCluster.Metadata.Id)
-	locals.NetworkTag = gkeCluster.Metadata.Id
+	locals.KubernetesPodSecondaryIpRangeName = fmt.Sprintf("gke-%s-pods", gkeCluster.Metadata.Name)
+	locals.KubernetesServiceSecondaryIpRangeName = fmt.Sprintf("gke-%s-services", gkeCluster.Metadata.Name)
+	locals.NetworkTag = fmt.Sprintf("gke-%s", gkeCluster.Metadata.Name)
 
 	locals.ContainerClusterLoggingComponentList = []string{"SYSTEM_COMPONENTS"}
 
