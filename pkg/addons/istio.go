@@ -2,10 +2,10 @@ package addons
 
 import (
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
-	istiov1alpha3 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/istio/networking/v1alpha3"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/localz"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/outputs"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/vars"
+	istiov1alpha3 "github.com/project-planton/kubernetes-crd-pulumi-types/pkg/istio/kubernetes/networking/v1alpha3"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/compute"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
@@ -189,14 +189,14 @@ func Istio(ctx *pulumi.Context, locals *localz.Locals,
 				ConfigPatches: istiov1alpha3.EnvoyFilterSpecConfigPatchesArray{
 					istiov1alpha3.EnvoyFilterSpecConfigPatchesArgs{
 						ApplyTo: pulumi.String("HTTP_FILTER"),
-						Match: pulumi.Map{
-							"context": pulumi.String("GATEWAY"),
-							"listener": pulumi.Map{
-								"filterChain": pulumi.Map{
-									"filter": pulumi.Map{
-										"name": pulumi.String("envoy.filters.network.http_connection_manager"),
-										"subFilter": pulumi.Map{
-											"name": pulumi.String("envoy.filters.http.cors"),
+						Match: istiov1alpha3.EnvoyFilterSpecConfigPatchesMatchArgs{
+							Context: pulumi.String("GATEWAY"),
+							Listener: istiov1alpha3.EnvoyFilterSpecConfigPatchesMatchListenerArgs{
+								FilterChain: istiov1alpha3.EnvoyFilterSpecConfigPatchesMatchListenerFilterChainArgs{
+									Filter: istiov1alpha3.EnvoyFilterSpecConfigPatchesMatchListenerFilterChainFilterArgs{
+										Name: pulumi.String("envoy.filters.network.http_connection_manager"),
+										SubFilter: istiov1alpha3.EnvoyFilterSpecConfigPatchesMatchListenerFilterChainFilterSubFilterArgs{
+											Name: pulumi.String("envoy.filters.http.cors"),
 										},
 									},
 								},

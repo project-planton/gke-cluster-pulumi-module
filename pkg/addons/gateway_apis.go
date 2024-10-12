@@ -3,7 +3,7 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/vars"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	pulumiyaml "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/yaml"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"

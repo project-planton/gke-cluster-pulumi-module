@@ -3,9 +3,9 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/localz"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/outputs"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/vars"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"

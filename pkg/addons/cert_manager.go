@@ -3,10 +3,10 @@ package addons
 import (
 	"fmt"
 	"github.com/pkg/errors"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/localz"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/outputs"
-	"github.com/plantoncloud/gke-cluster-pulumi-module/pkg/vars"
-	certmanagerv1 "github.com/plantoncloud/kubernetes-crd-pulumi-types/pkg/certmanager/certmanager/v1"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/localz"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/outputs"
+	"github.com/project-planton/gke-cluster-pulumi-module/pkg/vars"
+	certmanagerv1 "github.com/project-planton/kubernetes-crd-pulumi-types/pkg/certmanager/kubernetes/cert_manager/v1"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/container"
 	"github.com/pulumi/pulumi-gcp/sdk/v7/go/gcp/serviceaccount"
@@ -170,7 +170,7 @@ func CertManager(ctx *pulumi.Context, locals *localz.Locals,
 						Solvers: certmanagerv1.ClusterIssuerSpecAcmeSolversArray{
 							certmanagerv1.ClusterIssuerSpecAcmeSolversArgs{
 								Dns01: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01Args{
-									CloudDNS: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01CloudDnsArgs{
+									CloudDNS: certmanagerv1.ClusterIssuerSpecAcmeSolversDns01CloudDNSArgs{
 										Project: pulumi.String(i.DnsZoneGcpProjectId),
 									},
 								},
