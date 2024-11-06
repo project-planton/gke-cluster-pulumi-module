@@ -43,9 +43,9 @@ require (
 )
 
 require (
-	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241012091823-fbe6fb0746f9.1
+	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241106042319-91bc33237f01.1
 	github.com/project-planton/kubernetes-crd-pulumi-types v0.0.0-20241012102626-a7bf231cb216
-	github.com/project-planton/pulumi-module-golang-commons v0.0.0-20241012092225-2e664ff79f70
+	github.com/project-planton/pulumi-module-golang-commons v0.0.0-20241106173822-ed3ae381e02f
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
 )
 

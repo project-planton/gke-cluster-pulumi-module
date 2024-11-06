@@ -40,9 +40,9 @@ func Initialize(ctx *pulumi.Context, stackInput *gkeclusterv1.GkeClusterStackInp
 		kuberneteslabelkeys.ResourceKind: "gke-cluster",
 	}
 
-	if locals.GkeCluster.Spec.EnvironmentInfo != nil && locals.GkeCluster.Spec.EnvironmentInfo.OrgId != "" {
-		locals.GcpLabels[gcplabelkeys.Organization] = locals.GkeCluster.Spec.EnvironmentInfo.OrgId
-		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GkeCluster.Spec.EnvironmentInfo.OrgId
+	if locals.GkeCluster.Metadata.Org != "" {
+		locals.GcpLabels[gcplabelkeys.Organization] = locals.GkeCluster.Metadata.Org
+		locals.KubernetesLabels[kuberneteslabelkeys.Organization] = locals.GkeCluster.Metadata.Org
 	}
 
 	if locals.GkeCluster.Metadata.Id != "" {
