@@ -2,7 +2,7 @@ module github.com/project-planton/gke-cluster-pulumi-module
 
 go 1.23.1
 
-//replace github.com/project-planton/pulumi-module-golang-commons => ../pulumi-module-golang-commons
+//replace github.com/project-planton/project-planton => ../project-planton
 
 //these replacements are required in order to use external-secrets apis https://github.com/external-secrets/external-secrets/blob/main/go.mod
 replace (
@@ -37,16 +37,15 @@ replace (
 
 require (
 	github.com/pkg/errors v0.9.1
-	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.15.0
-	github.com/pulumi/pulumi/sdk/v3 v3.130.0
+	github.com/pulumi/pulumi-kubernetes/sdk/v4 v4.18.3
+	github.com/pulumi/pulumi/sdk/v3 v3.138.0
 	google.golang.org/grpc v1.65.0 // indirect
 )
 
 require (
-	buf.build/gen/go/project-planton/apis/protocolbuffers/go v1.35.1-20241106042319-91bc33237f01.1
 	github.com/project-planton/kubernetes-crd-pulumi-types v0.0.0-20241012102626-a7bf231cb216
-	github.com/project-planton/pulumi-module-golang-commons v0.0.0-20241106173822-ed3ae381e02f
-	github.com/pulumi/pulumi-gcp/sdk/v7 v7.29.0
+	github.com/project-planton/project-planton v0.0.19
+	github.com/pulumi/pulumi-gcp/sdk/v7 v7.38.0
 )
 
 require (
@@ -62,7 +61,7 @@ require (
 	github.com/atotto/clipboard v0.1.4 // indirect
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
-	github.com/bufbuild/protovalidate-go v0.7.0 // indirect
+	github.com/bufbuild/protovalidate-go v0.7.2 // indirect
 	github.com/charmbracelet/bubbles v0.16.1 // indirect
 	github.com/charmbracelet/bubbletea v0.25.0 // indirect
 	github.com/charmbracelet/lipgloss v0.7.1 // indirect
@@ -72,6 +71,7 @@ require (
 	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/djherbis/times v1.5.0 // indirect
 	github.com/emirpasic/gods v1.18.1 // indirect
+	github.com/fatih/color v1.17.0 // indirect
 	github.com/go-git/gcfg v1.5.1-0.20230307220236-3a3c6141e376 // indirect
 	github.com/go-git/go-billy/v5 v5.5.0 // indirect
 	github.com/go-git/go-git/v5 v5.12.0 // indirect
@@ -97,13 +97,14 @@ require (
 	github.com/muesli/cancelreader v0.2.2 // indirect
 	github.com/muesli/reflow v0.3.0 // indirect
 	github.com/muesli/termenv v0.15.2 // indirect
+	github.com/onsi/gomega v1.31.0 // indirect
 	github.com/opentracing/basictracer-go v1.1.0 // indirect
 	github.com/opentracing/opentracing-go v1.2.1-0.20220228012449-10b1cf09e00b // indirect
 	github.com/pgavlin/fx v0.1.6 // indirect
 	github.com/pjbgf/sha1cd v0.3.0 // indirect
 	github.com/pkg/term v1.1.0 // indirect
 	github.com/pulumi/appdash v0.0.0-20231130102222-75f619a67231 // indirect
-	github.com/pulumi/esc v0.9.1 // indirect
+	github.com/pulumi/esc v0.10.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06 // indirect
@@ -114,7 +115,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stoewer/go-strcase v1.3.0 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
-	github.com/tweekmonster/luser v0.0.0-20161003172636-3fa38070dbd7 // indirect
 	github.com/uber/jaeger-client-go v2.30.0+incompatible // indirect
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	github.com/xanzy/ssh-agent v0.3.3 // indirect

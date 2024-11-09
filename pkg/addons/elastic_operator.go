@@ -4,7 +4,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/project-planton/gke-cluster-pulumi-module/pkg/localz"
 	"github.com/project-planton/gke-cluster-pulumi-module/pkg/vars"
-	"github.com/project-planton/pulumi-module-golang-commons/pkg/provider/kubernetes/kuberneteslabelkeys"
+	"github.com/project-planton/project-planton/pkg/pulmod/provider/kubernetes/kuberneteslabelkeys"
 	pulumikubernetes "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes"
 	kubernetescorev1 "github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/core/v1"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v4/go/kubernetes/helm/v3"

@@ -2,11 +2,11 @@
 package localz
 
 import (
-	gcpcredentialv1 "buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/credential/gcpcredential/v1"
-	gkeclusterv1 "buf.build/gen/go/project-planton/apis/protocolbuffers/go/project/planton/provider/gcp/gkecluster/v1"
 	"fmt"
-	"github.com/project-planton/pulumi-module-golang-commons/pkg/provider/gcp/gcplabelkeys"
-	"github.com/project-planton/pulumi-module-golang-commons/pkg/provider/kubernetes/kuberneteslabelkeys"
+	gcpcredentialv1 "github.com/project-planton/project-planton/apis/go/project/planton/credential/gcpcredential/v1"
+	gkeclusterv1 "github.com/project-planton/project-planton/apis/go/project/planton/provider/gcp/gkecluster/v1"
+	"github.com/project-planton/project-planton/pkg/pulmod/provider/gcp/gcplabelkeys"
+	"github.com/project-planton/project-planton/pkg/pulmod/provider/kubernetes/kuberneteslabelkeys"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"strconv"
 )
