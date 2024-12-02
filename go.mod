@@ -44,7 +44,7 @@ require (
 
 require (
 	github.com/project-planton/kubernetes-crd-pulumi-types v0.0.0-20241012102626-a7bf231cb216
-	github.com/project-planton/project-planton v0.0.23
+	github.com/project-planton/project-planton v0.0.30
 	github.com/pulumi/pulumi-gcp/sdk/v7 v7.38.0
 )
 
